@@ -1,8 +1,8 @@
 		### BASICS ###
 
 NAME 			= minirt
-CC 				= cc
-CFLAGS 			= -Wall -Wextra -Werror -I.
+CC 				= gcc
+CFLAGS 			= -g -o -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
 RM 				= rm -rf
 VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx.supp
@@ -15,7 +15,7 @@ MLX42			= MLX42/build/libmlx42.a
 
 		### SOURCE ###
 
-SOURCES			= src/main.c
+SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c
 
 HEADERS			= minirt.h
 
@@ -53,7 +53,7 @@ fclean:			clean
 re:				fclean all
 
 run:			all
-	VALGRIND ./$(NAME) $(FILE)
+	@$(VALGRIND) ./$(NAME) $(FILE)
 
 debug:			CFLAGS := $(filter-out ,$(CFLAGS))
 debug:			CFLAGS += -g -Og
