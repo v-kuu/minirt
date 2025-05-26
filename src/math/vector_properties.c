@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_products.c                                  :+:      :+:    :+:   */
+/*   vector_properties.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 15:22:16 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/26 15:22:46 by vkuusela         ###   ########.fr       */
+/*   Created: 2025/05/26 17:59:23 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/05/26 18:01:18 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../test.h"
 
-float	dot_product(const t_vec3 first, const t_vec3 second)
+float	vec_len(const t_vec3 vector)
 {
-	return (first.x * second.x + first.y * second.y + first.z * second.z);
+	return (sqrt(vector.x * vector.x
+			+ vector.y * vector.y + vector.z * vector.z));
 }
 
-t_vec3	cross_product(const t_vec3 first, const t_vec3 second)
+t_vec3	unit_vec(const t_vec3 vector)
 {
-	return ((t_vec3){first.y * second.z - first.z * second.y,
-		first.z * second.y - first.x * second.z,
-		first.x * second.y - first.y * second.x});
+	return (divide_vec(vector, vec_len(vector)));
 }

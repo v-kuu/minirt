@@ -27,6 +27,7 @@ int	main(void)
 static void	draw_screen(void *param)
 {
 	mlx_image_t	*img;
+	t_ray		ray;
 	int			x;
 	int			y;
 
@@ -37,7 +38,7 @@ static void	draw_screen(void *param)
 		x = -1;
 		while (++x < WIDTH)
 		{
-
+			mlx_put_pixel(img, x, y, background_color(ray));
 		}
 	}
 }

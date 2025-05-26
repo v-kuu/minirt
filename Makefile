@@ -55,15 +55,12 @@ re:				fclean all
 run:			all
 	@$(VALGRIND) ./$(NAME) $(FILE)
 
-debug:			CFLAGS := $(filter-out ,$(CFLAGS))
-debug:			CFLAGS += -g -Og
+debug:			CFLAGS += -g
 debug:			re
 
-fsanitize:		CFLAGS := $(filter-out -Ofast,$(CFLAGS))
-fsanitize:		CFLAGS += -g -Og -fsanitize=address
+fsanitize:		CFLAGS += -g -fsanitize=address
 fsanitize:		re
 
-gprof:			CFLAGS := $(filter-out -Ofast,$(CFLAGS))
 gprof:			CFLAGS += -g -pg
 gprof:			re
 
