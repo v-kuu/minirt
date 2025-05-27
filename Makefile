@@ -2,7 +2,7 @@
 
 NAME 			= minirt
 CC 				= gcc
-CFLAGS 			= -g -o -Wall -Wextra -Werror -I.
+CFLAGS 			= -g -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
 RM 				= rm -rf
 VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx.supp
@@ -16,7 +16,9 @@ MLX42			= MLX42/build/libmlx42.a
 
 		### SOURCE ###
 
-SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c src/parsing/parsing.c
+SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c src/parsing/parsing.c\
+				  src/math/vector_operations.c src/math/vector_products.c \
+				  src/math/vector_properties.c src/rendering/color.c
 
 HEADERS			= minirt.h
 
@@ -62,15 +64,12 @@ re:				fclean all
 run:			all
 	@$(VALGRIND) ./$(NAME) $(FILE)
 
-debug:			CFLAGS := $(filter-out ,$(CFLAGS))
-debug:			CFLAGS += -g -Og
+debug:			CFLAGS += -g
 debug:			re
 
-fsanitize:		CFLAGS := $(filter-out -Ofast,$(CFLAGS))
-fsanitize:		CFLAGS += -g -Og -fsanitize=address
+fsanitize:		CFLAGS += -g -fsanitize=address
 fsanitize:		re
 
-gprof:			CFLAGS := $(filter-out -Ofast,$(CFLAGS))
 gprof:			CFLAGS += -g -pg
 gprof:			re
 
