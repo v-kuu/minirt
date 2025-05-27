@@ -3,7 +3,8 @@
 bool	check_identifier(t_data *data, int i)
 {
 	int		j;
-	char	*v_identifiers[] = {"A", "L", "C", "sp", "cy", "pl", "bx","cn", NULL};
+	char	*v_identifiers[] = {"A", "L", "C", "sp", "cy", "pl", NULL};
+	// char	*v_identifiers[] = {"A", "L", "C", "sp", "cy", "pl", "bx","cn", NULL}; //for BONUS
 
 	j = 0;
 	while (v_identifiers[j])
@@ -35,9 +36,44 @@ bool	identifiers_validation(t_data *data)
 	return (true);
 }
 
+
+bool check_identifier_repeat(t_data *data, char identifier)
+{
+	int i;
+	int counter;
+
+	i = 0;
+	counter = 0;
+	while(data->objects[i].object)
+	{
+		if(data->objects[i].object[0][0] == identifier)
+			counter++;
+		i++;
+	}
+	if (counter != 1)
+		return (false);
+	return (true);
+}
+
+
+bool check_identifiers_numbers(t_data *data)
+{
+	if (!check_identifier_repeat(data, 'A'))
+		return (ft_putstr_fd("only one A is valid",2), false);
+	if (!check_identifier_repeat(data, 'C'))
+		return (ft_putstr_fd("only one C is valid",2), false);
+	/* this one NOT for BONUS part only*/
+	if (!check_identifier_repeat(data, 'L'))
+		return (ft_putstr_fd("only one L is valid",2), false);
+	/* this one fNOT for BONUS part only*/
+	return (true);
+}
+
 bool	validation(t_data *data)
 {
 	if (!identifiers_validation(data))
+		return (false);
+	if(!check_identifiers_numbers(data))
 		return (false);
 	return (true);
 }

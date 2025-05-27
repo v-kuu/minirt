@@ -16,6 +16,9 @@
 
 typedef uint32_t	t_color;
 
+
+
+
 typedef struct s_object
 {
 	char	**object;

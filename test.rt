@@ -15,5 +15,4 @@ sp 6,-2,-7 6 255,134,10 D F:./scenes/textures/1.png
 
 cy -10,-5,0  0,1,0  6   8      255,134,10  D F:./scenes/textures/ball2.png
 
-bx 10,-5,3 15,0,-2      255,255,255  D F:./scenes/textures/wood.png
-cn 2,0,-3  0,-1,0  6   8      255,134,10  D F:./scenes/textures/wall.png
+
