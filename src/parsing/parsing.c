@@ -2,10 +2,11 @@
 
 static bool	line_parsing(t_data *data, int i)
 {
-	printf("line\n");
+	printf("line %s\n", data->read_lines[i]);
+	return (true);
 }
 
-void	parsing(t_data *data)
+bool	parsing(t_data *data)
 {
 	int i;
 	int j;
@@ -19,12 +20,13 @@ void	parsing(t_data *data)
 		while (valid_identifiers[j])
 		{
 			if (ft_strchr(valid_identifiers[j], data->read_lines[i][0]) != 0)
-				return(print_error_exit());
+				return(print_error_exit(), false);
 			else
-				printf("PASSED Identifier is:%s\n", valid_identifiers[j]);
+				line_parsing(data, i);
 			j++;
 		}
 		// if (data->read_lines[i][0] != '\n') line_parsing(data, i);
 		i++;
 	}
+	return (true);
 }
