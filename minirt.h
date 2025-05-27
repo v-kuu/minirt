@@ -91,6 +91,50 @@ typedef struct s_ray
 	t_vec3	direction;
 }			t_ray;
 
+typedef struct s_sphere
+{
+	t_vec3	center;
+	float	radius;
+	t_color	color;
+}			t_sphere;
+
+typedef struct s_plane
+{
+	t_vec3	point;
+	t_vec3	normal;
+	t_color	color;
+}			t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3	center;
+	t_vec3	axis;
+	float	diameter;
+	float	height;
+}			t_cylinder;
+
+typedef struct s_cam
+{
+	t_vec3	origin;
+	t_vec3	forward;
+	t_vec3	up;
+	float	fov_rad;
+}			t_cam;
+
+typedef struct s_viewport
+{
+	float	aspect_ratio;
+	float	focal_length;
+	int		width;
+	int		height;
+	t_vec3	horizontal;
+	t_vec3	vertical;
+	t_vec3	delta_horizontal;
+	t_vec3	delta_vertical;
+	t_vec3	upper_left;
+	t_vec3	pixel_zero;
+}			t_viewport;
+
 void	open_file_read(char **argv, t_data *data);
 void	check_filename(char **argv);
 void	check_arguments(int argc, char **argv);
@@ -149,9 +193,9 @@ t_vec3	cross_product(const t_vec3 first, const t_vec3 second);
 float	vec_len(const t_vec3 vector);
 
 /*
- * Returns the unit vector of a given vector (scaled to length 1)
+ * Returns the vector scaled to length 1
  */
-t_vec3	unit_vec(const t_vec3 vector);
+t_vec3	normalized_vec(const t_vec3 vector);
 
 //////////////////////////////////////////////////////////////////// color.c //
 
@@ -159,5 +203,24 @@ t_vec3	unit_vec(const t_vec3 vector);
  * Returns the default background color for the current ray
  */
 t_color	background_color(t_ray ray);
+
+/////////////////////////////////////////////////////////////////// camera.c //
+
+/*
+ * Initialize the basic camera object
+ */
+t_cam	init_camera(t_vec3 origin, t_vec3 orientation, float fov);
+
+/*
+ * Calculate the viewport based on camera data and screen dimensions
+ */
+t_viewport	create_viewport(t_cam cam, float width, float height);
+
+////////////////////////////////////////////////////////////////////// ray.c //
+
+/*
+ * Calculates the current ray vectors for the current pixel on screen
+ */
+t_ray	pixel_ray(t_vec3 origin, t_viewport viewport, int x, int y);
 
 #endif

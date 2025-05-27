@@ -18,7 +18,7 @@ float	vec_len(const t_vec3 vector)
 			+ vector.y * vector.y + vector.z * vector.z));
 }
 
-t_vec3	unit_vec(const t_vec3 vector)
+t_vec3	normalized_vec(const t_vec3 vector)
 {
 	return (divide_vec(vector, vec_len(vector)));
 }
