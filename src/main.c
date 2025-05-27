@@ -22,9 +22,15 @@ int main(int argc, char **argv)
 	data = ft_calloc(1, sizeof(t_data));
 	check_arguments(argc, argv);
 	open_file_read(argv, data);
-	print_lines(data);
-	parsing(data);
-	free_2d_arr(data->read_lines);
+	// print_lines(data);
+	if(!parsing(data))
+		{
+			free_2d_arr(data->read_lines);
+			free(data);
+			exit(EXIT_FAILURE);
+		}
+	free_objects_arr(data->objects);
+	free(data->objects);
 	free(data);
 	return (0);
 }

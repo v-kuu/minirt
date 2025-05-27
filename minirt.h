@@ -16,9 +16,15 @@
 
 typedef uint32_t	t_color;
 
+typedef struct s_object
+{
+	char	**object;
+}			t_object;
+
 typedef struct s_data
 {
 	char	**read_lines;
+	t_object *objects;
 }			t_data;
 
 void		open_file_read(char **argv, t_data *data);
@@ -28,6 +34,7 @@ void		print_error_exit(void);
 void 		free_2d_arr(char **arr);
 bool 		parsing(t_data *data);
 void 		print_lines(t_data *data);
+void 		free_objects_arr(t_object *objects);
 
 typedef struct s_vec3
 {

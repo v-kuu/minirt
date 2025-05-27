@@ -1,5 +1,20 @@
 #include "../../minirt.h"
 
+
+void free_objects_arr(t_object *objects)
+{
+	int i;
+
+	i = 0;
+	while (objects[i].object)
+	{
+		free_2d_arr(objects[i].object);
+		objects[i].object = NULL;
+		i++;
+	}
+}
+
+
 /*
 free 2d arr
 */
