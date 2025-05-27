@@ -2,7 +2,6 @@
 # define MINIRT
 
 # define MAX_LINES 200
-
 # include "libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
@@ -20,5 +19,7 @@ void		check_filename(char **argv);
 void		check_arguments(int argc, char **argv);
 void		print_error_exit(void);
 void 		free_2d_arr(char **arr);
+void 		parsing(t_data *data);
+void print_lines(t_data *data);
 
 #endif
