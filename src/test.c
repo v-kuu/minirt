@@ -1,4 +1,4 @@
-#include "test.h"
+#include "../minirt.h"
 
 static void	draw_screen(void *param);
 static void	keybinds(void *param);

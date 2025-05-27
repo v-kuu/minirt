@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../test.h"
+#include "../../minirt.h"
 
 float	dot_product(const t_vec3 first, const t_vec3 second)
 {

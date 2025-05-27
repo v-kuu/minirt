@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../test.h"
+#include "../../minirt.h"
 
 t_color	background_color(t_ray ray)
 {

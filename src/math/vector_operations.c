@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../test.h"
+#include "../../minirt.h"
 
 t_vec3	add_vec(const t_vec3 first, const t_vec3 second)
 {
