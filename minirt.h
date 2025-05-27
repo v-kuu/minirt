@@ -23,16 +23,22 @@ typedef struct s_a_light
 	uint32_t color;
 }	t_a_light;
 
+typedef struct s_objects
+{
+	t_a_light a;
+	
+}			t_objects;
+
 typedef struct s_s_lines
 {
 	char	**line;
-	t_a_light a;
 }			t_s_lines;
 
 typedef struct s_data
 {
 	char	**read_lines;
 	t_s_lines *lines;
+	t_objects objects;
 }			t_data;
 
 void		open_file_read(char **argv, t_data *data);

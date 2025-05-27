@@ -37,9 +37,17 @@ int	not_empty_lines(t_data *data)
 	return (lines_counter);
 }
 
-bool parse_to_objects(data)
+bool	parse_to_objects(t_data *data)
 {
+	int	i;
 
+	i = 0;
+	(void) data;
+	// 	while (data->lines[i].line)
+	// 	{
+	// if (data->lines[i].line == "A")
+	// 	}
+	return (true);
 }
 
 bool	parsing(t_data *data)
@@ -53,8 +61,8 @@ bool	parsing(t_data *data)
 	if (!parse_to_lines(data))
 		return (false);
 	if (!validation(data))
-		return (free_lines_arr(data->lines),false);
+		return (free_lines_arr(data->lines), false);
 	if (!parse_to_objects(data))
-		return (free_lines_arr(data->lines),false);
+		return (free_lines_arr(data->lines), false);
 	return (free_2d_arr(data->read_lines), true);
 }
