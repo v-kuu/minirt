@@ -9,7 +9,7 @@ bool	check_identifier(t_data *data, int i)
 	j = 0;
 	while (v_identifiers[j])
 	{
-		if (ft_strcmp(v_identifiers[j], data->objects[i].object[0]) == 0)
+		if (ft_strcmp(v_identifiers[j], data->lines[i].line[0]) == 0)
 		{
 			return (true);
 		}
@@ -23,11 +23,11 @@ bool	identifiers_validation(t_data *data)
 	int	i;
 
 	i = 0;
-	while (data->objects[i].object)
+	while (data->lines[i].line)
 	{
 		if (!check_identifier(data, i))
 		{
-			ft_putstr_fd(data->objects[i].object[0], 2);
+			ft_putstr_fd(data->lines[i].line[0], 2);
 			ft_putstr_fd(" is invlaid identifier \n", 2);
 			return (false);
 		}
@@ -44,9 +44,9 @@ bool check_identifier_repeat(t_data *data, char identifier)
 
 	i = 0;
 	counter = 0;
-	while(data->objects[i].object)
+	while(data->lines[i].line)
 	{
-		if(data->objects[i].object[0][0] == identifier)
+		if(data->lines[i].line[0][0] == identifier)
 			counter++;
 		i++;
 	}

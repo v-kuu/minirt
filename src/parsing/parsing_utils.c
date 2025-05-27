@@ -1,19 +1,19 @@
 #include "../../minirt.h"
 
 
-void free_objects_arr(t_object *objects)
+void free_lines_arr(t_s_lines *lines)
 {
 	int i;
 
 	i = 0;
-	while (objects[i].object)
+	while (lines[i].line)
 	{
-		free_2d_arr(objects[i].object);
-		objects[i].object = NULL;
+		free_2d_arr(lines[i].line);
+		lines[i].line = NULL;
 		i++;
 	}
-	free(objects);
-	objects = NULL;
+	free(lines);
+	lines = NULL;
 }
 
 

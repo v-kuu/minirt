@@ -17,17 +17,22 @@
 typedef uint32_t	t_color;
 
 
-
-
-typedef struct s_object
+typedef struct s_a_light
 {
-	char	**object;
-}			t_object;
+	float ratio;
+	uint32_t color;
+}	t_a_light;
+
+typedef struct s_s_lines
+{
+	char	**line;
+	t_a_light a;
+}			t_s_lines;
 
 typedef struct s_data
 {
 	char	**read_lines;
-	t_object *objects;
+	t_s_lines *lines;
 }			t_data;
 
 void		open_file_read(char **argv, t_data *data);
@@ -37,7 +42,7 @@ void		print_error_exit(void);
 void 		free_2d_arr(char **arr);
 bool 		parsing(t_data *data);
 void 		print_lines(t_data *data);
-void 		free_objects_arr(t_object *objects);
+void 		free_lines_arr(t_s_lines *objects);
 bool 		validation(t_data *data);
 int			ft_strcmp(const char *s1, const char *s2);
 
