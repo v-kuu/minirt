@@ -14,7 +14,7 @@
 # include "MLX42/include/MLX42/MLX42.h"
 # include <math.h>
 
-typedef uint32_t t_color;
+typedef uint32_t	t_color;
 
 typedef struct s_data
 {
@@ -28,17 +28,17 @@ typedef struct s_vec3
 	float	z;
 }			t_vec3;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	t_vec3	origin;
 	t_vec3	direction;
 }			t_ray;
 
-void		open_file_read(char **argv, t_data *data);
-void		check_filename(char **argv);
-void		check_arguments(int argc, char **argv);
-void		print_error_exit(void);
-void 		free_2d_arr(char **arr);
+void	open_file_read(char **argv, t_data *data);
+void	check_filename(char **argv);
+void	check_arguments(int argc, char **argv);
+void	print_error_exit(void);
+void	free_2d_arr(char **arr);
 
 //////////////////////////////////////////////////////// vector_operations.c //
 
@@ -101,6 +101,6 @@ t_vec3	unit_vec(const t_vec3 vector);
 /*
  * Returns the default background color for the current ray
  */
-t_color background_color(t_ray ray);
+t_color	background_color(t_ray ray);
 
 #endif
