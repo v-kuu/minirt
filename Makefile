@@ -17,6 +17,7 @@ MLX42			= MLX42/build/libmlx42.a
 		### SOURCE ###
 
 SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c src/parsing/parsing.c\
+				  src/parsing/validation.c\
 				  src/math/vector_operations.c src/math/vector_products.c \
 				  src/math/vector_properties.c src/rendering/color.c
 

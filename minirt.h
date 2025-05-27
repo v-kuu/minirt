@@ -35,6 +35,8 @@ void 		free_2d_arr(char **arr);
 bool 		parsing(t_data *data);
 void 		print_lines(t_data *data);
 void 		free_objects_arr(t_object *objects);
+bool 		validation(t_data *data);
+int			ft_strcmp(const char *s1, const char *s2);
 
 typedef struct s_vec3
 {

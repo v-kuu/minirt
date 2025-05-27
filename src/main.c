@@ -24,13 +24,9 @@ int main(int argc, char **argv)
 	open_file_read(argv, data);
 	// print_lines(data);
 	if(!parsing(data))
-		{
-			free_2d_arr(data->read_lines);
-			free(data);
-			exit(EXIT_FAILURE);
-		}
+		return (free_2d_arr(data->read_lines), free(data), 1);
+	
 	free_objects_arr(data->objects);
-	free(data->objects);
 	free(data);
 	return (0);
 }

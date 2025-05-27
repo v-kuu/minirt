@@ -12,6 +12,8 @@ void free_objects_arr(t_object *objects)
 		objects[i].object = NULL;
 		i++;
 	}
+	free(objects);
+	objects = NULL;
 }
 
 
@@ -43,4 +45,19 @@ void	print_error_exit(void)
 	ft_putstr_fd("Minirt :", 2);
 	ft_putstr_fd(strerror(errno), 2);
 	exit(EXIT_FAILURE);
+}
+
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	unsigned int	i;
+
+	i = 0;
+	while ((s1[i] || s2[i]))
+	{
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
 }
