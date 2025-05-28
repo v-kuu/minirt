@@ -16,11 +16,17 @@
 
 typedef uint32_t	t_color;
 
+typedef struct s_rgbcolor
+{
+	float	r;
+	float	g;
+	float	b;
+}			t_rgbcolor;
 
 typedef struct s_a_light
 {
 	float ratio;
-	uint32_t color;
+	t_rgbcolor color;
 }	t_a_light;
 
 typedef struct s_objects
@@ -38,8 +44,11 @@ typedef struct s_data
 {
 	char	**read_lines;
 	t_s_lines *lines;
-	t_objects objects;
+	t_objects *objects;
+	int lines_counter;
 }			t_data;
+
+
 
 void		open_file_read(char **argv, t_data *data);
 void		check_filename(char **argv);
