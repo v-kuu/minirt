@@ -135,11 +135,25 @@ typedef struct s_viewport
 	t_vec3	pixel_zero;
 }			t_viewport;
 
+typedef struct s_loop_hook_references
+{
+	t_camera	*cam;
+	t_viewport	*vp;
+	mlx_image_t	*img;
+}	t_refs;
+
 void	open_file_read(char **argv, t_data *data);
 void	check_filename(char **argv);
 void	check_arguments(int argc, char **argv);
 void	print_error_exit(void);
 void	free_2d_arr(char **arr);
+
+////////////////////////////////////////////////////////////// render_loop.c //
+
+/*
+ *	Sets up mlx and starts the rendering
+ */
+int	rendering_loop(void);
 
 //////////////////////////////////////////////////////// vector_operations.c //
 
