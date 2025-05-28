@@ -195,7 +195,7 @@ float	vec_len(const t_vec3 vector);
 /*
  * Returns the vector scaled to length 1
  */
-t_vec3	normalized_vec(const t_vec3 vector);
+t_vec3	unit_vec(const t_vec3 vector);
 
 //////////////////////////////////////////////////////////////////// color.c //
 

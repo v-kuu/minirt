@@ -20,6 +20,6 @@ float	dot_product(const t_vec3 first, const t_vec3 second)
 t_vec3	cross_product(const t_vec3 first, const t_vec3 second)
 {
 	return ((t_vec3){first.y * second.z - first.z * second.y,
-		first.z * second.y - first.x * second.z,
+		first.z * second.x - first.x * second.z,
 		first.x * second.y - first.y * second.x});
 }

@@ -30,14 +30,14 @@ t_viewport	create_viewport(t_cam cam, float width, float height)
 
 	screen.width = width;
 	screen.height = height;
+	screen.focal_length = ((float)screen.width / 2) / (tan(cam.fov_rad / 2));
 	screen.aspect_ratio = (float)screen.width / screen.height;
-	screen.horizontal = scale_vec(
-			cross_product(cam.forward, cam.up), screen.width);
-	screen.vertical = scale_vec(
-			cross_product(cam.forward, screen.horizontal), screen.height);
+	temp = cross_product(cam.forward, cam.up);
+	screen.horizontal = scale_vec(temp, screen.width);
+	temp = cross_product(cam.forward, unit_vec(screen.horizontal));
+	screen.vertical = scale_vec(temp, screen.height);
 	screen.delta_horizontal = divide_vec(screen.horizontal, screen.width);
 	screen.delta_vertical = divide_vec(screen.vertical, screen.height);
-	screen.focal_length = ((float)screen.width / 2) / (tan(cam.fov_rad / 2));
 	temp = subtract_vec(cam.origin, (t_vec3){0, 0, screen.focal_length});
 	temp = subtract_vec(temp, divide_vec(screen.horizontal, 2));
 	screen.upper_left = subtract_vec(temp, divide_vec(screen.vertical, 2));
