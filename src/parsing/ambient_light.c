@@ -14,6 +14,11 @@ void	case_a(t_data *data, t_objects *objects, int i)
 	char	**rgb;
 
 	rgb = NULL;
+	if (data->lines[i].line[3] != 0)
+	{
+		ft_putstr_fd("extra arguments in a line\n", 2);
+		exit_free_parsing(data);
+	}
 	objects->a.ratio = ft_atof(data->lines[i].line[1]);
 	rgb = ft_split(data->lines[i].line[2], ',');
 	if (!rgb)

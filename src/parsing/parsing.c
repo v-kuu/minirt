@@ -62,8 +62,8 @@ bool	parse_to_objects(t_data *data)
 	{
 		if (ft_strcmp(data->lines[i].line[0], "A") == 0)
 			case_a(data, objects, i);
-		// else if (ft_strcmp(data->lines[i].line[0], "C") == 0)
-		// 	case_c(data, i);
+		else if (ft_strcmp(data->lines[i].line[0], "C") == 0)
+			case_c(data,objects, i);
 		// else if (ft_strcmp(data->lines[i].line[0], "L") == 0)
 		// 	case_l(data, i);
 		// else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)

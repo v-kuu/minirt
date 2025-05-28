@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:04:32 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/01/28 12:06:08 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:36:36 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ char	*get_next_line(int fd);
 void	*ft_free(void **ptr);
 int		ft_abs(int number);
 void	*ft_free_str_arr(char **array);
+int	ft_isfloat(int character);
 
 #endif

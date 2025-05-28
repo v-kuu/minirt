@@ -1,5 +1,21 @@
 #include "../../minirt.h"
 
+bool check_all_nums(char *str)
+{
+	int i;
+
+	i = 0;
+	if(str[0] == '-' || str[0] == '+')
+		i++;
+	while (str[i] && str[i]!='\n')
+	{	
+		if(!ft_isfloat(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 static void	numberconvert(float *f, char *str, int *i)
 {
 	*f = *f * 10;
@@ -42,6 +58,8 @@ float	ft_atof(char *str)
 	i = 0;
 	f = 0;
 	decimal_part = NULL;
+	if (!check_all_nums(str))
+		return (ft_putstr_fd("Error: non digits is in the str\n",2), NAN);
 	if (!str)
 		return (NAN);
 	if (str[0] == '-')

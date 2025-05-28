@@ -15,6 +15,14 @@
 # include <math.h>
 
 typedef uint32_t	t_color;
+typedef struct s_vec3
+{
+	float	x;
+	float	y;
+	float	z;
+}			t_vec3;
+
+
 
 typedef struct s_rgbcolor
 {
@@ -22,6 +30,13 @@ typedef struct s_rgbcolor
 	float	g;
 	float	b;
 }			t_rgbcolor;
+
+typedef struct s_camera
+{
+	t_vec3 coordinates;
+	t_vec3 orientations;
+	float fov;
+}	t_camera;
 
 typedef struct s_a_light
 {
@@ -32,7 +47,7 @@ typedef struct s_a_light
 typedef struct s_objects
 {
 	t_a_light a;
-	
+	t_camera c;
 }			t_objects;
 
 typedef struct s_s_lines
@@ -65,14 +80,10 @@ void	case_a(t_data *data, t_objects *objects, int i);
 float	ft_atof(char *str);
 void	exit_free_parsing(t_data *data);
 bool	color_validation(t_rgbcolor color);
+void	case_c(t_data *data, t_objects *objects, int i);
+void print_camera(t_data *data); // must be removed
 
 
-typedef struct s_vec3
-{
-	float	x;
-	float	y;
-	float	z;
-}			t_vec3;
 
 typedef struct s_ray
 {
