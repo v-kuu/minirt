@@ -15,18 +15,75 @@
 # include <math.h>
 
 typedef uint32_t	t_color;
-
-typedef struct s_data
-{
-	char	**read_lines;
-}			t_data;
-
 typedef struct s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
 }			t_vec3;
+
+
+
+typedef struct s_rgbcolor
+{
+	float	r;
+	float	g;
+	float	b;
+}			t_rgbcolor;
+
+typedef struct s_camera
+{
+	t_vec3 coordinates;
+	t_vec3 orientations;
+	float fov;
+}	t_camera;
+
+typedef struct s_a_light
+{
+	float ratio;
+	t_rgbcolor color;
+}	t_a_light;
+
+typedef struct s_objects
+{
+	t_a_light a;
+	t_camera c;
+}			t_objects;
+
+typedef struct s_s_lines
+{
+	char	**line;
+}			t_s_lines;
+
+typedef struct s_data
+{
+	char	**read_lines;
+	t_s_lines *lines;
+	t_objects *objects;
+	int lines_counter;
+}			t_data;
+
+
+
+void		open_file_read(char **argv, t_data *data);
+void		check_filename(char **argv);
+void		check_arguments(int argc, char **argv);
+void		print_error_exit(void);
+void 		free_2d_arr(char **arr);
+bool 		parsing(t_data *data);
+void 		print_lines(t_data *data);
+void 		free_lines_arr(t_s_lines *objects);
+bool 		validation(t_data *data);
+int			ft_strcmp(const char *s1, const char *s2);
+bool	validate_a(t_a_light a);
+void	case_a(t_data *data, t_objects *objects, int i);
+float	ft_atof(char *str);
+void	exit_free_parsing(t_data *data);
+bool	color_validation(t_rgbcolor color);
+void	case_c(t_data *data, t_objects *objects, int i);
+void print_camera(t_data *data); // must be removed
+
+
 
 typedef struct s_ray
 {

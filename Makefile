@@ -7,6 +7,7 @@ LFLAGS			= -ldl -lglfw -pthread -lm
 RM 				= rm -rf
 VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx.supp
 FILE			= test.rt
+OBJDIR			= obj
 
 		### LIBRARIES ###
 
@@ -15,17 +16,20 @@ MLX42			= MLX42/build/libmlx42.a
 
 		### SOURCE ###
 
-SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c \
+SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c src/parsing/parsing.c\
+				  src/parsing/validation.c src/parsing/ft_atof.c src/parsing/ambient_light.c\
+				  src/parsing/camera.c \
 				  src/math/vector_operations.c src/math/vector_products.c \
 				  src/math/vector_properties.c src/rendering/color.c
 
 HEADERS			= minirt.h
 
-OBJECTS			= $(SOURCES:.c=.o)
+OBJECTS			= $(SOURCES:%.c=$(OBJDIR)/%.o)
 
-%.o:			%.c $(HEADERS)
+$(OBJDIR)/%.o: %.c $(HEADERS)
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
-
+	
 all: 			$(NAME)
 
 $(NAME):		$(LIBFT) $(MLX42) $(OBJECTS)
@@ -41,9 +45,14 @@ $(MLX42):
 	@if [ ! -d "MLX42" ]; then git clone https://github.com/codam-coding-college/MLX42.git; fi
 	@(cd MLX42/ && cmake -B ./build && cmake --build ./build -j4)
 
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
+
+
+
 clean:
 	@echo "Cleaning objects..."
-	@$(RM) $(OBJECTS)
+	@$(RM) $(OBJECTS) $(OBJDIR)
 	@(cd libft/ && make clean)
 
 fclean:			clean

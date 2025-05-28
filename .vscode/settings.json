@@ -1,5 +1,13 @@
 {
 	"files.associations": {
-		"cstdlib": "c"
+		"cstdlib": "c",
+		"libft.h": "c",
+		"string.h": "c",
+		"sstream": "c",
+		"random": "c",
+		"array": "c",
+		"string": "c",
+		"string_view": "c",
+		"span": "c"
 	}
 }
