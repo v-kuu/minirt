@@ -1,6 +1,17 @@
 #include "../../minirt.h"
 
 
+void	exit_free_parsing(t_data *data)
+{
+	if (data->read_lines)
+		free_2d_arr(data->read_lines);
+	if (data->objects)
+		free(data->objects);
+	if (data)
+		free(data);
+	exit(EXIT_FAILURE);
+}
+
 void free_lines_arr(t_s_lines *lines)
 {
 	int i;

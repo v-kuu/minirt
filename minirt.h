@@ -60,6 +60,12 @@ void 		print_lines(t_data *data);
 void 		free_lines_arr(t_s_lines *objects);
 bool 		validation(t_data *data);
 int			ft_strcmp(const char *s1, const char *s2);
+bool	validate_a(t_a_light a);
+void	case_a(t_data *data, t_objects *objects, int i);
+float	ft_atof(char *str);
+void	exit_free_parsing(t_data *data);
+bool	color_validation(t_rgbcolor color);
+
 
 typedef struct s_vec3
 {
