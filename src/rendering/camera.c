@@ -35,7 +35,7 @@ t_viewport	create_viewport(t_cam cam, float width, float height)
 	temp = cross_product(cam.forward, cam.up);
 	screen.horizontal = scale_vec(temp, screen.width);
 	temp = cross_product(cam.forward, unit_vec(screen.horizontal));
-	screen.vertical = scale_vec(temp, screen.height);
+	screen.vertical = scale_vec(temp, -screen.height);
 	screen.delta_horizontal = divide_vec(screen.horizontal, screen.width);
 	screen.delta_vertical = divide_vec(screen.vertical, screen.height);
 	temp = subtract_vec(cam.origin, (t_vec3){0, 0, screen.focal_length});
