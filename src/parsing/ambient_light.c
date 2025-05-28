@@ -13,9 +13,7 @@ void	case_a(t_data *data, t_objects *objects, int i)
 {
 	char	**rgb;
 
-	rgb = ft_calloc(3, sizeof(char *));
-	if (!rgb)
-		exit_free_parsing(data);
+	rgb = NULL;
 	objects->a.ratio = ft_atof(data->lines[i].line[1]);
 	rgb = ft_split(data->lines[i].line[2], ',');
 	if (!rgb)
@@ -32,4 +30,5 @@ void	case_a(t_data *data, t_objects *objects, int i)
 		free_2d_arr(rgb);
 		exit_free_parsing(data);
 	}
+	free_2d_arr(rgb);
 }

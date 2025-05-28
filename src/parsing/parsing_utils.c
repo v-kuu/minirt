@@ -3,10 +3,12 @@
 
 void	exit_free_parsing(t_data *data)
 {
-	if (data->read_lines)
-		free_2d_arr(data->read_lines);
+	
 	if (data->objects)
 		free(data->objects);
+	free_lines_arr(data->lines);
+	if (data->read_lines)
+		free_2d_arr(data->read_lines);
 	if (data)
 		free(data);
 	exit(EXIT_FAILURE);
