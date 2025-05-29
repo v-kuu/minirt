@@ -6,13 +6,13 @@
 /*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/29 15:29:28 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:45:07 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minirt.h"
 
-int	sphere_intersection(t_sphere sphere, t_ray ray)
+float	sphere_intersection(t_sphere sphere, t_ray ray)
 {
 	t_vec3	displacement_vec;
 	float	square_r;
@@ -26,5 +26,8 @@ int	sphere_intersection(t_sphere sphere, t_ray ray)
 	square_dist = dot_product(displacement_vec, displacement_vec)
 		- sphere.radius * sphere.radius;
 	discriminant = projection * projection - 4 * square_r * square_dist;
-	return (discriminant >= 0);
+	if (discriminant < 0)
+		return (-1.0);
+	else
+		return ((-projection - sqrt(discriminant) / (2.0 * square_r)));
 }

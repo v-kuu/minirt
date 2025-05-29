@@ -25,3 +25,11 @@ t_ray	pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y)
 	ray_direction = subtract_vec(pixel_center, origin);
 	return ((t_ray){origin, ray_direction});
 }
+
+t_point	ray_at(t_ray ray, float hit)
+{
+	t_vec3	scaled_dir;
+
+	scaled_dir = scale_vec(ray.direction, hit);
+	return (add_vec(ray.origin, scaled_dir));
+}
