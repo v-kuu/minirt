@@ -16,11 +16,12 @@ MLX42			= MLX42/build/libmlx42.a
 
 		### SOURCE ###
 
-SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c src/parsing/parsing.c\
-				  src/parsing/validation.c src/parsing/ft_atof.c src/parsing/ambient_light.c\
+SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c src/parsing/parsing.c \
+				  src/parsing/validation.c src/parsing/ft_atof.c src/parsing/ambient_light.c \
 				  src/parsing/camera.c \
 				  src/math/vector_operations.c src/math/vector_products.c \
-				  src/math/vector_properties.c src/rendering/color.c
+				  src/math/vector_properties.c src/rendering/color.c \
+				  src/rendering/camera.c src/rendering/ray.c src/rendering/render_loop.c
 
 HEADERS			= minirt.h
 

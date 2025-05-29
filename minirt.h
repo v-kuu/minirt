@@ -15,14 +15,13 @@
 # include <math.h>
 
 typedef uint32_t	t_color;
+
 typedef struct s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
 }			t_vec3;
-
-
 
 typedef struct s_rgbcolor
 {
@@ -63,8 +62,6 @@ typedef struct s_data
 	int lines_counter;
 }			t_data;
 
-
-
 void		open_file_read(char **argv, t_data *data);
 void		check_filename(char **argv);
 void		check_arguments(int argc, char **argv);
@@ -83,19 +80,66 @@ bool	color_validation(t_rgbcolor color);
 void	case_c(t_data *data, t_objects *objects, int i);
 void print_camera(t_data *data); // must be removed
 
-
-
 typedef struct s_ray
 {
 	t_vec3	origin;
 	t_vec3	direction;
 }			t_ray;
 
+typedef struct s_sphere
+{
+	t_vec3	center;
+	float	radius;
+	t_color	color;
+}			t_sphere;
+
+typedef struct s_plane
+{
+	t_vec3	point;
+	t_vec3	normal;
+	t_color	color;
+}			t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3	center;
+	t_vec3	axis;
+	float	diameter;
+	float	height;
+}			t_cylinder;
+
+typedef struct s_cam
+{
+	t_vec3	origin;
+	t_vec3	forward;
+	t_vec3	up;
+	float	fov_rad;
+}			t_cam;
+
+typedef struct s_viewp
+{
+	mlx_image_t	*img;
+	t_vec3		cam_origin;
+	t_vec3		horizontal;
+	t_vec3		vertical;
+	t_vec3		delta_u;
+	t_vec3		delta_v;
+	t_vec3		upper_left;
+	t_vec3		pixel_zero;
+}			t_viewp;
+
 void	open_file_read(char **argv, t_data *data);
 void	check_filename(char **argv);
 void	check_arguments(int argc, char **argv);
 void	print_error_exit(void);
 void	free_2d_arr(char **arr);
+
+////////////////////////////////////////////////////////////// render_loop.c //
+
+/*
+ *	Sets up mlx and starts the rendering
+ */
+int		rendering_loop(t_data *data);
 
 //////////////////////////////////////////////////////// vector_operations.c //
 
@@ -149,7 +193,7 @@ t_vec3	cross_product(const t_vec3 first, const t_vec3 second);
 float	vec_len(const t_vec3 vector);
 
 /*
- * Returns the unit vector of a given vector (scaled to length 1)
+ * Returns the vector scaled to length 1
  */
 t_vec3	unit_vec(const t_vec3 vector);
 
@@ -159,5 +203,24 @@ t_vec3	unit_vec(const t_vec3 vector);
  * Returns the default background color for the current ray
  */
 t_color	background_color(t_ray ray);
+
+/////////////////////////////////////////////////////////////////// camera.c //
+
+/*
+ * Initialize the basic camera object
+ */
+t_cam	init_camera(t_vec3 origin, t_vec3 orientation, float fov);
+
+/*
+ * Calculate the viewport based on camera data and screen dimensions
+ */
+t_viewp	create_viewport(t_ray cam_vec, float fov_rad, int width, int height);
+
+////////////////////////////////////////////////////////////////////// ray.c //
+
+/*
+ * Calculates the current ray vectors for the current pixel on screen
+ */
+t_ray	pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
 
 #endif

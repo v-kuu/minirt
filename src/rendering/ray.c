@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_products.c                                  :+:      :+:    :+:   */
+/*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 15:22:16 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/26 15:22:46 by vkuusela         ###   ########.fr       */
+/*   Created: 2025/05/27 19:42:43 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/05/27 20:05:50 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minirt.h"
 
-float	dot_product(const t_vec3 first, const t_vec3 second)
+t_ray	pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y)
 {
-	return (first.x * second.x + first.y * second.y + first.z * second.z);
-}
+	t_vec3	ray_direction;
+	t_vec3	pixel_center;
+	t_vec3	temp;
 
-t_vec3	cross_product(const t_vec3 first, const t_vec3 second)
-{
-	return ((t_vec3){first.y * second.z - first.z * second.y,
-		first.z * second.x - first.x * second.z,
-		first.x * second.y - first.y * second.x});
+	viewport.delta_u = scale_vec(viewport.delta_u, x);
+	viewport.delta_v = scale_vec(viewport.delta_v, y);
+	temp = add_vec(viewport.delta_u, viewport.delta_v);
+	pixel_center = add_vec(viewport.pixel_zero, temp);
+	ray_direction = subtract_vec(pixel_center, origin);
+	return ((t_ray){origin, ray_direction});
 }
