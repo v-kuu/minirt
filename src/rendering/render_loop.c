@@ -6,7 +6,7 @@
 /*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/28 19:10:04 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:23:07 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@ static void	draw_screen(void *param)
 {
 	const t_viewp	*vp = param;
 	t_ray			ray;
+	t_sphere		sphere;
 	int				x;
 	int				y;
 
+	sphere.radius = 0.5;
+	sphere.center = (t_vec3){0, 0, -2};
 	y = -1;
 	while (++y < HEIGHT)
 	{
@@ -56,7 +59,10 @@ static void	draw_screen(void *param)
 		while (++x < WIDTH)
 		{
 			ray = pixel_ray(vp->cam_origin, *vp, x, y);
-			mlx_put_pixel(vp->img, x, y, background_color(ray));
+			if (sphere_intersection(sphere, ray))
+				mlx_put_pixel(vp->img, x ,y, 0xFF0000FF);
+			else
+				mlx_put_pixel(vp->img, x, y, background_color(ray));
 		}
 	}
 }

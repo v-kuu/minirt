@@ -259,4 +259,11 @@ t_viewp				create_viewport(t_ray cam_vec, float fov_rad, int width,
  */
 t_ray				pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
 
+//////////////////////////////////////////////////////////// hit_detection.c //
+
+/*
+ * Calculates if a given ray intersects a sphere
+ */
+int	sphere_intersection(t_sphere sphere, t_ray ray);
+
 #endif
