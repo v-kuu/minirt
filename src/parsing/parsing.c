@@ -37,13 +37,13 @@ int	not_empty_lines(t_data *data)
 	return (lines_counter);
 }
 
-bool	color_validation(t_rgbcolor color)
+bool	color_validation(t_rgbcolor *color)
 {
-	if (!(color.r >= 0 && color.r <= 255))
+	if (!(color->r >= 0 && color->r <= 255))
 		return (ft_putstr_fd("invalid color red value.\n", 2), false);
-	if (!(color.g >= 0 && color.g <= 255))
+	if (!(color->g >= 0 && color->g <= 255))
 		return (ft_putstr_fd("invalid color green value.\n", 2), false);
-	if (!(color.b >= 0 && color.b <= 255))
+	if (!(color->b >= 0 && color->b <= 255))
 		return (ft_putstr_fd("invalid color blue value.\n", 2), false);
 	return (true);
 }
@@ -58,20 +58,22 @@ bool	parse_to_objects(t_data *data)
 	if (!objects)
 		return (false);
 	data->objects = objects;
+	if(!malloc_all_objects(data))
+		return (false);
 	while (data->lines[i].line)
 	{
 		if (ft_strcmp(data->lines[i].line[0], "A") == 0)
 			case_a(data, objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "C") == 0)
-			case_c(data,objects, i);
-		// else if (ft_strcmp(data->lines[i].line[0], "L") == 0)
-		// 	case_l(data, i);
+			case_c(data, objects, i);
+		else if (ft_strcmp(data->lines[i].line[0], "L") == 0)
+			case_l(data, objects, i);
+		else if (ft_strcmp(data->lines[i].line[0], "sp") == 0)
+			case_sp(data, objects, i);
 		// else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)
-		// 	case_pl(data, i);
+		// 	case_pl(data,objects, i);
 		// else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
 		// 	case_cy(data, i);
-		// else if (ft_strcmp(data->lines[i].line[0], "cp") == 0)
-		// 	case_sp(data, i);
 		// else
 		// 	bonus_cases(data);
 		i++;
@@ -79,6 +81,45 @@ bool	parse_to_objects(t_data *data)
 	return (true);
 }
 
+void	calculate_counters(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->lines[i].line)
+	{
+		if (ft_strcmp(data->lines[i].line[0], "L") == 0)
+			data->light_counter++;
+		else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)
+			data->pl_counter++;
+		else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
+			data->cy_counter++;
+		else if (ft_strcmp(data->lines[i].line[0], "cp") == 0)
+			data->cp_counter++;
+		else if (ft_strcmp(data->lines[i].line[0], "sp") == 0)
+			data->sp_counter++;
+		i++;
+	}
+}
+bool	malloc_all_objects(t_data *data)
+{
+	data->objects->l = ft_calloc(data->light_counter, sizeof(t_light));
+	if (!data->objects->l)
+		return (false);
+	data->objects->sp = ft_calloc(data->sp_counter, sizeof(t_sphere));
+	if (!data->objects->sp)
+		return (free(data->objects->l), false);
+	data->objects->cy = ft_calloc(data->cy_counter, sizeof(t_cylinder));
+	if (!data->objects->cy)
+		return (free(data->objects->l), free(data->objects->sp), false);
+	data->objects->pl = ft_calloc(data->pl_counter, sizeof(t_plane));
+	if (!data->objects->pl)
+	{
+		return (free(data->objects->l), free(data->objects->sp),
+			free(data->objects->cy), false);
+	}
+	return (true);
+}
 bool	parsing(t_data *data)
 {
 	data->lines_counter = not_empty_lines(data);
@@ -89,6 +130,7 @@ bool	parsing(t_data *data)
 		return (false);
 	if (!validation(data))
 		return (free_lines_arr(data->lines), false);
+	calculate_counters(data);
 	if (!parse_to_objects(data))
 		return (free_lines_arr(data->lines), false);
 	return (free_2d_arr(data->read_lines), true);

@@ -10,6 +10,7 @@
 		"string_view": "c",
 		"span": "c",
 		"minirt.h": "c",
-		"cmath": "c"
+		"cmath": "c",
+		"mlx42.h": "c"
 	}
 }

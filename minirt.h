@@ -2,7 +2,7 @@
 # define MINIRT_H
 
 # define MAX_LINES 200
-# define MOL 1000 // max orientations value
+# define MOL 1000.0f // max coordinates value
 # define WIDTH 1920
 # define HEIGHT 1080
 
@@ -32,6 +32,13 @@ typedef struct s_rgbcolor
 	float			b;
 }					t_rgbcolor;
 
+typedef struct s_light
+{
+	t_vec3			coordinates;
+	float			b_ratio;
+	t_rgbcolor 		color;
+}					t_light;
+
 typedef struct s_camera
 {
 	t_vec3			coordinates;
@@ -45,10 +52,42 @@ typedef struct s_a_light
 	t_rgbcolor		color;
 }					t_a_light;
 
+
+typedef struct s_sphere
+{
+	t_vec3			center;
+	float			radius;
+	t_rgbcolor		color;
+}					t_sphere;
+
+typedef struct s_plane
+{
+	t_vec3			point;
+	t_vec3			normal;
+	t_rgbcolor		color;
+}					t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3			center;
+	t_vec3			axis;
+	float			diameter;
+	float			height;
+}					t_cylinder;
+
 typedef struct s_objects
 {
 	t_a_light		a;
 	t_camera		c;
+	t_light			*l;
+	t_plane			*pl;
+	t_sphere		*sp;
+	t_cylinder		*cy;
+
+	int lctr; /// added_lights_counter
+	int pctr;
+	int spctr;
+	int cyctr;
 }					t_objects;
 
 typedef struct s_s_lines
@@ -62,6 +101,12 @@ typedef struct s_data
 	t_s_lines		*lines;
 	t_objects		*objects;
 	int				lines_counter;
+	int light_counter;
+	int sp_counter;
+	int cy_counter;
+	int pl_counter;
+	int px_counter;
+	int cp_counter;
 }					t_data;
 
 void				open_file_read(char **argv, t_data *data);
@@ -78,39 +123,22 @@ bool				validate_a(t_a_light a);
 void				case_a(t_data *data, t_objects *objects, int i);
 float				ft_atof(char *str);
 void				exit_free_parsing(t_data *data);
-bool				color_validation(t_rgbcolor color);
+bool				color_validation(t_rgbcolor *color);
 void				case_c(t_data *data, t_objects *objects, int i);
+void				case_l(t_data *data, t_objects *objects, int i);
+void	case_sp(t_data *data, t_objects *objects, int i);
+
 void				print_camera(t_data *data); // must be removed
 bool				fill_in_coordinates(t_data *data, int i, t_vec3 *coords);
 bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
+bool	fill_in_RGB(char *value, t_rgbcolor *color);
+bool	malloc_all_objects(t_data *data);
 
 typedef struct s_ray
 {
 	t_vec3			origin;
 	t_vec3			direction;
 }					t_ray;
-
-typedef struct s_sphere
-{
-	t_vec3			center;
-	float			radius;
-	t_color			color;
-}					t_sphere;
-
-typedef struct s_plane
-{
-	t_vec3			point;
-	t_vec3			normal;
-	t_color			color;
-}					t_plane;
-
-typedef struct s_cylinder
-{
-	t_vec3			center;
-	t_vec3			axis;
-	float			diameter;
-	float			height;
-}					t_cylinder;
 
 typedef struct s_cam
 {

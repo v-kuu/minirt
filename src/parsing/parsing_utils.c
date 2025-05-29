@@ -3,6 +3,7 @@
 
 void	exit_free_parsing(t_data *data)
 {
+	free(data->objects->l); // must be free to bonus
 	if (data->objects)
 		free(data->objects);
 	free_lines_arr(data->lines);

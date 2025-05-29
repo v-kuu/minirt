@@ -4,7 +4,7 @@ bool	validate_a(t_a_light a)
 {
 	if (!(a.ratio >= 0 && a.ratio <= 1))
 		return (ft_putstr_fd("invalid Ambient light ratio.\n", 2), false);
-	if (!color_validation(a.color))
+	if (!color_validation(&a.color))
 		return (false);
 	return (true);
 }

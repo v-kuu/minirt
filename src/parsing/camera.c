@@ -1,11 +1,21 @@
 #include "../../minirt.h"
 
+bool	validate_coordination(t_vec3 *coords)
+{
+	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL
+			|| coords->y < -MOL) || (coords->z > MOL || coords->z < -MOL))
+	{
+		return (ft_putstr_fd("check coordinates values\n", 2), false);
+	}
+	return (true);
+}
+
 bool	validate_orientation(t_vec3 *orinets)
 {
 	if ((orinets->x > 1 || orinets->x < -1) || (orinets->y > 1 || orinets->y <
 			-1) || (orinets->z > 1 || orinets->z < -1))
 	{
-		return (ft_putstr_fd("check coordinates vales\n", 2), false);
+		return (ft_putstr_fd("check Orinetations vales\n", 2), false);
 	}
 	if ((orinets->x > MOL || orinets->x < -MOL) || (orinets->y > MOL
 			|| orinets->y < -MOL) || (orinets->z > MOL || orinets->z < -MOL))
@@ -46,6 +56,8 @@ bool	fill_in_coordinates(t_data *data, int i, t_vec3 *coords)
 	free_2d_arr(coordinates);
 	if (isnan(coords->x) || isnan(coords->y) || isnan(coords->z))
 		return (false);
+	if (!validate_coordination(coords))
+		return (false);
 	return (true);
 }
 
@@ -72,7 +84,7 @@ void	case_c(t_data *data, t_objects *objects, int i)
 		exit_free_parsing(data);
 	if (!fill_in_c_fov(data, i, &objects->c))
 		exit_free_parsing(data);
-	print_camera(data); // must be deleted
+	// print_camera(data); // must be deleted
 }
 
 void	print_camera(t_data *data)
