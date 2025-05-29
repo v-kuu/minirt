@@ -56,10 +56,8 @@ static void	draw_screen(void *param)
 		while (++x < WIDTH)
 		{
 			ray = pixel_ray(vp->cam_origin, *vp, x, y);
-	//		printf("{%f, %f, %f} {%f, %f, %f}\n", ray.origin.x, ray.origin.y, ray.origin.z, ray.direction.x, ray.direction.y, ray.direction.z);
 			mlx_put_pixel(vp->img, x, y, background_color(ray));
 		}
-	//	printf("{%f, %f, %f} {%f, %f, %f}\n", ray.origin.x, ray.origin.y, ray.origin.z, ray.direction.x, ray.direction.y, ray.direction.z);
 	}
 }
 

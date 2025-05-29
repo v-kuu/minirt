@@ -18,12 +18,10 @@ t_viewp	create_viewport(t_ray cam_vec, float fov_rad, int width, int height)
 {
 	t_viewp	screen;
 	t_vec3	temp;
-	//float	aspect_ratio;
 	float	focal_length;
 
 	screen.cam_origin = cam_vec.origin;
 	focal_length = ((float)width / 2) / (tan(fov_rad / 2));
-	//aspect_ratio = (float)width / height;
 	temp = cross_product(cam_vec.direction, (t_vec3){0, 1, 0});
 	screen.horizontal = scale_vec(temp, width);
 	temp = cross_product(cam_vec.direction, unit_vec(screen.horizontal));
