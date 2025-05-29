@@ -2,6 +2,7 @@
 # define MINIRT_H
 
 # define MAX_LINES 200
+# define MOL 1000 // max orientations value
 # define WIDTH 1920
 # define HEIGHT 1080
 

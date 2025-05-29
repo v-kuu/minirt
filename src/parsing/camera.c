@@ -1,19 +1,47 @@
 #include "../../minirt.h"
 
+bool	validate_camera_values(t_objects *objects)
+{
+	if ((objects->c.coordinates.x > 1 || objects->c.coordinates.x < -1)
+		|| (objects->c.coordinates.y > 1 || objects->c.coordinates.y < -1)
+		|| (objects->c.coordinates.z > 1 || objects->c.coordinates.z < -1))
+	{
+		return (ft_putstr_fd("check coordinates vales\n", 2), false);
+	}
+	if ((objects->c.orientations.x > MOL || objects->c.orientations.x < -MOL)
+		|| (objects->c.orientations.y > MOL || objects->c.orientations.y < -MOL)
+		|| (objects->c.orientations.z > MOL || objects->c.orientations.z <
+			-MOL))
+	{
+		return (ft_putstr_fd("check Orinetations values\n", 2), false);
+	}
+	if (!(objects->c.fov >= 0 && objects->c.fov <= 180))
+		return (ft_putstr_fd("check fov value\n", 2), false);
+	return (true);
+}
+
+bool	validate_camera_nan(t_objects *objects)
+{
+	if (isnan(objects->c.orientations.x) || isnan(objects->c.orientations.y)
+		|| isnan(objects->c.orientations.z))
+	{
+		return (false);
+	}
+	if (isnan(objects->c.coordinates.x) || isnan(objects->c.coordinates.y)
+		|| isnan(objects->c.coordinates.z))
+	{
+		return (false);
+	}
+	if (isnan(objects->c.fov))
+		return (false);
+	return (true);
+}
+
 bool	validate_camera(t_objects *objects)
 {
-	
-	if ((objects->c.orientations.x == NAN) || (objects->c.orientations.y == NAN)
-		|| (objects->c.orientations.z == NAN))
-	{
+	if (!validate_camera_nan(objects))
 		return (false);
-	}
-	if ((objects->c.coordinates.x == NAN) || (objects->c.coordinates.y == NAN)
-		|| (objects->c.coordinates.z == NAN))
-	{
-		return (false);
-	}
-	if ((objects->c.fov == NAN))
+	if (!validate_camera_values(objects))
 		return (false);
 	return (true);
 }

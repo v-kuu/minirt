@@ -58,10 +58,10 @@ float	ft_atof(char *str)
 	i = 0;
 	f = 0;
 	decimal_part = NULL;
-	if (!check_all_nums(str))
-		return (ft_putstr_fd("Error: non digits is in the str\n",2), NAN);
 	if (!str)
 		return (NAN);
+	if (!check_all_nums(str))
+		return (ft_putstr_fd("Error: non digits is in the str\n",2), NAN);
 	if (str[0] == '-')
 		handle_minues(&sign, &i);
 	while (str[i] && str[i] != '.' && str[i] != '\n')
@@ -74,5 +74,7 @@ float	ft_atof(char *str)
 		f = f + decimal_convert(decimal_part);
 		free(decimal_part);
 	}
+	if (f > FLT_MAX || f < -FLT_MAX)
+		return(ft_putstr_fd("Error over than the max float.\n",2), NAN);
 	return (f * sign);
 }
