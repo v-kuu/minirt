@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	// print_lines(data);
 	if(!parsing(data))
 		return (free_2d_arr(data->read_lines), free(data), 1);
-	
+	rendering_loop(data);
 	free(data->objects);
 	free_lines_arr(data->lines);
 	free(data);
