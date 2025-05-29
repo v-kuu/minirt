@@ -29,8 +29,9 @@ void	case_a(t_data *data, t_objects *objects, int i)
 	objects->a.color.r = ft_atof(rgb[0]);
 	objects->a.color.g = ft_atof(rgb[1]);
 	objects->a.color.b = ft_atof(rgb[2]);
-	if (!objects->a.ratio || !objects->a.color.r || !objects->a.color.g
-		|| !objects->a.color.b || !validate_a(objects->a))
+	if (objects->a.ratio == NAN || objects->a.color.r == NAN
+		|| objects->a.color.g == NAN || objects->a.color.b == NAN
+		|| !validate_a(objects->a))
 	{
 		free_2d_arr(rgb);
 		exit_free_parsing(data);

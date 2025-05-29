@@ -3,7 +3,6 @@
 
 void	exit_free_parsing(t_data *data)
 {
-	
 	if (data->objects)
 		free(data->objects);
 	free_lines_arr(data->lines);

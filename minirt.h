@@ -13,6 +13,7 @@
 # include <unistd.h>
 # include "MLX42/include/MLX42/MLX42.h"
 # include <math.h>
+#include <float.h>
 
 typedef uint32_t	t_color;
 typedef struct s_vec3
