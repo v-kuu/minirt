@@ -12,37 +12,36 @@
 
 #include "../../minirt.h"
 
-t_cam	init_camera(t_vec3 origin, t_vec3 orientation, float fov)
-{
-	t_cam	cam;
+static void	calculate_pixel_zero(t_viewp *screen, float focal_length);
 
-	cam.origin = origin;
-	cam.forward = orientation;
-	cam.fov_rad = fov * (M_PI / 180);
-	cam.up = (t_vec3){0, 1, 0};
-	return (cam);
+t_viewp	create_viewport(t_ray cam_vec, float fov_rad, int width, int height)
+{
+	t_viewp	screen;
+	t_vec3	temp;
+	//float	aspect_ratio;
+	float	focal_length;
+
+	screen.cam_origin = cam_vec.origin;
+	focal_length = ((float)width / 2) / (tan(fov_rad / 2));
+	//aspect_ratio = (float)width / height;
+	temp = cross_product(cam_vec.direction, (t_vec3){0, 1, 0});
+	screen.horizontal = scale_vec(temp, width);
+	temp = cross_product(cam_vec.direction, unit_vec(screen.horizontal));
+	screen.vertical = scale_vec(temp, -height);
+	screen.delta_u = divide_vec(screen.horizontal, width);
+	screen.delta_v = divide_vec(screen.vertical, height);
+	calculate_pixel_zero(&screen, focal_length);
+	return (screen);
 }
 
-t_viewport	create_viewport(t_cam cam, float width, float height)
+static void	calculate_pixel_zero(t_viewp *screen, float focal_length)
 {
-	t_viewport	screen;
-	t_vec3		temp;
+	t_vec3	upper_left;
+	t_vec3	temp;
 
-	screen.width = width;
-	screen.height = height;
-	screen.focal_length = ((float)screen.width / 2) / (tan(cam.fov_rad / 2));
-	screen.aspect_ratio = (float)screen.width / screen.height;
-	temp = cross_product(cam.forward, cam.up);
-	screen.horizontal = scale_vec(temp, screen.width);
-	temp = cross_product(cam.forward, unit_vec(screen.horizontal));
-	screen.vertical = scale_vec(temp, -screen.height);
-	screen.delta_horizontal = divide_vec(screen.horizontal, screen.width);
-	screen.delta_vertical = divide_vec(screen.vertical, screen.height);
-	temp = subtract_vec(cam.origin, (t_vec3){0, 0, screen.focal_length});
-	temp = subtract_vec(temp, divide_vec(screen.horizontal, 2));
-	screen.upper_left = subtract_vec(temp, divide_vec(screen.vertical, 2));
-	temp = add_vec(screen.delta_horizontal, screen.delta_vertical);
-	temp = scale_vec(temp, 0.5f);
-	screen.pixel_zero = add_vec(screen.upper_left, temp);
-	return (screen);
+	temp = subtract_vec(screen->cam_origin, (t_vec3){0, 0, focal_length});
+	temp = subtract_vec(temp, divide_vec(screen->horizontal, 2));
+	upper_left = subtract_vec(temp, divide_vec(screen->vertical, 2));
+	temp = scale_vec(add_vec(screen->delta_u, screen->delta_v), 0.5f);
+	screen->pixel_zero = add_vec(upper_left, temp);
 }

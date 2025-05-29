@@ -10,29 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minirt.h"
+#include "../../minirt.h"
 
 static void	draw_screen(void *param);
 static void	keybinds(void *param);
 
-int	rendering_loop(void)
+int	rendering_loop(t_data *data)
 {
-	mlx_t	*mlx;
-	t_refs	refs;
+	mlx_t		*mlx;
+	t_viewp		screen;
+	t_camera	cam;
+	t_ray		cam_vec;
 
 	mlx = mlx_init(WIDTH, HEIGHT, "minirt", false);
 	if (!mlx)
 		return (1);
-	refs.img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	if (!refs.img)
+	cam = data->objects->c;
+	cam_vec = (t_ray){cam.coordinates, cam.orientations};
+	screen = create_viewport(cam_vec, (cam.fov * (M_PI / 180)), WIDTH, HEIGHT);
+	screen.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	if (!screen.img)
 	{
 		mlx_terminate(mlx);
 		return (1);
 	}
-	refs.cam = init_camera((t_vec3){0,0,0}, (t_vec3){0,0,-1}, 70);
-	refs.vp = create_viewport(refs.cam, WIDTH, HEIGHT);
-	mlx_image_to_window(mlx, refs.img, 0, 0);
-	mlx_loop_hook(mlx, draw_screen, &refs);
+	mlx_image_to_window(mlx, screen.img, 0, 0);
+	mlx_loop_hook(mlx, draw_screen, &screen);
 	mlx_loop_hook(mlx, keybinds, mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
@@ -41,7 +44,7 @@ int	rendering_loop(void)
 
 static void	draw_screen(void *param)
 {
-	const t_refs	*refs = param;
+	const t_viewp	*vp = param;
 	t_ray			ray;
 	int				x;
 	int				y;
@@ -52,9 +55,9 @@ static void	draw_screen(void *param)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			ray = pixel_ray(cam.origin, refs->vp, x, y);
+			ray = pixel_ray(vp->cam_origin, *vp, x, y);
 	//		printf("{%f, %f, %f} {%f, %f, %f}\n", ray.origin.x, ray.origin.y, ray.origin.z, ray.direction.x, ray.direction.y, ray.direction.z);
-			mlx_put_pixel(refs->img, x, y, background_color(ray));
+			mlx_put_pixel(vp->img, x, y, background_color(ray));
 		}
 	//	printf("{%f, %f, %f} {%f, %f, %f}\n", ray.origin.x, ray.origin.y, ray.origin.z, ray.direction.x, ray.direction.y, ray.direction.z);
 	}

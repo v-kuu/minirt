@@ -12,15 +12,15 @@
 
 #include "../../minirt.h"
 
-t_ray	pixel_ray(t_vec3 origin, t_viewport viewport, int x, int y)
+t_ray	pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y)
 {
 	t_vec3	ray_direction;
 	t_vec3	pixel_center;
 	t_vec3	temp;
 
-	viewport.delta_horizontal = scale_vec(viewport.delta_horizontal, x);
-	viewport.delta_vertical = scale_vec(viewport.delta_vertical, y);
-	temp = add_vec(viewport.delta_horizontal, viewport.delta_vertical);
+	viewport.delta_u = scale_vec(viewport.delta_u, x);
+	viewport.delta_v = scale_vec(viewport.delta_v, y);
+	temp = add_vec(viewport.delta_u, viewport.delta_v);
 	pixel_center = add_vec(viewport.pixel_zero, temp);
 	ray_direction = subtract_vec(pixel_center, origin);
 	return ((t_ray){origin, ray_direction});

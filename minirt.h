@@ -15,14 +15,13 @@
 # include <math.h>
 
 typedef uint32_t	t_color;
+
 typedef struct s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
 }			t_vec3;
-
-
 
 typedef struct s_rgbcolor
 {
@@ -63,8 +62,6 @@ typedef struct s_data
 	int lines_counter;
 }			t_data;
 
-
-
 void		open_file_read(char **argv, t_data *data);
 void		check_filename(char **argv);
 void		check_arguments(int argc, char **argv);
@@ -82,8 +79,6 @@ void	exit_free_parsing(t_data *data);
 bool	color_validation(t_rgbcolor color);
 void	case_c(t_data *data, t_objects *objects, int i);
 void print_camera(t_data *data); // must be removed
-
-
 
 typedef struct s_ray
 {
@@ -121,26 +116,17 @@ typedef struct s_cam
 	float	fov_rad;
 }			t_cam;
 
-typedef struct s_viewport
+typedef struct s_viewp
 {
-	float	aspect_ratio;
-	float	focal_length;
-	int		width;
-	int		height;
-	t_vec3	horizontal;
-	t_vec3	vertical;
-	t_vec3	delta_horizontal;
-	t_vec3	delta_vertical;
-	t_vec3	upper_left;
-	t_vec3	pixel_zero;
-}			t_viewport;
-
-typedef struct s_loop_hook_references
-{
-	t_camera	*cam;
-	t_viewport	*vp;
 	mlx_image_t	*img;
-}	t_refs;
+	t_vec3		cam_origin;
+	t_vec3		horizontal;
+	t_vec3		vertical;
+	t_vec3		delta_u;
+	t_vec3		delta_v;
+	t_vec3		upper_left;
+	t_vec3		pixel_zero;
+}			t_viewp;
 
 void	open_file_read(char **argv, t_data *data);
 void	check_filename(char **argv);
@@ -153,7 +139,7 @@ void	free_2d_arr(char **arr);
 /*
  *	Sets up mlx and starts the rendering
  */
-int	rendering_loop(void);
+int		rendering_loop(t_data *data);
 
 //////////////////////////////////////////////////////// vector_operations.c //
 
@@ -228,13 +214,13 @@ t_cam	init_camera(t_vec3 origin, t_vec3 orientation, float fov);
 /*
  * Calculate the viewport based on camera data and screen dimensions
  */
-t_viewport	create_viewport(t_cam cam, float width, float height);
+t_viewp	create_viewport(t_ray cam_vec, float fov_rad, int width, int height);
 
 ////////////////////////////////////////////////////////////////////// ray.c //
 
 /*
  * Calculates the current ray vectors for the current pixel on screen
  */
-t_ray	pixel_ray(t_vec3 origin, t_viewport viewport, int x, int y);
+t_ray	pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
 
 #endif
