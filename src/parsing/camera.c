@@ -1,90 +1,76 @@
 #include "../../minirt.h"
 
-bool	validate_camera_values(t_objects *objects)
+bool	validate_orientation(t_vec3 *orinets)
 {
-	if ((objects->c.coordinates.x > 1 || objects->c.coordinates.x < -1)
-		|| (objects->c.coordinates.y > 1 || objects->c.coordinates.y < -1)
-		|| (objects->c.coordinates.z > 1 || objects->c.coordinates.z < -1))
+	if ((orinets->x > 1 || orinets->x < -1) || (orinets->y > 1 || orinets->y <
+			-1) || (orinets->z > 1 || orinets->z < -1))
 	{
 		return (ft_putstr_fd("check coordinates vales\n", 2), false);
 	}
-	if ((objects->c.orientations.x > MOL || objects->c.orientations.x < -MOL)
-		|| (objects->c.orientations.y > MOL || objects->c.orientations.y < -MOL)
-		|| (objects->c.orientations.z > MOL || objects->c.orientations.z <
-			-MOL))
+	if ((orinets->x > MOL || orinets->x < -MOL) || (orinets->y > MOL
+			|| orinets->y < -MOL) || (orinets->z > MOL || orinets->z < -MOL))
 	{
 		return (ft_putstr_fd("check Orinetations values\n", 2), false);
 	}
-	if (!(objects->c.fov >= 0 && objects->c.fov <= 180))
+	return (true);
+}
+
+bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
+{
+	char	**orientations;
+
+	orientations = ft_split(data->lines[i].line[2], ',');
+	if (!orientations)
+		exit_free_parsing(data);
+	orinets->x = ft_atof(orientations[0]);
+	orinets->y = ft_atof(orientations[1]);
+	orinets->z = ft_atof(orientations[2]);
+	free_2d_arr(orientations);
+	if (isnan(orinets->x) || isnan(orinets->y) || isnan(orinets->z))
+		return (false);
+	if (!validate_orientation(orinets))
+		return (false);
+	return (true);
+}
+
+bool	fill_in_coordinates(t_data *data, int i, t_vec3 *coords)
+{
+	char	**coordinates;
+
+	coordinates = ft_split(data->lines[i].line[1], ',');
+	if (!coordinates)
+		return (false);
+	coords->x = ft_atof(coordinates[0]);
+	coords->y = ft_atof(coordinates[1]);
+	coords->z = ft_atof(coordinates[2]);
+	free_2d_arr(coordinates);
+	if (isnan(coords->x) || isnan(coords->y) || isnan(coords->z))
+		return (false);
+	return (true);
+}
+
+bool	fill_in_c_fov(t_data *data, int i, t_camera *c)
+{
+	c->fov = ft_atof(data->lines[i].line[3]);
+	if (isnan(c->fov))
+		exit_free_parsing(data);
+	if (!(c->fov >= 0 && c->fov <= 180))
 		return (ft_putstr_fd("check fov value\n", 2), false);
 	return (true);
 }
 
-bool	validate_camera_nan(t_objects *objects)
-{
-	if (isnan(objects->c.orientations.x) || isnan(objects->c.orientations.y)
-		|| isnan(objects->c.orientations.z))
-	{
-		return (false);
-	}
-	if (isnan(objects->c.coordinates.x) || isnan(objects->c.coordinates.y)
-		|| isnan(objects->c.coordinates.z))
-	{
-		return (false);
-	}
-	if (isnan(objects->c.fov))
-		return (false);
-	return (true);
-}
-
-bool	validate_camera(t_objects *objects)
-{
-	if (!validate_camera_nan(objects))
-		return (false);
-	if (!validate_camera_values(objects))
-		return (false);
-	return (true);
-}
-
-void	fill_in_orientations(t_objects *objects, char **orientations)
-{
-	objects->c.orientations.x = ft_atof(orientations[0]);
-	objects->c.orientations.y = ft_atof(orientations[1]);
-	objects->c.orientations.z = ft_atof(orientations[2]);
-}
-
-void	fill_in_coordinates(t_objects *objects, char **coordinates)
-{
-	objects->c.coordinates.x = ft_atof(coordinates[0]);
-	objects->c.coordinates.y = ft_atof(coordinates[1]);
-	objects->c.coordinates.z = ft_atof(coordinates[2]);
-}
-
 void	case_c(t_data *data, t_objects *objects, int i)
 {
-	char	**coordinates;
-	char	**orientations;
-
 	if (data->lines[i].line[4] != 0)
 	{
 		ft_putstr_fd("extra arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
-	coordinates = ft_split(data->lines[i].line[1], ',');
-	if (!coordinates)
+	if (!fill_in_coordinates(data, i, &objects->c.coordinates))
 		exit_free_parsing(data);
-	fill_in_coordinates(objects, coordinates);
-	orientations = ft_split(data->lines[i].line[2], ',');
-	if (!orientations)
-	{
-		free_2d_arr(coordinates);
+	if (!fill_in_orientations(data, i, &objects->c.orientations))
 		exit_free_parsing(data);
-	}
-	fill_in_orientations(objects, orientations);
-	objects->c.fov = ft_atof(data->lines[i].line[3]);
-	free_2d_arr(coordinates);
-	free_2d_arr(orientations);
-	if (!validate_camera(objects))
+	if (!fill_in_c_fov(data, i, &objects->c))
 		exit_free_parsing(data);
 	print_camera(data); // must be deleted
 }

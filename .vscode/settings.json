@@ -9,6 +9,7 @@
 		"string": "c",
 		"string_view": "c",
 		"span": "c",
-		"minirt.h": "c"
+		"minirt.h": "c",
+		"cmath": "c"
 	}
 }
