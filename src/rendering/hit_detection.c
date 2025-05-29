@@ -29,5 +29,5 @@ float	sphere_intersection(t_sphere sphere, t_ray ray)
 	if (discriminant < 0)
 		return (-1.0);
 	else
-		return (projection - sqrt(discriminant) / square_ray);
+		return ((projection - sqrtf(discriminant)) / square_ray);
 }

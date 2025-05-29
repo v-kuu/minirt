@@ -51,7 +51,7 @@ static void	draw_screen(void *param)
 	int				y;
 	float			hit;
 
-	sphere.radius = 0.5;
+	sphere.radius = 1;
 	sphere.center = (t_vec3){0, 0, -2};
 	y = -1;
 	while (++y < HEIGHT)
