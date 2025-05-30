@@ -5,7 +5,7 @@ CC 				= gcc
 CFLAGS 			= -g -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
 RM 				= rm -rf
-VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx.supp
+VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx42.supp
 FILE			= test.rt
 OBJDIR			= obj
 
@@ -22,7 +22,8 @@ SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c sr
 				  src/parsing/cylinder.c \
 				  src/math/vector_operations.c src/math/vector_products.c \
 				  src/math/vector_properties.c src/rendering/color.c \
-				  src/rendering/camera.c src/rendering/ray.c src/rendering/render_loop.c
+				  src/rendering/camera.c src/rendering/ray.c src/rendering/render_loop.c \
+				  src/rendering/hit_detection.c
 
 HEADERS			= minirt.h
 

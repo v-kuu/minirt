@@ -25,6 +25,8 @@ typedef struct s_vec3
 	float			z;
 }					t_vec3;
 
+typedef t_vec3	t_point;
+
 typedef struct s_rgbcolor
 {
 	float			r;
@@ -239,6 +241,11 @@ t_vec3				unit_vec(const t_vec3 vector);
  */
 t_color				background_color(t_ray ray);
 
+/*
+ * Returns a color based on the normal
+ */
+t_color	normal_visual(t_ray ray, t_vec3 center, float hit);
+
 /////////////////////////////////////////////////////////////////// camera.c //
 
 /*
@@ -258,5 +265,17 @@ t_viewp				create_viewport(t_ray cam_vec, float fov_rad, int width,
  * Calculates the current ray vectors for the current pixel on screen
  */
 t_ray				pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
+
+/*
+ * Returns the location where the ray hit
+ */
+t_point	ray_at(t_ray ray, float hit);
+
+//////////////////////////////////////////////////////////// hit_detection.c //
+
+/*
+ * Calculates if a given ray intersects a sphere
+ */
+float	sphere_intersection(t_sphere sphere, t_ray ray);
 
 #endif
