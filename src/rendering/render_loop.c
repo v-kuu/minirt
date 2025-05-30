@@ -68,7 +68,7 @@ static void	draw_screen(void *param)
 			ray = pixel_ray(vp->cam_origin, *vp, x, y);
 			hit = sphere_intersection(sphere, ray);
 			if (hit >= 0)
-				mlx_put_pixel(vp->img, (WIDTH - x - 1) ,y, normal_visual(ray, sphere.center, hit));
+				mlx_put_pixel(vp->img, x, y, normal_visual(ray, sphere.center, hit));
 			else
 				mlx_put_pixel(vp->img, x, y, background_color(ray));
 		}
