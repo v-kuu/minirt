@@ -27,6 +27,7 @@ bool	identifiers_validation(t_data *data)
 	{
 		if (!check_identifier(data, i))
 		{
+			ft_putstr_fd("Error\n", 2);
 			ft_putstr_fd(data->lines[i].line[0], 2);
 			ft_putstr_fd(" is invlaid identifier \n", 2);
 			return (false);
@@ -59,12 +60,12 @@ bool check_identifier_repeat(t_data *data, char identifier)
 bool check_identifiers_numbers(t_data *data)
 {
 	if (!check_identifier_repeat(data, 'A'))
-		return (ft_putstr_fd("only one A is valid",2), false);
+		return (ft_putstr_fd("Error\nonly one A is valid",2), false);
 	if (!check_identifier_repeat(data, 'C'))
-		return (ft_putstr_fd("only one C is valid",2), false);
+		return (ft_putstr_fd("Error\nonly one C is valid",2), false);
 	/* this one NOT for BONUS part only*/
 	if (!check_identifier_repeat(data, 'L'))
-		return (ft_putstr_fd("only one L is valid",2), false);
+		return (ft_putstr_fd("Error\nonly one L is valid",2), false);
 	/* this one fNOT for BONUS part only*/
 	return (true);
 }

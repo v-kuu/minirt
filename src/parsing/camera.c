@@ -5,7 +5,7 @@ bool	validate_coordination(t_vec3 *coords)
 	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL
 			|| coords->y < -MOL) || (coords->z > MOL || coords->z < -MOL))
 	{
-		return (ft_putstr_fd("check coordinates values\n", 2), false);
+		return (ft_putstr_fd("Error\ncheck coordinates values\n", 2), false);
 	}
 	return (true);
 }
@@ -15,12 +15,12 @@ bool	validate_orientation(t_vec3 *orinets)
 	if ((orinets->x > 1 || orinets->x < -1) || (orinets->y > 1 || orinets->y <
 			-1) || (orinets->z > 1 || orinets->z < -1))
 	{
-		return (ft_putstr_fd("check Orinetations vales\n", 2), false);
+		return (ft_putstr_fd("Error\ncheck Orinetations vales\n", 2), false);
 	}
 	if ((orinets->x > MOL || orinets->x < -MOL) || (orinets->y > MOL
 			|| orinets->y < -MOL) || (orinets->z > MOL || orinets->z < -MOL))
 	{
-		return (ft_putstr_fd("check Orinetations values\n", 2), false);
+		return (ft_putstr_fd("Error\ncheck Orinetations values\n", 2), false);
 	}
 	return (true);
 }
@@ -67,7 +67,7 @@ bool	fill_in_c_fov(t_data *data, int i, t_camera *c)
 	if (isnan(c->fov))
 		exit_free_parsing(data);
 	if (!(c->fov >= 0 && c->fov <= 180))
-		return (ft_putstr_fd("check fov value\n", 2), false);
+		return (ft_putstr_fd("Error\ncheck fov value\n", 2), false);
 	return (true);
 }
 
@@ -75,7 +75,7 @@ void	case_c(t_data *data, t_objects *objects, int i)
 {
 	if (data->lines[i].line[4] != 0)
 	{
-		ft_putstr_fd("extra arguments in a line\n", 2);
+		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
 	if (!fill_in_coordinates(data, i, &objects->c.coordinates))
