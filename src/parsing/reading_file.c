@@ -2,6 +2,7 @@
 
 void	print_exit_read(char *msg, t_data *data, int fd)
 {
+	ft_putstr_fd("Error\n", 2);
 	ft_putstr_fd("Minirt :", 2);
 	ft_putstr_fd(msg, 2);
 	close(fd);
@@ -57,14 +58,14 @@ void	check_filename(char **argv)
 	{
 		if (ft_strncmp((argv[1] + (len - 3)), ".rt", 3) != 0)
 		{
-			ft_putstr_fd("Minirt :", 2);
+			ft_putstr_fd("Error\n", 2);
 			ft_putstr_fd("Check the file name please!\n", 2);
 			exit(1);
 		}
 	}
 	else
 	{
-		ft_putstr_fd("Minirt :", 2);
+		ft_putstr_fd("Error\n", 2);
 		ft_putstr_fd("Check the file name please!\n", 2);
 		exit(1);
 	}
@@ -82,8 +83,8 @@ void	check_arguments(int argc, char **argv)
 	}
 	else
 	{
-		ft_putstr_fd("Minirt :", 2);
-		ft_putstr_fd("Check the arguments please!\n", 2);
+		ft_putstr_fd("Error\n", 2);
+		ft_putstr_fd("Minirt: Check the arguments please!\n", 2);
 		exit(1);
 	}
 }

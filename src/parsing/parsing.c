@@ -40,11 +40,11 @@ int	not_empty_lines(t_data *data)
 bool	color_validation(t_rgbcolor *color)
 {
 	if (!(color->r >= 0 && color->r <= 255))
-		return (ft_putstr_fd("invalid color red value.\n", 2), false);
+		return (ft_putstr_fd("Error\ninvalid color red value.\n", 2), false);
 	if (!(color->g >= 0 && color->g <= 255))
-		return (ft_putstr_fd("invalid color green value.\n", 2), false);
+		return (ft_putstr_fd("Error\ninvalid color green value.\n", 2), false);
 	if (!(color->b >= 0 && color->b <= 255))
-		return (ft_putstr_fd("invalid color blue value.\n", 2), false);
+		return (ft_putstr_fd("Error\ninvalid color blue value.\n", 2), false);
 	return (true);
 }
 
