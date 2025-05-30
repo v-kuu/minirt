@@ -36,7 +36,7 @@ typedef struct s_light
 {
 	t_vec3			coordinates;
 	float			b_ratio;
-	t_rgbcolor 		color;
+	t_rgbcolor		color;
 }					t_light;
 
 typedef struct s_camera
@@ -51,7 +51,6 @@ typedef struct s_a_light
 	float			ratio;
 	t_rgbcolor		color;
 }					t_a_light;
-
 
 typedef struct s_sphere
 {
@@ -73,6 +72,7 @@ typedef struct s_cylinder
 	t_vec3			axis;
 	float			diameter;
 	float			height;
+	t_rgbcolor		color;
 }					t_cylinder;
 
 typedef struct s_objects
@@ -85,9 +85,9 @@ typedef struct s_objects
 	t_cylinder		*cy;
 
 	int lctr; /// added_lights_counter
-	int pctr;
-	int spctr;
-	int cyctr;
+	int				plctr;
+	int				spctr;
+	int				cyctr;
 }					t_objects;
 
 typedef struct s_s_lines
@@ -101,12 +101,12 @@ typedef struct s_data
 	t_s_lines		*lines;
 	t_objects		*objects;
 	int				lines_counter;
-	int light_counter;
-	int sp_counter;
-	int cy_counter;
-	int pl_counter;
-	int px_counter;
-	int cp_counter;
+	int				light_counter;
+	int				sp_counter;
+	int				cy_counter;
+	int				pl_counter;
+	int				px_counter;
+	int				cp_counter;
 }					t_data;
 
 void				open_file_read(char **argv, t_data *data);
@@ -120,19 +120,22 @@ void				free_lines_arr(t_s_lines *objects);
 bool				validation(t_data *data);
 int					ft_strcmp(const char *s1, const char *s2);
 bool				validate_a(t_a_light a);
-void				case_a(t_data *data, t_objects *objects, int i);
 float				ft_atof(char *str);
 void				exit_free_parsing(t_data *data);
 bool				color_validation(t_rgbcolor *color);
+void				case_a(t_data *data, t_objects *objects, int i);
 void				case_c(t_data *data, t_objects *objects, int i);
 void				case_l(t_data *data, t_objects *objects, int i);
-void	case_sp(t_data *data, t_objects *objects, int i);
+void				case_sp(t_data *data, t_objects *objects, int i);
+void				case_pl(t_data *data, t_objects *objects, int i);
+void	case_cy(t_data *data, t_objects *objects, int i);
 
-void				print_camera(t_data *data); // must be removed
+void	print_camera(t_data *data); // must be removed
 bool				fill_in_coordinates(t_data *data, int i, t_vec3 *coords);
 bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
-bool	fill_in_RGB(char *value, t_rgbcolor *color);
-bool	malloc_all_objects(t_data *data);
+bool				fill_in_RGB(char *value, t_rgbcolor *color);
+bool				malloc_all_objects(t_data *data);
+bool	fill_in_value(char *value, float *src);
 
 typedef struct s_ray
 {

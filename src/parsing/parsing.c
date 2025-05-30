@@ -54,7 +54,7 @@ bool	parse_to_objects(t_data *data)
 	t_objects	*objects;
 
 	i = 0;
-	objects = ft_calloc(data->lines_counter, sizeof(t_objects *));
+	objects = ft_calloc(1, sizeof(t_objects));
 	if (!objects)
 		return (false);
 	data->objects = objects;
@@ -70,10 +70,10 @@ bool	parse_to_objects(t_data *data)
 			case_l(data, objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "sp") == 0)
 			case_sp(data, objects, i);
-		// else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)
-		// 	case_pl(data,objects, i);
-		// else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
-		// 	case_cy(data, i);
+		else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)
+			case_pl(data,objects, i);
+		else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
+			case_cy(data,objects, i);
 		// else
 		// 	bonus_cases(data);
 		i++;
@@ -94,8 +94,6 @@ void	calculate_counters(t_data *data)
 			data->pl_counter++;
 		else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
 			data->cy_counter++;
-		else if (ft_strcmp(data->lines[i].line[0], "cp") == 0)
-			data->cp_counter++;
 		else if (ft_strcmp(data->lines[i].line[0], "sp") == 0)
 			data->sp_counter++;
 		i++;
