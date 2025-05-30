@@ -15,6 +15,8 @@
 static void	draw_screen(void *param);
 static void	keybinds(void *param);
 
+int	g_active;
+
 int	rendering_loop(t_data *data)
 {
 	mlx_t		*mlx;
@@ -34,6 +36,7 @@ int	rendering_loop(t_data *data)
 		mlx_terminate(mlx);
 		return (1);
 	}
+	g_active = 1;
 	mlx_image_to_window(mlx, screen.img, 0, 0);
 	mlx_loop_hook(mlx, draw_screen, &screen);
 	mlx_loop_hook(mlx, keybinds, mlx);
@@ -51,6 +54,9 @@ static void	draw_screen(void *param)
 	int				y;
 	float			hit;
 
+	if (!g_active)
+		return ;
+	g_active = 0;
 	sphere.radius = 1;
 	sphere.center = (t_vec3){0, 0, -2};
 	y = -1;
