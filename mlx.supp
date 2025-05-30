@@ -1,0 +1,7 @@
+{
+   suppress-strncmp-dlopen
+   Memcheck:Addr8
+   fun:strncmp
+   fun:_dl_*
+   ...
+}
