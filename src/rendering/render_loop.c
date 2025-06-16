@@ -91,6 +91,20 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			}
 		}
 	}
+	index = -1;
+	while (++index < obj->cyctr)
+	{
+		hit = cylinder_intersection(obj->cy[index], ray);
+		if (hit >= 0)
+		{
+			if (hit < closest)
+			{
+				closest = hit;
+				mlx_put_pixel(vp->img, x, y,
+						normal_visual(ray, obj->cy[index].center, hit));
+			}
+		}
+	}
 	if (closest == FLT_MAX)
 		mlx_put_pixel(vp->img, x, y, background_color(ray));
 }
