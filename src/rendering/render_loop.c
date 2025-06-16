@@ -13,6 +13,7 @@
 #include "../../minirt.h"
 
 static void	draw_screen(void *param);
+static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp);
 static void	keybinds(void *param);
 
 int	g_active;
@@ -36,6 +37,7 @@ int	rendering_loop(t_data *data)
 		mlx_terminate(mlx);
 		return (1);
 	}
+	screen.obj = data->objects;
 	g_active = 1;
 	mlx_image_to_window(mlx, screen.img, 0, 0);
 	mlx_loop_hook(mlx, draw_screen, &screen);
@@ -49,16 +51,12 @@ static void	draw_screen(void *param)
 {
 	const t_viewp	*vp = param;
 	t_ray			ray;
-	t_sphere		sphere;
 	int				x;
 	int				y;
-	float			hit;
 
 	if (!g_active)
 		return ;
 	g_active = 0;
-	sphere.radius = 1;
-	sphere.center = (t_vec3){0, 0, -2};
 	y = -1;
 	while (++y < HEIGHT)
 	{
@@ -66,13 +64,35 @@ static void	draw_screen(void *param)
 		while (++x < WIDTH)
 		{
 			ray = pixel_ray(vp->cam_origin, *vp, x, y);
-			hit = sphere_intersection(sphere, ray);
-			if (hit >= 0)
-				mlx_put_pixel(vp->img, x, y, normal_visual(ray, sphere.center, hit));
-			else
-				mlx_put_pixel(vp->img, x, y, background_color(ray));
+			render_pixel(x, y, ray, vp);
 		}
 	}
+}
+
+static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
+{
+	const t_objects	*obj = vp->obj;
+	float			hit;
+	float			closest;
+	int				index;
+
+	index = -1;
+	closest = FLT_MAX;
+	while (++index < obj->spctr)
+	{
+		hit = sphere_intersection(obj->sp[index], ray);
+		if (hit >= 0)
+		{
+			if (hit < closest)
+			{
+				closest = hit;
+				mlx_put_pixel(vp->img, x, y,
+						normal_visual(ray, obj->sp[index].center, hit));
+			}
+		}
+	}
+	if (closest == FLT_MAX)
+		mlx_put_pixel(vp->img, x, y, background_color(ray));
 }
 
 static void	keybinds(void *param)

@@ -156,6 +156,7 @@ typedef struct s_cam
 typedef struct s_viewp
 {
 	mlx_image_t		*img;
+	t_objects		*obj;
 	t_vec3			cam_origin;
 	t_vec3			horizontal;
 	t_vec3			vertical;
