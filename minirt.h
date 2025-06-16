@@ -279,4 +279,9 @@ t_point	ray_at(t_ray ray, float hit);
  */
 float	sphere_intersection(t_sphere sphere, t_ray ray);
 
+/*
+ * Calculates if a given ray intersects a cylinder
+ */
+float	cylinder_intersection(t_cylinder cyl, t_ray ray);
+
 #endif

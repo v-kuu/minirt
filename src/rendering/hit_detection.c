@@ -31,3 +31,8 @@ float	sphere_intersection(t_sphere sphere, t_ray ray)
 	else
 		return ((projection - sqrtf(discriminant)) / square_ray);
 }
+
+float	cylinder_intersection(t_cylinder cyl, t_ray ray)
+{
+
+}
