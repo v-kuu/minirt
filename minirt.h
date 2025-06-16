@@ -278,5 +278,6 @@ t_point	ray_at(t_ray ray, float hit);
  * Calculates if a given ray intersects a sphere
  */
 float	sphere_intersection(t_sphere sphere, t_ray ray);
+float plane_intersection(t_plane plane, t_ray ray);
 
 #endif

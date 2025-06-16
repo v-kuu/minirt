@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit_detection.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/29 15:45:07 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:02:55 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,22 @@ float	sphere_intersection(t_sphere sphere, t_ray ray)
 		return (-1.0);
 	else
 		return ((projection - sqrtf(discriminant)) / square_ray);
+}
+
+float plane_intersection(t_plane plane, t_ray ray)
+{
+	float	denom;
+	t_vec3	diff;
+	float	t;
+
+	denom = dot_product(ray.direction, plane.normal);
+	if (fabsf(denom) < 1e-6) // ray is parallel to the plane
+		return (-1.0);
+
+	diff = subtract_vec(plane.point, ray.origin);
+	t = dot_product(diff, plane.normal) / denom;
+
+	if (t < 0)
+		return (-1.0); // plane is behind the ray
+	return (t);
 }

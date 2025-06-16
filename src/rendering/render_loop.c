@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_loop.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/29 16:10:24 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:45:06 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,18 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 						normal_visual(ray, obj->sp[index].center, hit));
 			}
 		}
+		
+		hit = plane_intersection(obj->pl[index], ray);
+		if (hit >= 0)
+		{
+			if (hit < closest)
+			{
+				closest = hit;
+				mlx_put_pixel(vp->img, x, y,
+						normal_visual(ray, obj->sp[index].center, hit));
+			}
+		}
+		
 	}
 	if (closest == FLT_MAX)
 		mlx_put_pixel(vp->img, x, y, background_color(ray));
