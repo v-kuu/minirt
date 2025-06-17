@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:28:34 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/29 16:17:44 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/06/17 14:35:23 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,11 @@ t_color	cyl_normal(t_ray ray, t_vec3 center, float hit)
 	blue = (0x00 - 0xFF) * fraction + (0xFF);
 	blue <<= 8;
 	return (red | green | blue | 0xFF);
+}
+
+t_color plane_visual(t_ray ray, t_plane plane, float hit)
+{
+	(void) hit;
+	(void) ray;
+	return (0xFF << 24) | ((int)plane.color.r<< 16) | ((int)plane.color.g << 8) | (int)plane.color.b;
 }

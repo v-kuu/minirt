@@ -1,5 +1,18 @@
 #include "../../minirt.h"
 
+void	remove_white_spaces(char *line)
+{
+	int i;
+
+	i = 0;
+	while(line[i])
+	{
+		if(line[i] == '\t')
+			line[i] = ' ';
+		i++;
+	}
+}
+
 bool	parse_to_lines(t_data *data)
 {
 	int	i;
@@ -11,6 +24,7 @@ bool	parse_to_lines(t_data *data)
 	{
 		if (data->read_lines[i][0] != '\n')
 		{
+			remove_white_spaces(data->read_lines[i]);
 			data->lines[j].line = ft_split(data->read_lines[i], ' ');
 			if (!data->lines[j].line)
 				return (free_lines_arr(data->lines), false);
@@ -58,7 +72,7 @@ bool	parse_to_objects(t_data *data)
 	if (!objects)
 		return (false);
 	data->objects = objects;
-	if(!malloc_all_objects(data))
+	if (!malloc_all_objects(data))
 		return (false);
 	while (data->lines[i].line)
 	{
@@ -71,9 +85,9 @@ bool	parse_to_objects(t_data *data)
 		else if (ft_strcmp(data->lines[i].line[0], "sp") == 0)
 			case_sp(data, objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)
-			case_pl(data,objects, i);
+			case_pl(data, objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
-			case_cy(data,objects, i);
+			case_cy(data, objects, i);
 		// else
 		// 	bonus_cases(data);
 		i++;
@@ -118,6 +132,8 @@ bool	malloc_all_objects(t_data *data)
 	}
 	return (true);
 }
+
+
 bool	parsing(t_data *data)
 {
 	data->lines_counter = not_empty_lines(data);

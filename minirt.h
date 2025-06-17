@@ -247,6 +247,7 @@ t_color				background_color(t_ray ray);
  * Returns a color based on the normal
  */
 t_color	normal_visual(t_ray ray, t_vec3 center, float hit);
+t_color	plane_visual(t_ray ray, t_plane plane, float hit);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 
@@ -279,6 +280,7 @@ t_point	ray_at(t_ray ray, float hit);
  * Calculates if a given ray intersects a sphere
  */
 float	sphere_intersection(t_sphere sphere, t_ray ray);
+float plane_intersection(t_plane plane, t_ray ray);
 
 /*
  * Calculates if a given ray intersects a cylinder
