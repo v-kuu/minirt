@@ -246,6 +246,7 @@ t_color				background_color(t_ray ray);
  * Returns a color based on the normal
  */
 t_color	normal_visual(t_ray ray, t_vec3 center, float hit);
+t_color	plane_visual(t_ray ray, t_plane plane, float hit);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 

@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/16 16:02:55 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/17 13:23:37 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,27 @@ float	sphere_intersection(t_sphere sphere, t_ray ray)
 		return ((projection - sqrtf(discriminant)) / square_ray);
 }
 
-float plane_intersection(t_plane plane, t_ray ray)
+/*
+Plane has normal vector to decide the direction, and a point.
+the equation for the intersection point t is:
+t = dot(plane_point - ray_origin, plane_normal) / dot(ray_direction,
+		plane_normal);
+fabs(denominator < 1e-6),
+	this meand to check if it is near to zero so this avoind the zeoro divition.
+*/
+float	plane_intersection(t_plane plane, t_ray ray)
 {
-	float	denom;
-	t_vec3	diff;
+	float	temp;
+	float	denominator;
 	float	t;
 
-	denom = dot_product(ray.direction, plane.normal);
-	if (fabsf(denom) < 1e-6) // ray is parallel to the plane
+	temp = dot_product(subtract_vec(plane.point, ray.origin), plane.normal);
+	denominator = dot_product(ray.direction, plane.normal);
+	if (fabs(denominator) < 1e-6)
 		return (-1.0);
-
-	diff = subtract_vec(plane.point, ray.origin);
-	t = dot_product(diff, plane.normal) / denom;
-
+	else
+		t = temp / denominator;
 	if (t < 0)
-		return (-1.0); // plane is behind the ray
+		return (-1.0);
 	return (t);
 }
