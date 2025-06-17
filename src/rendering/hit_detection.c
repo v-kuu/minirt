@@ -52,7 +52,8 @@ float	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	if (discriminant < 0)
 		return (-1.0);
 	t = (projection - sqrtf(discriminant)) / square_ray;
-	if (ray_at(ray, t).y > cyl.height / 2 || ray_at(ray, t).y < cyl.height / -2)
+	if (ray_at(ray, t).y > cyl.height / 2
+		|| ray_at(ray, t).y < cyl.height / -2)
 		return (-1.0);
 	return (t);
 }
