@@ -41,9 +41,10 @@ float	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	float	discriminant;
 
 	displacement_vec = subtract_vec(cyl.center, ray.origin);
-	square_ray = pow(ray.direction.x, 2) + pow(ray.direction.y, 2);
-	projection = ray.direction.x * displacement_vec.x + ray.direction.y * displacement_vec.y;
-	square_dist = pow(displacement_vec.x, 2) + pow(displacement_vec.y, 2)
+	square_ray = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
+	projection = ray.direction.x * displacement_vec.x
+		+ ray.direction.z * displacement_vec.z;
+	square_dist = pow(displacement_vec.x, 2) + pow(displacement_vec.z, 2)
 		- pow(cyl.diameter, 2);
 	discriminant = projection * projection - square_ray * square_dist;
 	if (discriminant < 0)

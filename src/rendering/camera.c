@@ -25,7 +25,7 @@ t_viewp	create_viewport(t_ray cam_vec, float fov_rad, int width, int height)
 	temp = cross_product(cam_vec.direction, (t_vec3){0, 1, 0});
 	screen.horizontal = scale_vec(temp, width);
 	temp = cross_product(cam_vec.direction, unit_vec(screen.horizontal));
-	screen.vertical = scale_vec(temp, -height);
+	screen.vertical = scale_vec(temp, height);
 	screen.delta_u = divide_vec(screen.horizontal, width);
 	screen.delta_v = divide_vec(screen.vertical, height);
 	calculate_pixel_zero(&screen, focal_length);
@@ -37,8 +37,8 @@ static void	calculate_pixel_zero(t_viewp *screen, float focal_length)
 	t_vec3	upper_left;
 	t_vec3	temp;
 
-	temp = subtract_vec(screen->cam_origin, (t_vec3){0, 0, focal_length});
-	temp = subtract_vec(temp, divide_vec(screen->horizontal, 2));
+	temp = add_vec(screen->cam_origin, (t_vec3){0, 0, -focal_length});
+	temp = add_vec(temp, divide_vec(screen->horizontal, -2));
 	upper_left = subtract_vec(temp, divide_vec(screen->vertical, 2));
 	temp = scale_vec(add_vec(screen->delta_u, screen->delta_v), 0.5f);
 	screen->pixel_zero = add_vec(upper_left, temp);
