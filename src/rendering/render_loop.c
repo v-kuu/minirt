@@ -23,14 +23,12 @@ int	rendering_loop(t_data *data)
 	mlx_t		*mlx;
 	t_viewp		screen;
 	t_camera	cam;
-	t_ray		cam_vec;
 
 	mlx = mlx_init(WIDTH, HEIGHT, "minirt", false);
 	if (!mlx)
 		return (1);
 	cam = data->objects->c;
-	cam_vec = (t_ray){cam.coordinates, cam.orientations};
-	screen = create_viewport(cam_vec, (cam.fov * (M_PI / 180)), WIDTH, HEIGHT);
+	screen = create_viewport(cam, (cam.fov * (M_PI / 180)), WIDTH, HEIGHT);
 	screen.img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	if (!screen.img)
 	{

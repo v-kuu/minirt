@@ -158,6 +158,7 @@ typedef struct s_viewp
 	mlx_image_t		*img;
 	t_objects		*obj;
 	t_vec3			cam_origin;
+	t_vec3			cam_dir;
 	t_vec3			horizontal;
 	t_vec3			vertical;
 	t_vec3			delta_u;
@@ -257,7 +258,7 @@ t_cam				init_camera(t_vec3 origin, t_vec3 orientation, float fov);
 /*
  * Calculate the viewport based on camera data and screen dimensions
  */
-t_viewp				create_viewport(t_ray cam_vec, float fov_rad, int width,
+t_viewp				create_viewport(t_camera cam, float fov_rad, int width,
 						int height);
 
 ////////////////////////////////////////////////////////////////////// ray.c //
