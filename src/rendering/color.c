@@ -21,7 +21,7 @@ t_color	background_color(t_ray ray)
 	t_color	blue;
 
 	unit_direction = unit_vec(ray.direction);
-	fraction = 0.5 * (unit_direction.y + 1.0);
+	fraction = 0.5 * (-unit_direction.y + 1.0);
 	red = (0xFF - 0x77) * fraction + (0x77);
 	green = (0xFF - 0xBB) * fraction + (0xBB);
 	blue = (0xFF - 0xFF) * fraction + (0xFF);
@@ -38,13 +38,13 @@ t_color	normal_visual(t_ray ray, t_vec3 center, float hit)
 
 	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
-	red = (0x00 - 0xFF) * fraction + (0xFF);
+	red = 0xFF * fraction;
 	red <<= 24;
 	fraction = 0.5 * (unit_normal.y + 1.0);
-	green = (0x00 - 0xFF) * fraction + (0xFF);
+	green = 0xFF * fraction;
 	green <<= 16;
-	fraction = 0.5 * (-unit_normal.z + 1.0);
-	blue = (0x00 - 0xFF) * fraction + (0xFF);
+	fraction = 0.5 * (unit_normal.z + 1.0);
+	blue = 0xFF * fraction;
 	blue <<= 8;
 	return (red | green | blue | 0xFF);
 }
@@ -59,13 +59,12 @@ t_color	cyl_normal(t_ray ray, t_vec3 center, float hit)
 
 	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
-	red = (0x00 - 0xFF) * fraction + (0xFF);
+	red = 0xFF * fraction;
 	red <<= 24;
-	fraction = 0.5 * (unit_normal.y + 1.0);
-	green = (0x00 - 0xFF) * fraction + (0xFF);
+	green = 0;
 	green <<= 16;
-	fraction = 0.5 * (-unit_normal.z + 1.0);
-	blue = (0x00 - 0xFF) * fraction + (0xFF);
+	fraction = 0.5 * (unit_normal.z + 1.0);
+	blue = 0xFF * fraction;
 	blue <<= 8;
 	return (red | green | blue | 0xFF);
 }

@@ -88,9 +88,6 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 						normal_visual(ray, obj->sp[index].center, hit));
 			}
 		}
-		
-		
-		
 	}
 	index = -1;
 	while (++index < obj->plctr)
@@ -117,7 +114,7 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			{
 				closest = hit;
 				mlx_put_pixel(vp->img, x, y,
-						normal_visual(ray, obj->cy[index].center, hit));
+						cyl_normal(ray, obj->cy[index].center, hit));
 			}
 		}
 	}
