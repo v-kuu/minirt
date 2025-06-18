@@ -222,7 +222,17 @@ t_vec3				scale_vec(const t_vec3 vector, float scalar);
  */
 t_vec3				divide_vec(const t_vec3 vector, float scalar);
 
+
+
+/*
+ * return the normalized vector, but dividing the coordinates by the length.
+	the length calculated by sqrt(x*x + y*y + z*z);
+ */
+t_vec3	normalize_vec(const t_vec3 vector);
+
 ////////////////////////////////////////////////////////// vector_products.c //
+
+
 
 /*
  * Calculates the dot product between 2 vectors. The dot product tells us
@@ -302,5 +312,8 @@ t_hit	plane_intersection(t_plane plane, t_ray ray);
  * Calculates if a given ray intersects a cylinder
  */
 t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray);
+t_hit	sphere_intersection(t_sphere sphere, t_ray ray);
+t_hit	plane_intersection(t_plane plane, t_ray ray);
+t_color light_visual(t_objects obj, t_ray ray,float hit, int index);
 
 #endif
