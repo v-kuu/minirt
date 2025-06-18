@@ -33,3 +33,10 @@ t_point	ray_at(t_ray ray, float hit)
 	scaled_dir = scale_vec(ray.direction, hit);
 	return (add_vec(ray.origin, scaled_dir));
 }
+
+t_ray	rotate_ray(t_ray ray, t_quaternion quat)
+{
+	ray.origin = rotate_by_quat(quat, ray.origin);
+	ray.direction = rotate_by_quat(quat, ray.direction);
+	return (ray);
+}
