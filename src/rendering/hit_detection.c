@@ -12,6 +12,9 @@
 
 #include "../../minirt.h"
 
+static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray);
+static float	circle_intersection(t_cylinder cyl, t_ray ray, int dir);
+
 float	sphere_intersection(t_sphere sphere, t_ray ray)
 {
 	t_vec3	displacement_vec;
@@ -39,7 +42,6 @@ float	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	float	projection;
 	float	square_dist;
 	float	discriminant;
-	float	t;
 
 	cyl.diameter /= 2;
 	displacement_vec = subtract_vec(cyl.center, ray.origin);
@@ -51,11 +53,9 @@ float	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	discriminant = projection * projection - square_ray * square_dist;
 	if (discriminant < 0)
 		return (-1.0);
-	t = (projection - sqrtf(discriminant)) / square_ray;
-	if (ray_at(ray, t).y > cyl.height / 2
-		|| ray_at(ray, t).y < cyl.height / -2)
-		return (-1.0);
-	return (t);
+	return (check_caps(((projection - sqrtf(discriminant)) / square_ray),
+			(projection + sqrtf(discriminant) / square_ray),
+			cyl, ray));
 }
 
 /*
@@ -80,5 +80,57 @@ float	plane_intersection(t_plane plane, t_ray ray)
 		t = temp / denominator;
 	if (t < 0)
 		return (-1.0);
+	return (t);
+}
+
+static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray)
+{
+	float	t_all[4];
+	float	closest;
+	int		index;
+	
+	closest = FLT_MAX;
+	t_all[0] = t1;
+	if (ray_at(ray, t_all[0]).y > cyl.height / 2
+		|| ray_at(ray, t_all[0]).y < cyl.height / -2)
+		t_all[0] = -1;
+	t_all[1] = t2;
+	if (ray_at(ray, t_all[1]).y > cyl.height / 2
+		|| ray_at(ray, t_all[1]).y < cyl.height / -2)
+		t_all[1] = -1;
+	t_all[2] = circle_intersection(cyl, ray, 1);
+	t_all[3] = circle_intersection(cyl, ray, -1);
+	index = 0;
+	while (index < 4)
+	{
+		if (t_all[index] >= 0 && t_all[index] < closest)
+			closest = t_all[index];
+		index++;
+	}
+	if (closest == FLT_MAX)
+		closest = -1.0;
+	return (closest);
+}
+
+static float	circle_intersection(t_cylinder cyl, t_ray ray, int dir)
+{
+	t_vec3	cap_point;
+	float	temp;
+	float	denominator;
+	float	t;
+
+	cap_point = (t_vec3){cyl.center.x,
+		cyl.center.y + (cyl.height / 2 * dir), cyl.center.z};
+	temp = dot_product(subtract_vec(cap_point, ray.origin),
+			(t_vec3){0, 1 * dir, 0});
+	denominator = dot_product(ray.direction, (t_vec3){0, 1 * dir, 0});
+	if (fabs(denominator) < 1e-6)
+		t = -1.0;
+	else
+	{
+		t = temp / denominator;
+		if (vec_len(subtract_vec(ray_at(ray, t), cap_point)) > cyl.diameter)
+			t = -1.0;
+	}
 	return (t);
 }
