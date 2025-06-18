@@ -222,14 +222,6 @@ t_vec3				scale_vec(const t_vec3 vector, float scalar);
  */
 t_vec3				divide_vec(const t_vec3 vector, float scalar);
 
-
-
-/*
- * return the normalized vector, but dividing the coordinates by the length.
-	the length calculated by sqrt(x*x + y*y + z*z);
- */
-t_vec3	normalize_vec(const t_vec3 vector);
-
 ////////////////////////////////////////////////////////// vector_products.c //
 
 
