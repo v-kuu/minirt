@@ -15,7 +15,7 @@
 static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray);
 static float	circle_intersection(t_cylinder cyl, t_ray ray, int dir);
 
-float	sphere_intersection(t_sphere sphere, t_ray ray)
+t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 {
 	t_vec3	displacement_vec;
 	float	square_ray;
@@ -30,12 +30,12 @@ float	sphere_intersection(t_sphere sphere, t_ray ray)
 		- sphere.radius * sphere.radius;
 	discriminant = projection * projection - square_ray * square_dist;
 	if (discriminant < 0)
-		return (-1.0);
+		return ((t_hit){.t = -1.0f});
 	else
-		return ((projection - sqrtf(discriminant)) / square_ray);
+		return ((t_hit){.t = (projection - sqrtf(discriminant)) / square_ray});
 }
 
-float	cylinder_intersection(t_cylinder cyl, t_ray ray)
+t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 {
 	t_vec3	displacement_vec;
 	float	square_ray;
@@ -52,10 +52,10 @@ float	cylinder_intersection(t_cylinder cyl, t_ray ray)
 		- pow(cyl.diameter, 2);
 	discriminant = projection * projection - square_ray * square_dist;
 	if (discriminant < 0)
-		return (-1.0);
-	return (check_caps(((projection - sqrtf(discriminant)) / square_ray),
+		return ((t_hit){.t = -1.0f});
+	return ((t_hit){.t = check_caps(((projection - sqrtf(discriminant)) / square_ray),
 			(projection + sqrtf(discriminant) / square_ray),
-			cyl, ray));
+			cyl, ray)});
 }
 
 /*
@@ -66,7 +66,7 @@ t = dot(plane_point - ray_origin, plane_normal) / dot(ray_direction,
 fabs(denominator < 1e-6),
 	this meand to check if it is near to zero so this avoind the zeoro divition.
 */
-float	plane_intersection(t_plane plane, t_ray ray)
+t_hit	plane_intersection(t_plane plane, t_ray ray)
 {
 	float	temp;
 	float	denominator;
@@ -75,12 +75,12 @@ float	plane_intersection(t_plane plane, t_ray ray)
 	temp = dot_product(subtract_vec(plane.point, ray.origin), plane.normal);
 	denominator = dot_product(ray.direction, plane.normal);
 	if (fabs(denominator) < 1e-6)
-		return (-1.0);
+		return ((t_hit){.t = -1.0f});
 	else
 		t = temp / denominator;
 	if (t < 0)
-		return (-1.0);
-	return (t);
+		return ((t_hit){.t = -1.0f});
+	return ((t_hit){.t = t});
 }
 
 static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray)
@@ -119,8 +119,7 @@ static float	circle_intersection(t_cylinder cyl, t_ray ray, int dir)
 	float	denominator;
 	float	t;
 
-	cap_point = (t_vec3){cyl.center.x,
-		cyl.center.y + (cyl.height / 2 * dir), cyl.center.z};
+	cap_point = (t_vec3){cyl.center.x, cyl.height / 2 * dir, cyl.center.z};
 	temp = dot_product(subtract_vec(cap_point, ray.origin),
 			(t_vec3){0, 1 * dir, 0});
 	denominator = dot_product(ray.direction, (t_vec3){0, 1 * dir, 0});

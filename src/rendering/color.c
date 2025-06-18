@@ -28,7 +28,7 @@ t_color	background_color(t_ray ray)
 	return (red << 24 | green << 16 | blue << 8 | 0xFF);
 }
 
-t_color	normal_visual(t_ray ray, t_vec3 center, float hit)
+t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit)
 {
 	t_vec3	unit_normal;
 	float	fraction;
@@ -36,7 +36,7 @@ t_color	normal_visual(t_ray ray, t_vec3 center, float hit)
 	t_color	green;
 	t_color	blue;
 
-	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit), center));
+	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit.t), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
 	red = 0xFF * fraction;
 	red <<= 24;
@@ -49,7 +49,7 @@ t_color	normal_visual(t_ray ray, t_vec3 center, float hit)
 	return (red | green | blue | 0xFF);
 }
 
-t_color	cyl_normal(t_ray ray, t_vec3 center, float hit)
+t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit)
 {
 	t_vec3	unit_normal;
 	float	fraction;
@@ -57,7 +57,7 @@ t_color	cyl_normal(t_ray ray, t_vec3 center, float hit)
 	t_color	green;
 	t_color	blue;
 
-	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit), center));
+	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit.t), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
 	red = 0xFF * fraction;
 	red <<= 24;
@@ -69,7 +69,7 @@ t_color	cyl_normal(t_ray ray, t_vec3 center, float hit)
 	return (red | green | blue | 0xFF);
 }
 
-t_color plane_visual(t_ray ray, t_plane plane, float hit)
+t_color plane_visual(t_ray ray, t_plane plane, t_hit hit)
 {
 	(void) hit;
 	(void) ray;

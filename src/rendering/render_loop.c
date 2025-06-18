@@ -70,18 +70,18 @@ static void	draw_screen(void *param)
 static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 {
 	const t_objects	*obj = vp->obj;
-	float			hit;
-	float			closest;
+	t_hit			hit;
+	t_hit			closest;
 	int				index;
 
 	index = -1;
-	closest = FLT_MAX;
+	closest.t = FLT_MAX;
 	while (++index < obj->spctr)
 	{
 		hit = sphere_intersection(obj->sp[index], ray);
-		if (hit >= 0)
+		if (hit.t >= 0)
 		{
-			if (hit < closest)
+			if (hit.t < closest.t)
 			{
 				closest = hit;
 				mlx_put_pixel(vp->img, x, y,
@@ -93,9 +93,9 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 	while (++index < obj->plctr)
 	{
 		hit = plane_intersection(obj->pl[index], ray);
-		if (hit >= 0)
+		if (hit.t >= 0)
 		{
-			if (hit < closest)
+			if (hit.t < closest.t)
 			{
 				closest = hit;
 				mlx_put_pixel(vp->img, x, y,
@@ -108,9 +108,9 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 	while (++index < obj->cyctr)
 	{
 		hit = cylinder_intersection(obj->cy[index], ray);
-		if (hit >= 0)
+		if (hit.t >= 0)
 		{
-			if (hit < closest)
+			if (hit.t < closest.t)
 			{
 				closest = hit;
 				mlx_put_pixel(vp->img, x, y,
@@ -118,7 +118,7 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			}
 		}
 	}
-	if (closest == FLT_MAX)
+	if (closest.t == FLT_MAX)
 		mlx_put_pixel(vp->img, x, y, background_color(ray));
 }
 

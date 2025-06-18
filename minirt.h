@@ -25,6 +25,21 @@ typedef struct s_vec3
 	float			z;
 }					t_vec3;
 
+typedef struct	s_quaternion
+{
+	float			w;
+	float			x;
+	float			y;
+	float			z;
+}				t_quaternion;
+
+typedef struct	s_hit_record
+{
+	float	t;
+	t_vec3	normal;
+	t_color	color;
+}				t_hit;
+
 typedef t_vec3	t_point;
 
 typedef struct s_rgbcolor
@@ -246,9 +261,9 @@ t_color				background_color(t_ray ray);
 /*
  * Returns a color based on the normal
  */
-t_color	normal_visual(t_ray ray, t_vec3 center, float hit);
-t_color	plane_visual(t_ray ray, t_plane plane, float hit);
-t_color	cyl_normal(t_ray ray, t_vec3 center, float hit);
+t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit);
+t_color	plane_visual(t_ray ray, t_plane plane, t_hit hit);
+t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 
@@ -280,12 +295,12 @@ t_point	ray_at(t_ray ray, float hit);
 /*
  * Calculates if a given ray intersects a sphere
  */
-float	sphere_intersection(t_sphere sphere, t_ray ray);
-float plane_intersection(t_plane plane, t_ray ray);
+t_hit	sphere_intersection(t_sphere sphere, t_ray ray);
+t_hit	plane_intersection(t_plane plane, t_ray ray);
 
 /*
  * Calculates if a given ray intersects a cylinder
  */
-float	cylinder_intersection(t_cylinder cyl, t_ray ray);
+t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray);
 
 #endif
