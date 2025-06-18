@@ -39,12 +39,3 @@ t_vec3	divide_vec(const t_vec3 vector, float scalar)
 {
 	return ((t_vec3){vector.x / scalar, vector.y / scalar, vector.z / scalar});
 }
-
-t_vec3	normalize_vec(const t_vec3 vector)
-{
-	float length;
-	
-	length = sqrt(vector.x*vector.x + vector.y*vector.y + vector.z*vector.z);
-	
-	return ((t_vec3){vector.x / length,vector.y / length, vector.z / length});
-}

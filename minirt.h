@@ -25,6 +25,21 @@ typedef struct s_vec3
 	float			z;
 }					t_vec3;
 
+typedef struct	s_quaternion
+{
+	float			w;
+	float			x;
+	float			y;
+	float			z;
+}				t_quaternion;
+
+typedef struct	s_hit_record
+{
+	float	t;
+	t_vec3	normal;
+	t_color	color;
+}				t_hit;
+
 typedef t_vec3	t_point;
 
 typedef struct s_rgbcolor
@@ -158,6 +173,7 @@ typedef struct s_viewp
 	mlx_image_t		*img;
 	t_objects		*obj;
 	t_vec3			cam_origin;
+	t_vec3			cam_dir;
 	t_vec3			horizontal;
 	t_vec3			vertical;
 	t_vec3			delta_u;
@@ -206,14 +222,6 @@ t_vec3				scale_vec(const t_vec3 vector, float scalar);
  */
 t_vec3				divide_vec(const t_vec3 vector, float scalar);
 
-
-
-/*
- * return the normalized vector, but dividing the coordinates by the length.
-	the length calculated by sqrt(x*x + y*y + z*z);
- */
-t_vec3	normalize_vec(const t_vec3 vector);
-
 ////////////////////////////////////////////////////////// vector_products.c //
 
 
@@ -243,7 +251,7 @@ float				vec_len(const t_vec3 vector);
 /*
  * Returns the vector scaled to length 1
  */
-t_vec3				unit_vec(const t_vec3 vector);
+t_vec3				normalize(const t_vec3 vector);
 
 //////////////////////////////////////////////////////////////////// color.c //
 
@@ -255,8 +263,9 @@ t_color				background_color(t_ray ray);
 /*
  * Returns a color based on the normal
  */
-t_color	normal_visual(t_ray ray, t_vec3 center, float hit);
-t_color	plane_visual(t_ray ray, t_plane plane, float hit);
+t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit);
+t_color	plane_visual(t_ray ray, t_plane plane, t_hit hit);
+t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 
@@ -268,7 +277,7 @@ t_cam				init_camera(t_vec3 origin, t_vec3 orientation, float fov);
 /*
  * Calculate the viewport based on camera data and screen dimensions
  */
-t_viewp				create_viewport(t_ray cam_vec, float fov_rad, int width,
+t_viewp				create_viewport(t_camera cam, float fov_rad, int width,
 						int height);
 
 ////////////////////////////////////////////////////////////////////// ray.c //
@@ -288,8 +297,15 @@ t_point	ray_at(t_ray ray, float hit);
 /*
  * Calculates if a given ray intersects a sphere
  */
-float	sphere_intersection(t_sphere sphere, t_ray ray);
-float plane_intersection(t_plane plane, t_ray ray);
+t_hit	sphere_intersection(t_sphere sphere, t_ray ray);
+t_hit	plane_intersection(t_plane plane, t_ray ray);
+
+/*
+ * Calculates if a given ray intersects a cylinder
+ */
+t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray);
+t_hit	sphere_intersection(t_sphere sphere, t_ray ray);
+t_hit	plane_intersection(t_plane plane, t_ray ray);
 t_color light_visual(t_objects obj, t_ray ray,float hit, int index);
 
 #endif

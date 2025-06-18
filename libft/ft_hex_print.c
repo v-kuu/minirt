@@ -43,8 +43,6 @@ int	ft_hex_print(uintptr_t number, char specifier)
 
 static int	ft_recursive_hex(uintptr_t number, char specifier)
 {
-	if (number < 0)
-		return (-1);
 	if (number > 15)
 		ft_recursive_hex(number / 16, specifier);
 	if (number % 16 < 10)

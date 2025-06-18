@@ -5,7 +5,7 @@
 
 t_vec3	normal_at(t_sphere sphere, t_vec3 point)
 {
-	return (normalize_vec(subtract_vec(point, sphere.center)));
+	return (normalize(subtract_vec(point, sphere.center)));
 }
 
 t_vec3	reflect_at(t_ray ray, t_vec3 light_n)
@@ -13,7 +13,7 @@ t_vec3	reflect_at(t_ray ray, t_vec3 light_n)
 	t_vec3	in_v;
 	float	dot;
 
-	in_v = normalize_vec(scale_vec(ray.direction, -1));;
+	in_v = normalize(scale_vec(ray.direction, -1));;
 	dot = dot_product(in_v, light_n);
 	return (subtract_vec(in_v, scale_vec(light_n, 2 * dot)));
 }

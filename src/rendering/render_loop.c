@@ -23,14 +23,12 @@ int	rendering_loop(t_data *data)
 	mlx_t		*mlx;
 	t_viewp		screen;
 	t_camera	cam;
-	t_ray		cam_vec;
 
 	mlx = mlx_init(WIDTH, HEIGHT, "minirt", false);
 	if (!mlx)
 		return (1);
 	cam = data->objects->c;
-	cam_vec = (t_ray){cam.coordinates, cam.orientations};
-	screen = create_viewport(cam_vec, (cam.fov * (M_PI / 180)), WIDTH, HEIGHT);
+	screen = create_viewport(cam, (cam.fov * (M_PI / 180)), WIDTH, HEIGHT);
 	screen.img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	if (!screen.img)
 	{
@@ -72,35 +70,32 @@ static void	draw_screen(void *param)
 static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 {
 	const t_objects	*obj = vp->obj;
-	float			hit;
-	float			closest;
+	t_hit			hit;
+	t_hit			closest;
 	int				index;
 
 	index = -1;
-	closest = FLT_MAX;
+	closest.t = FLT_MAX;
 	while (++index < obj->spctr)
 	{
 		hit = sphere_intersection(obj->sp[index], ray);
-		if (hit >= 0)
+		if (hit.t >= 0)
 		{
-			if (hit < closest)
+			if (hit.t < closest.t)
 			{
 				closest = hit;
 				mlx_put_pixel(vp->img, x, y,
 						normal_visual(ray, obj->sp[index].center, hit));
 			}
 		}
-		
-		
-		
 	}
 	index = -1;
 	while (++index < obj->plctr)
 	{
 		hit = plane_intersection(obj->pl[index], ray);
-		if (hit >= 0)
+		if (hit.t >= 0)
 		{
-			if (hit < closest)
+			if (hit.t < closest.t)
 			{
 				closest = hit;
 				mlx_put_pixel(vp->img, x, y,
@@ -109,7 +104,21 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			}
 		}
 	}
-	if (closest == FLT_MAX)
+	index = -1;
+	while (++index < obj->cyctr)
+	{
+		hit = cylinder_intersection(obj->cy[index], ray);
+		if (hit.t >= 0)
+		{
+			if (hit.t < closest.t)
+			{
+				closest = hit;
+				mlx_put_pixel(vp->img, x, y,
+						cyl_normal(ray, obj->cy[index].center, hit));
+			}
+		}
+	}
+	if (closest.t == FLT_MAX)
 		mlx_put_pixel(vp->img, x, y, background_color(ray));
 }
 
