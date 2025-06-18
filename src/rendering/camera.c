@@ -25,7 +25,7 @@ t_viewp	create_viewport(t_camera cam, float fov_rad, int width, int height)
 	focal_length = ((float)width / 2) / (tan(fov_rad / 2));
 	temp = cross_product(screen.cam_dir, (t_vec3){0, 1, 0});
 	screen.horizontal = scale_vec(temp, width);
-	temp = cross_product(screen.cam_dir, unit_vec(screen.horizontal));
+	temp = cross_product(screen.cam_dir, normalize(screen.horizontal));
 	screen.vertical = scale_vec(temp, height);
 	screen.delta_u = divide_vec(screen.horizontal, width);
 	screen.delta_v = divide_vec(screen.vertical, height);

@@ -20,7 +20,7 @@ t_color	background_color(t_ray ray)
 	t_color	green;
 	t_color	blue;
 
-	unit_direction = unit_vec(ray.direction);
+	unit_direction = normalize(ray.direction);
 	fraction = 0.5 * (-unit_direction.y + 1.0);
 	red = (0xFF - 0x77) * fraction + (0x77);
 	green = (0xFF - 0xBB) * fraction + (0xBB);
@@ -36,7 +36,7 @@ t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit)
 	t_color	green;
 	t_color	blue;
 
-	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit.t), center));
+	unit_normal = normalize(subtract_vec(ray_at(ray, hit.t), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
 	red = 0xFF * fraction;
 	red <<= 24;
@@ -57,7 +57,7 @@ t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit)
 	t_color	green;
 	t_color	blue;
 
-	unit_normal = unit_vec(subtract_vec(ray_at(ray, hit.t), center));
+	unit_normal = normalize(subtract_vec(ray_at(ray, hit.t), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
 	red = 0xFF * fraction;
 	red <<= 24;
