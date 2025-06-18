@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/17 13:23:37 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/18 16:56:34 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	float	discriminant;
 
 	cyl.diameter /= 2;
+	ray = rotate_ray(ray, create_rotation_quat(
+				(t_vec3){0, 1, 0}, cyl.axis));
 	displacement_vec = subtract_vec(cyl.center, ray.origin);
 	square_ray = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
 	projection = ray.direction.x * displacement_vec.x
@@ -53,9 +55,10 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	discriminant = projection * projection - square_ray * square_dist;
 	if (discriminant < 0)
 		return ((t_hit){.t = -1.0f});
-	return ((t_hit){.t = check_caps(((projection - sqrtf(discriminant)) / square_ray),
-			(projection + sqrtf(discriminant) / square_ray),
-			cyl, ray)});
+	return ((t_hit)
+		{.t = check_caps(((projection - sqrtf(discriminant)) / square_ray),
+				(projection + sqrtf(discriminant) / square_ray),
+				cyl, ray)});
 }
 
 /*
@@ -88,7 +91,7 @@ static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray)
 	float	t_all[4];
 	float	closest;
 	int		index;
-	
+
 	closest = FLT_MAX;
 	t_all[0] = t1;
 	if (ray_at(ray, t_all[0]).y > cyl.height / 2
