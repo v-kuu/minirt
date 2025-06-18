@@ -206,7 +206,17 @@ t_vec3				scale_vec(const t_vec3 vector, float scalar);
  */
 t_vec3				divide_vec(const t_vec3 vector, float scalar);
 
+
+
+/*
+ * return the normalized vector, but dividing the coordinates by the length.
+	the length calculated by sqrt(x*x + y*y + z*z);
+ */
+t_vec3	normalize_vec(const t_vec3 vector);
+
 ////////////////////////////////////////////////////////// vector_products.c //
+
+
 
 /*
  * Calculates the dot product between 2 vectors. The dot product tells us
@@ -280,5 +290,6 @@ t_point	ray_at(t_ray ray, float hit);
  */
 float	sphere_intersection(t_sphere sphere, t_ray ray);
 float plane_intersection(t_plane plane, t_ray ray);
+t_color light_visual(t_objects obj, t_ray ray,float hit, int index);
 
 #endif

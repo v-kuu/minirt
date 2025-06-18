@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:28:34 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/17 14:35:23 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/18 15:08:29 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,10 @@ t_color	normal_visual(t_ray ray, t_vec3 center, float hit)
 	return (red | green | blue | 0xFF);
 }
 
-
-
-t_color plane_visual(t_ray ray, t_plane plane, float hit)
+t_color	plane_visual(t_ray ray, t_plane plane, float hit)
 {
-	(void) hit;
-	(void) ray;
-	return (0xFF << 24) | ((int)plane.color.r<< 16) | ((int)plane.color.g << 8) | (int)plane.color.b;
+	(void)hit;
+	(void)ray;
+	return ((0xFF << 24) | ((int)plane.color.r << 16) | ((int)plane.color.g << 8) | (int)plane.color.b);
 }
 

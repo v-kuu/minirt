@@ -11,6 +11,7 @@
 		"span": "c",
 		"minirt.h": "c",
 		"cmath": "c",
-		"mlx42.h": "c"
+		"mlx42.h": "c",
+		"numbers": "c"
 	}
 }
