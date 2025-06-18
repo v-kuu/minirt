@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 12:38:36 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/09 15:45:10 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/18 14:15:20 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,13 @@ t_vec3	scale_vec(const t_vec3 vector, float scalar)
 t_vec3	divide_vec(const t_vec3 vector, float scalar)
 {
 	return ((t_vec3){vector.x / scalar, vector.y / scalar, vector.z / scalar});
+}
+
+t_vec3	normalize_vec(const t_vec3 vector)
+{
+	float length;
+	
+	length = sqrt(vector.x*vector.x + vector.y*vector.y + vector.z*vector.z);
+	
+	return ((t_vec3){vector.x / length,vector.y / length, vector.z / length});
 }
