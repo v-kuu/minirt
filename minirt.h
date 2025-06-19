@@ -274,6 +274,8 @@ t_color				background_color(t_ray ray);
 t_color				normal_visual(t_ray ray, t_vec3 center, t_hit hit);
 t_color				plane_visual(t_ray ray, t_plane plane, t_hit hit);
 t_color				cyl_normal(t_ray ray, t_vec3 center, t_hit hit);
+t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, float hit, int index);
+t_color shading_visual(t_rgbcolor color);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 
