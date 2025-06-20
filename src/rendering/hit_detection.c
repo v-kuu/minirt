@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/17 13:23:37 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/20 17:19:18 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,13 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 	if (discriminant < 0)
 		return ((t_hit){.t = -1.0f});
 	else
-		return ((t_hit){.t = (projection - sqrtf(discriminant)) / square_ray});
+	{
+		float t;
+
+		t = (projection - sqrtf(discriminant)) / square_ray;
+		return ((t_hit){.t = t, sp_normal_at(sphere,ray_at(ray,t))});
+
+	}
 }
 
 t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)

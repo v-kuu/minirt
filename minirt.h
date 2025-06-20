@@ -5,8 +5,8 @@
 # define MOL 1000.0f // max coordinates value
 # define WIDTH 1920
 # define HEIGHT 1080
-# define SHININESS 100 // in lighting
-# define SPECULAR 0.8f    // in ligtining
+# define SHININESS 10 // in lighting
+# define SPECULAR 0.2f    // in ligtining
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
 # include <errno.h>
@@ -275,8 +275,9 @@ t_color				background_color(t_ray ray);
 t_color				normal_visual(t_ray ray, t_vec3 center, t_hit hit);
 t_color				plane_visual(t_ray ray, t_plane plane, t_hit hit);
 t_color				cyl_normal(t_ray ray, t_vec3 center, t_hit hit);
-t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, float hit, int index);
+t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, t_hit hit, int index);
 t_color shading_visual(t_rgbcolor color);
+t_vec3	sp_normal_at(t_sphere sphere, t_vec3 point);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 
