@@ -5,7 +5,8 @@
 # define MOL 1000.0f // max coordinates value
 # define WIDTH 1920
 # define HEIGHT 1080
-
+# define SHININESS 100 // in lighting
+# define SPECULAR 0.8f    // in ligtining
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
 # include <errno.h>

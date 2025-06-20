@@ -2,6 +2,15 @@
 
 #include "../../minirt.h"
 
+float	ft_clamp(float val, float min, float max)
+{
+	if (val < min)
+		return (min);
+	if (val > max)
+		return (max);
+	return (val);
+}
+
 t_vec3	normal_at(t_sphere sphere, t_vec3 point)
 {
 	return (normalize(subtract_vec(point, sphere.center)));
@@ -29,8 +38,7 @@ t_rgbcolor	normalize_color(t_rgbcolor c1)
 	return ((t_rgbcolor){c1.r / 255.0f, c1.g / 255.0f, c1.b / 255.0f});
 }
 
-t_rgbcolor	lightining(t_objects *objects, t_sphere obj,
-		t_phong phong)
+t_rgbcolor	lightining(t_objects *objects, t_sphere obj, t_phong phong)
 {
 	t_rgbcolor	effective_color;
 	t_rgbcolor	ambient;
@@ -38,6 +46,7 @@ t_rgbcolor	lightining(t_objects *objects, t_sphere obj,
 	t_rgbcolor	specular;
 	float		epsilon;
 	float		factor;
+	t_rgbcolor	final;
 
 	effective_color = multiply_color_by(normalize_color(obj.color),
 			objects->l[0].b_ratio);
@@ -55,16 +64,18 @@ t_rgbcolor	lightining(t_objects *objects, t_sphere obj,
 		epsilon = dot_product(phong.reflect_V, phong.eye_v);
 		if (epsilon > 0)
 		{
-			factor = powf(epsilon, 32.0f);
-			specular = multiply_color_by(objects->l[0].color, factor
-					* objects->l[0].b_ratio);
+			factor = powf(epsilon, SHININESS);
+			specular = multiply_color_by(normalize_color(objects->l[0].color),
+					factor * objects->l[0].b_ratio * SPECULAR);
 		}
 		else
-		{
 			specular = (t_rgbcolor){0, 0, 0};
-		}
 	}
-	return (add_colors(add_colors(ambient, diffuse), specular));
+	final = add_colors(add_colors(ambient, diffuse), specular);
+	final.r = ft_clamp(final.r, 0.0f, 1.0f);
+	final.g = ft_clamp(final.g, 0.0f, 1.0f);
+	final.b = ft_clamp(final.b, 0.0f, 1.0f);
+	return (final);
 }
 
 t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, float hit, int index)
@@ -76,6 +87,7 @@ t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, float hit, int index)
 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
 	phong.normal_v = normal_at(obj->sp[index], hit_point);
-	phong.reflect_V = reflect_at(normalize(scale_vec(phong.light_v, -1)), phong.normal_v);
-	return (lightining(obj, obj->sp[0], phong));
+	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
+				phong.normal_v));
+	return (lightining(obj, obj->sp[index], phong));
 }
