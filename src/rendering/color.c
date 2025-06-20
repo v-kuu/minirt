@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:28:34 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/19 12:13:12 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/20 12:15:42 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,11 @@ t_color shading_visual(t_rgbcolor color)
 	float r;
 	float g;
 	float b;
-
-	r = color.r *255.0;
-	g = color.g *255.0;
-	b = color.b *255.0;
 	
-	return ((0xFF << 24) | ((int)r << 16) | ((int)g << 8) | (int)b);
+	r = color.r *255.0f;
+	g = color.g *255.0f;
+	b = color.b *255.0f;
+	
+    return ((int)r << 24) | ((int)g << 16) | ((int)b << 8) | 0xFF;
+
 }
