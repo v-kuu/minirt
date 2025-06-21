@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/21 13:28:47 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 14:01:24 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ t_hit	sphere_intersection(t_objects *obj,  t_sphere sphere, t_ray ray)
 
 		hit.t = (projection - sqrtf(discriminant)) / square_ray;
 		hit.normal = sp_normal_at(sphere,ray_at(ray,hit.t));	
-		hit.color = shading_visual(shading_vectors2(obj, sphere.color, hit));
 		hit.ray = ray;
+		hit.color = shading_visual(shading_vectors2(obj, sphere.color, hit));
 		return (hit);
 	}
 }
@@ -89,8 +89,12 @@ t_hit	plane_intersection(t_objects *obj, t_plane plane, t_ray ray)
 	else
 		t = temp / denominator;
 	if (t < 0)
-		return ((t_hit){.t = -1.0f});	
-	return ((t_hit){.t = t,.normal = plane.normal, .ray = ray, .color = shading_visual(shading_vectors2(obj, plane.color, hit))});
+		return ((t_hit){.t = -1.0f});
+	hit.t = t;
+	hit.normal = plane.normal;
+	hit.ray	= ray;
+	hit.color = shading_visual(shading_vectors2(obj, plane.color, hit));
+	return (hit);
 }
 
 static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray)

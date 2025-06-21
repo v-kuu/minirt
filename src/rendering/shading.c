@@ -71,6 +71,7 @@ t_rgbcolor	lightining(t_objects *objects, t_rgbcolor obj_color, t_phong phong)
 		else
 			specular = (t_rgbcolor){0, 0, 0};
 	}
+	// printf("Final normal is:(%f,%f,%f)\n", diffuse.r, diffuse.g, diffuse.b);
 	final = add_colors(add_colors(ambient, diffuse), specular);
 	final.r = ft_clamp(final.r, 0.0f, 1.0f);
 	final.g = ft_clamp(final.g, 0.0f, 1.0f);
