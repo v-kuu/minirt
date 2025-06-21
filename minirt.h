@@ -5,8 +5,8 @@
 # define MOL 1000.0f // max coordinates value
 # define WIDTH 1920
 # define HEIGHT 1080
-# define SHININESS 10 // in lighting
-# define SPECULAR 0.2f    // in ligtining
+# define SHININESS 10  // in lighting
+# define SPECULAR 0.2f // in ligtining
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
 # include <errno.h>
@@ -134,17 +134,15 @@ typedef struct s_data
 	int				cp_counter;
 }					t_data;
 
-
 typedef struct s_phong_vectors
 {
 	t_vec3			eye_v;
 	t_vec3			light_v;
 	t_vec3			normal_v;
 	t_vec3			reflect_V;
-} t_phong;
+}					t_phong;
 
-	void
-	open_file_read(char **argv, t_data *data);
+void				open_file_read(char **argv, t_data *data);
 void				check_filename(char **argv);
 void				check_arguments(int argc, char **argv);
 void				print_error_exit(void);
@@ -171,8 +169,6 @@ bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
 bool				fill_in_RGB(char *value, t_rgbcolor *color);
 bool				malloc_all_objects(t_data *data);
 bool				fill_in_value(char *value, float *src);
-
-
 
 typedef struct s_cam
 {
@@ -278,9 +274,9 @@ t_color				background_color(t_ray ray);
 t_color				normal_visual(t_vec3 center, t_hit hit);
 t_color				plane_visual(t_plane plane);
 t_color				cyl_normal(t_vec3 center, t_hit hit);
-t_rgbcolor	shading_vectors(t_objects *obj,t_hit hit, int index);
-t_color shading_visual(t_rgbcolor color);
-t_vec3	sp_normal_at(t_sphere sphere, t_vec3 point);
+t_rgbcolor			shading_vectors(t_objects *obj, t_hit hit, int index);
+t_color				shading_visual(t_rgbcolor color);
+t_vec3				sp_normal_at(t_sphere sphere, t_vec3 point);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 
@@ -312,16 +308,20 @@ t_point				ray_at(t_ray ray, float hit);
 /*
  * Calculates if a given ray intersects a sphere
  */
-t_hit				sphere_intersection(t_sphere sphere, t_ray ray);
+t_hit				sphere_intersection(t_objects *obj, t_sphere sphere,
+						t_ray ray);
 t_hit				plane_intersection(t_plane plane, t_ray ray);
 
 /*
  * Calculates if a given ray intersects a cylinder
  */
 t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
-t_hit				sphere_intersection(t_sphere sphere, t_ray ray);
+t_hit				sphere_intersection(t_objects *obj, t_sphere sphere,
+						t_ray ray);
 t_hit				plane_intersection(t_plane plane, t_ray ray);
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
+t_rgbcolor			shading_vectors2(t_objects *obj, t_sphere sphere,
+						t_hit hit);
 
 #endif

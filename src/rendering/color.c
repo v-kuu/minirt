@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:28:34 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/21 12:01:29 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 12:36:26 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,3 +88,4 @@ t_color shading_visual(t_rgbcolor color)
     return ((int)r << 24) | ((int)g << 16) | ((int)b << 8) | 0xFF;
 
 }
+

@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/21 12:01:44 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 12:42:08 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 	closest.t = FLT_MAX;
 	while (++index < obj->spctr)
 	{
-		hit = sphere_intersection(obj->sp[index], ray);
+		hit = sphere_intersection(obj, obj->sp[index], ray);
 		if (hit.t >= 0)
 		{
 			if (hit.t < closest.t)
@@ -86,8 +86,7 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 				closest = hit;
 				// mlx_put_pixel(vp->img, x, y,
 				// 		normal_visual(ray, obj->sp[index].center, hit));
-				mlx_put_pixel(vp->img, x, y,
-						shading_visual(shading_vectors(obj,hit, index)));
+				mlx_put_pixel(vp->img, x, y,hit.color);
 			}
 		}
 	}

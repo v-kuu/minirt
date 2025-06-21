@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/21 11:46:36 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 12:43:20 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray);
 static float	circle_intersection(t_cylinder cyl, t_ray ray, int dir);
 
-t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
+t_hit	sphere_intersection(t_objects *obj,  t_sphere sphere, t_ray ray)
 {
 	t_vec3	displacement_vec;
 	float	square_ray;
@@ -33,11 +33,13 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 		return ((t_hit){.t = -1.0f});
 	else
 	{
-		float t;
+		t_hit hit;
 
-		t = (projection - sqrtf(discriminant)) / square_ray;
-		return ((t_hit){.t = t, .normal = sp_normal_at(sphere,ray_at(ray,t)), .ray = ray});
-
+		hit.t = (projection - sqrtf(discriminant)) / square_ray;
+		hit.normal = sp_normal_at(sphere,ray_at(ray,hit.t));	
+		hit.color = shading_visual(shading_vectors2(obj, sphere, hit));
+		hit.ray = ray;
+		return (hit);
 	}
 }
 
@@ -61,7 +63,8 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 		return ((t_hit){.t = -1.0f});
 	return ((t_hit){.t = check_caps(((projection - sqrtf(discriminant)) / square_ray),
 			(projection + sqrtf(discriminant) / square_ray),
-			cyl, ray)});
+			cyl, ray), .ray = ray});
+	// i need the cylindar normal.
 }
 
 /*
