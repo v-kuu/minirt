@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/21 14:01:24 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 15:13:27 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_hit	sphere_intersection(t_objects *obj,  t_sphere sphere, t_ray ray)
 		hit.t = (projection - sqrtf(discriminant)) / square_ray;
 		hit.normal = sp_normal_at(sphere,ray_at(ray,hit.t));	
 		hit.ray = ray;
-		hit.color = shading_visual(shading_vectors2(obj, sphere.color, hit));
+		hit.color = shading_visual(shading_vectors(obj, sphere.color, hit));
 		return (hit);
 	}
 }
@@ -93,7 +93,7 @@ t_hit	plane_intersection(t_objects *obj, t_plane plane, t_ray ray)
 	hit.t = t;
 	hit.normal = plane.normal;
 	hit.ray	= ray;
-	hit.color = shading_visual(shading_vectors2(obj, plane.color, hit));
+	hit.color = shading_visual(shading_vectors(obj, plane.color, hit));
 	return (hit);
 }
 

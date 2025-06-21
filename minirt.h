@@ -142,6 +142,17 @@ typedef struct s_phong_vectors
 	t_vec3			reflect_V;
 }					t_phong;
 
+typedef struct s_lights
+{
+	t_rgbcolor		effective_color;
+	t_rgbcolor		ambient;
+	t_rgbcolor		diffuse;
+	t_rgbcolor		specular;
+	float			epsilon;
+	float			factor;
+	t_rgbcolor		final;
+}					t_lights;
+
 void				open_file_read(char **argv, t_data *data);
 void				check_filename(char **argv);
 void				check_arguments(int argc, char **argv);
@@ -322,7 +333,13 @@ t_hit				plane_intersection(t_objects *obj, t_plane plane,
 						t_ray ray);
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
-t_rgbcolor			shading_vectors2(t_objects *obj, t_rgbcolor obj_color,
+t_rgbcolor			shading_vectors(t_objects *obj, t_rgbcolor obj_color,
 						t_hit hit);
+
+float				ft_clamp(float val, float min, float max);
+t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
+t_rgbcolor			add_colors(t_rgbcolor c1, t_rgbcolor c2);
+t_rgbcolor			multiply_color_by(t_rgbcolor c1, float value);
+t_rgbcolor			normalize_color(t_rgbcolor c1);
 
 #endif

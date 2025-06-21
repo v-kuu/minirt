@@ -2,99 +2,56 @@
 
 #include "../../minirt.h"
 
-float	ft_clamp(float val, float min, float max)
-{
-	if (val < min)
-		return (min);
-	if (val > max)
-		return (max);
-	return (val);
-}
-
 t_vec3	sp_normal_at(t_sphere sphere, t_vec3 point)
 {
 	return (normalize(subtract_vec(point, sphere.center)));
 }
 
-t_vec3	reflect_at(t_vec3 in_v, t_vec3 light_n)
+void color_climping(t_lights *light)
 {
-	float	dot;
-
-	dot = dot_product(in_v, light_n);
-	return (subtract_vec(in_v, scale_vec(light_n, 2 * dot)));
+	light->final.r = ft_clamp(light->final.r, 0.0f, 1.0f);
+	light->final.g = ft_clamp(light->final.g, 0.0f, 1.0f);
+	light->final.b = ft_clamp(light->final.b, 0.0f, 1.0f);
 }
-
-t_rgbcolor	add_colors(t_rgbcolor c1, t_rgbcolor c2)
+void light_calculation(t_lights *light, t_phong *phong, t_light *light_obj)
 {
-	return ((t_rgbcolor){c1.r + c2.r, c1.g + c2.g, c1.b + c2.b});
-}
-
-t_rgbcolor	multiply_color_by(t_rgbcolor c1, float value)
-{
-	return ((t_rgbcolor){c1.r * value, c1.g * value, c1.b * value});
-}
-t_rgbcolor	normalize_color(t_rgbcolor c1)
-{
-	return ((t_rgbcolor){c1.r / 255.0f, c1.g / 255.0f, c1.b / 255.0f});
-}
-
-t_rgbcolor	lightining(t_objects *objects, t_rgbcolor obj_color, t_phong phong)
-{
-	t_rgbcolor	effective_color;
-	t_rgbcolor	ambient;
-	t_rgbcolor	diffuse;
-	t_rgbcolor	specular;
-	float		epsilon;
-	float		factor;
-	t_rgbcolor	final;
-
-	effective_color = multiply_color_by(normalize_color(obj_color),
-			objects->l[0].b_ratio);
-	ambient = multiply_color_by(normalize_color(obj_color), objects->a.ratio);
-	epsilon = dot_product(phong.light_v, phong.normal_v);
-	if (epsilon < 0)
+if (light->epsilon < 0)
 	{
-		diffuse = (t_rgbcolor){0, 0, 0};
-		specular = (t_rgbcolor){0, 0, 0};
+		light->diffuse = (t_rgbcolor){0, 0, 0};
+		light->specular = (t_rgbcolor){0, 0, 0};
 	}
 	else
 	{
-		diffuse = multiply_color_by(effective_color, epsilon);
-		epsilon = 0;
-		epsilon = dot_product(phong.reflect_V, phong.eye_v);
-		if (epsilon > 0)
+		light->diffuse = multiply_color_by(light->effective_color, light->epsilon);
+		light->epsilon = 0;
+		light->epsilon = dot_product(phong->reflect_V, phong->eye_v);
+		if (light->epsilon > 0)
 		{
-			factor = powf(epsilon, SHININESS);
-			specular = multiply_color_by(normalize_color(objects->l[0].color),
-					factor * objects->l[0].b_ratio * SPECULAR);
+			light->factor = powf(light->epsilon, SHININESS);
+			light->specular = multiply_color_by(normalize_color(light_obj->color),
+					light->factor * light_obj->b_ratio * SPECULAR);
 		}
 		else
-			specular = (t_rgbcolor){0, 0, 0};
+			light->specular = (t_rgbcolor){0, 0, 0};
 	}
-	// printf("Final normal is:(%f,%f,%f)\n", diffuse.r, diffuse.g, diffuse.b);
-	final = add_colors(add_colors(ambient, diffuse), specular);
-	final.r = ft_clamp(final.r, 0.0f, 1.0f);
-	final.g = ft_clamp(final.g, 0.0f, 1.0f);
-	final.b = ft_clamp(final.b, 0.0f, 1.0f);
-	return (final);
 }
 
-// t_rgbcolor	shading_vectors(t_objects *obj, t_hit hit, int index)
-// {
-// 	t_phong	phong;
-// 	t_vec3	hit_point;
+t_rgbcolor	lightining(t_a_light a_light,t_light l_light, t_rgbcolor obj_color, t_phong phong)
+{
+	t_lights light;
 
-// 	hit_point = ray_at(hit.ray, hit.t);
-// 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
-// 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
-// 	phong.normal_v = hit.normal;
-// 	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
-// 				phong.normal_v));
-// 	return (lightining(obj, obj->sp[index], phong));
-// }
+	light.effective_color = multiply_color_by(normalize_color(obj_color),
+			l_light.b_ratio);
+	light.ambient = multiply_color_by(normalize_color(obj_color), a_light.ratio);
+	light.epsilon = dot_product(phong.light_v, phong.normal_v);
+	light_calculation(&light, &phong, &l_light);
+	
+	light.final = add_colors(add_colors(light.ambient, light.diffuse), light.specular);
+	color_climping(&light);
+	return (light.final);
+}
 
-
-t_rgbcolor	shading_vectors2(t_objects *obj, t_rgbcolor obj_color,  t_hit hit)
+t_rgbcolor	shading_vectors(t_objects *obj, t_rgbcolor obj_color,  t_hit hit)
 {
 	t_phong	phong;
 	t_vec3	hit_point;
@@ -105,5 +62,5 @@ t_rgbcolor	shading_vectors2(t_objects *obj, t_rgbcolor obj_color,  t_hit hit)
 	phong.normal_v = hit.normal;
 	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
 				phong.normal_v));
-	return (lightining(obj, obj_color, phong));
+	return (lightining(obj->a,obj->l[0], obj_color, phong));
 }
