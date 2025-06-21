@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/20 17:42:54 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 11:46:36 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 		float t;
 
 		t = (projection - sqrtf(discriminant)) / square_ray;
-		return ((t_hit){.t = t, sp_normal_at(sphere,ray_at(ray,t))});
+		return ((t_hit){.t = t, .normal = sp_normal_at(sphere,ray_at(ray,t)), .ray = ray});
 
 	}
 }
@@ -86,7 +86,7 @@ t_hit	plane_intersection(t_plane plane, t_ray ray)
 		t = temp / denominator;
 	if (t < 0)
 		return ((t_hit){.t = -1.0f});
-	return ((t_hit){.t = t,.normal = plane.normal});
+	return ((t_hit){.t = t,.normal = plane.normal, .ray = ray});
 }
 
 static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray)

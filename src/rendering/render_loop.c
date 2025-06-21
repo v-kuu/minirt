@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/20 17:43:10 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 12:01:44 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 				// mlx_put_pixel(vp->img, x, y,
 				// 		normal_visual(ray, obj->sp[index].center, hit));
 				mlx_put_pixel(vp->img, x, y,
-						shading_visual(shading_vectors(obj, ray, hit, index)));
+						shading_visual(shading_vectors(obj,hit, index)));
 			}
 		}
 	}
@@ -103,7 +103,7 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 				// mlx_put_pixel(vp->img, x, y,
 				// 		plane_visual(ray, obj->pl[index], hit));
 				mlx_put_pixel(vp->img, x, y,
-						shading_visual(pl_shading_vectors(obj, ray, hit, index)));
+						shading_visual(shading_vectors(obj, hit, index)));
 
 			}
 		}
@@ -118,7 +118,7 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			{
 				closest = hit;
 				mlx_put_pixel(vp->img, x, y,
-						cyl_normal(ray, obj->cy[index].center, hit));
+						cyl_normal(obj->cy[index].center, hit));
 			}
 		}
 	}

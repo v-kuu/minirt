@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:28:34 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/20 12:15:42 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/21 12:01:29 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_color	background_color(t_ray ray)
 	return (red << 24 | green << 16 | blue << 8 | 0xFF);
 }
 
-t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit)
+t_color	normal_visual(t_vec3 center, t_hit hit)
 {
 	t_vec3	unit_normal;
 	float	fraction;
@@ -36,7 +36,7 @@ t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit)
 	t_color	green;
 	t_color	blue;
 
-	unit_normal = normalize(subtract_vec(ray_at(ray, hit.t), center));
+	unit_normal = normalize(subtract_vec(ray_at(hit.ray, hit.t), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
 	red = 0xFF * fraction;
 	red <<= 24;
@@ -49,7 +49,7 @@ t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit)
 	return (red | green | blue | 0xFF);
 }
 
-t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit)
+t_color	cyl_normal(t_vec3 center, t_hit hit)
 {
 	t_vec3	unit_normal;
 	float	fraction;
@@ -57,7 +57,7 @@ t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit)
 	t_color	green;
 	t_color	blue;
 
-	unit_normal = normalize(subtract_vec(ray_at(ray, hit.t), center));
+	unit_normal = normalize(subtract_vec(ray_at(hit.ray, hit.t), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
 	red = 0xFF * fraction;
 	red <<= 24;
@@ -69,10 +69,8 @@ t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit)
 	return (red | green | blue | 0xFF);
 }
 
-t_color plane_visual(t_ray ray, t_plane plane, t_hit hit)
+t_color plane_visual(t_plane plane)
 {
-	(void)hit;
-	(void)ray;
 	return ((0xFF << 24) | ((int)plane.color.r << 16) | ((int)plane.color.g << 8) | (int)plane.color.b);
 }
 

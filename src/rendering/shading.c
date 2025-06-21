@@ -78,12 +78,12 @@ t_rgbcolor	lightining(t_objects *objects, t_sphere obj, t_phong phong)
 	return (final);
 }
 
-t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, t_hit hit, int index)
+t_rgbcolor	shading_vectors(t_objects *obj, t_hit hit, int index)
 {
 	t_phong	phong;
 	t_vec3	hit_point;
 
-	hit_point = ray_at(ray, hit.t);
+	hit_point = ray_at(hit.ray, hit.t);
 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
 	phong.normal_v = hit.normal;
@@ -92,16 +92,3 @@ t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, t_hit hit, int index)
 	return (lightining(obj, obj->sp[index], phong));
 }
 
-t_rgbcolor	pl_shading_vectors(t_objects *obj, t_ray ray, t_hit hit, int index)
-{
-	t_phong	phong;
-	t_vec3	hit_point;
-
-	hit_point = ray_at(ray, hit.t);
-	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
-	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
-	phong.normal_v = hit.normal;
-	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
-				phong.normal_v));
-	return (lightining(obj, obj->pl[index], phong));
-}

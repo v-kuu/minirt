@@ -26,6 +26,12 @@ typedef struct s_vec3
 	float			z;
 }					t_vec3;
 
+typedef struct s_ray
+{
+	t_vec3			origin;
+	t_vec3			direction;
+}					t_ray;
+
 typedef struct s_quaternion
 {
 	float			w;
@@ -39,6 +45,7 @@ typedef struct s_hit_record
 	float			t;
 	t_vec3			normal;
 	t_color			color;
+	t_ray			ray;
 }					t_hit;
 
 typedef t_vec3		t_point;
@@ -165,11 +172,7 @@ bool				fill_in_RGB(char *value, t_rgbcolor *color);
 bool				malloc_all_objects(t_data *data);
 bool				fill_in_value(char *value, float *src);
 
-typedef struct s_ray
-{
-	t_vec3			origin;
-	t_vec3			direction;
-}					t_ray;
+
 
 typedef struct s_cam
 {
@@ -272,10 +275,10 @@ t_color				background_color(t_ray ray);
 /*
  * Returns a color based on the normal
  */
-t_color				normal_visual(t_ray ray, t_vec3 center, t_hit hit);
-t_color				plane_visual(t_ray ray, t_plane plane, t_hit hit);
-t_color				cyl_normal(t_ray ray, t_vec3 center, t_hit hit);
-t_rgbcolor	shading_vectors(t_objects *obj, t_ray ray, t_hit hit, int index);
+t_color				normal_visual(t_vec3 center, t_hit hit);
+t_color				plane_visual(t_plane plane);
+t_color				cyl_normal(t_vec3 center, t_hit hit);
+t_rgbcolor	shading_vectors(t_objects *obj,t_hit hit, int index);
 t_color shading_visual(t_rgbcolor color);
 t_vec3	sp_normal_at(t_sphere sphere, t_vec3 point);
 
