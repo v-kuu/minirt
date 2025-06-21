@@ -274,7 +274,6 @@ t_color				background_color(t_ray ray);
 t_color				normal_visual(t_vec3 center, t_hit hit);
 t_color				plane_visual(t_plane plane);
 t_color				cyl_normal(t_vec3 center, t_hit hit);
-t_rgbcolor			shading_vectors(t_objects *obj, t_hit hit, int index);
 t_color				shading_visual(t_rgbcolor color);
 t_vec3				sp_normal_at(t_sphere sphere, t_vec3 point);
 
@@ -310,7 +309,8 @@ t_point				ray_at(t_ray ray, float hit);
  */
 t_hit				sphere_intersection(t_objects *obj, t_sphere sphere,
 						t_ray ray);
-t_hit				plane_intersection(t_plane plane, t_ray ray);
+t_hit				plane_intersection(t_objects *obj, t_plane plane,
+						t_ray ray);
 
 /*
  * Calculates if a given ray intersects a cylinder
@@ -318,10 +318,11 @@ t_hit				plane_intersection(t_plane plane, t_ray ray);
 t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
 t_hit				sphere_intersection(t_objects *obj, t_sphere sphere,
 						t_ray ray);
-t_hit				plane_intersection(t_plane plane, t_ray ray);
+t_hit				plane_intersection(t_objects *obj, t_plane plane,
+						t_ray ray);
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
-t_rgbcolor			shading_vectors2(t_objects *obj, t_sphere sphere,
+t_rgbcolor			shading_vectors2(t_objects *obj, t_rgbcolor obj_color,
 						t_hit hit);
 
 #endif

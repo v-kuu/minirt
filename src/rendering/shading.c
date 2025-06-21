@@ -38,7 +38,7 @@ t_rgbcolor	normalize_color(t_rgbcolor c1)
 	return ((t_rgbcolor){c1.r / 255.0f, c1.g / 255.0f, c1.b / 255.0f});
 }
 
-t_rgbcolor	lightining(t_objects *objects, t_sphere obj, t_phong phong)
+t_rgbcolor	lightining(t_objects *objects, t_rgbcolor obj_color, t_phong phong)
 {
 	t_rgbcolor	effective_color;
 	t_rgbcolor	ambient;
@@ -48,9 +48,9 @@ t_rgbcolor	lightining(t_objects *objects, t_sphere obj, t_phong phong)
 	float		factor;
 	t_rgbcolor	final;
 
-	effective_color = multiply_color_by(normalize_color(obj.color),
+	effective_color = multiply_color_by(normalize_color(obj_color),
 			objects->l[0].b_ratio);
-	ambient = multiply_color_by(normalize_color(obj.color), objects->a.ratio);
+	ambient = multiply_color_by(normalize_color(obj_color), objects->a.ratio);
 	epsilon = dot_product(phong.light_v, phong.normal_v);
 	if (epsilon < 0)
 	{
@@ -78,7 +78,22 @@ t_rgbcolor	lightining(t_objects *objects, t_sphere obj, t_phong phong)
 	return (final);
 }
 
-t_rgbcolor	shading_vectors(t_objects *obj, t_hit hit, int index)
+// t_rgbcolor	shading_vectors(t_objects *obj, t_hit hit, int index)
+// {
+// 	t_phong	phong;
+// 	t_vec3	hit_point;
+
+// 	hit_point = ray_at(hit.ray, hit.t);
+// 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
+// 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
+// 	phong.normal_v = hit.normal;
+// 	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
+// 				phong.normal_v));
+// 	return (lightining(obj, obj->sp[index], phong));
+// }
+
+
+t_rgbcolor	shading_vectors2(t_objects *obj, t_rgbcolor obj_color,  t_hit hit)
 {
 	t_phong	phong;
 	t_vec3	hit_point;
@@ -89,20 +104,5 @@ t_rgbcolor	shading_vectors(t_objects *obj, t_hit hit, int index)
 	phong.normal_v = hit.normal;
 	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
 				phong.normal_v));
-	return (lightining(obj, obj->sp[index], phong));
-}
-
-
-t_rgbcolor	shading_vectors2(t_objects *obj, t_sphere sphere,  t_hit hit)
-{
-	t_phong	phong;
-	t_vec3	hit_point;
-
-	hit_point = ray_at(hit.ray, hit.t);
-	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
-	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
-	phong.normal_v = hit.normal;
-	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
-				phong.normal_v));
-	return (lightining(obj, sphere, phong));
+	return (lightining(obj, obj_color, phong));
 }
