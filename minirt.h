@@ -95,6 +95,7 @@ typedef struct s_cylinder
 {
 	t_vec3			center;
 	t_vec3			axis;
+	t_quaternion	q_axis;
 	float			diameter;
 	float			height;
 	t_rgbcolor		color;
@@ -289,6 +290,11 @@ t_vec3			rotate_by_quat(t_quaternion quat, t_vec3 vec);
  */
 t_quaternion	normalize_quat(t_quaternion quat);
 
+/*
+ * Inverts a quaternion
+ */
+t_quaternion	inverse_quat(t_quaternion quat);
+
 //////////////////////////////////////////////////////////////////// color.c //
 
 /*
@@ -331,6 +337,11 @@ t_ray				pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
 t_point				ray_at(t_ray ray, float hit);
 
 /*
+ * Converts a local t into world t
+ */
+float				t_from_point(t_point hit, t_ray ray);
+
+/*
  * Rotates a ray by a given quat
  */
 t_ray				rotate_ray(t_ray ray, t_quaternion quat);
@@ -346,6 +357,8 @@ t_hit				sphere_intersection(t_sphere sphere, t_ray ray);
  * Calculates if a given ray intersects a plane
  */
 t_hit				plane_intersection(t_plane plane, t_ray ray);
+
+/////////////////////////////////////////////////////// cylinder_detection.c //
 
 /*
  * Calculates if a given ray intersects a cylinder

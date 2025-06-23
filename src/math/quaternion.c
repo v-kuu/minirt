@@ -54,3 +54,8 @@ t_quaternion	normalize_quat(t_quaternion quat)
 	return ((t_quaternion){quat.w / len, quat.x / len,
 			quat.y / len, quat.z / len});
 }
+
+t_quaternion	inverse_quat(t_quaternion quat)
+{
+	return ((t_quaternion){quat.w, -quat.x, -quat.y, -quat.z});
+}

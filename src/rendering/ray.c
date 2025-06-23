@@ -34,6 +34,11 @@ t_point	ray_at(t_ray ray, float hit)
 	return (add_vec(ray.origin, scaled_dir));
 }
 
+float	t_from_point(t_point hit, t_ray ray)
+{
+	return (vec_len(subtract_vec(hit, ray.origin)) / vec_len(ray.direction));
+}
+
 t_ray	rotate_ray(t_ray ray, t_quaternion quat)
 {
 	quat = normalize_quat(quat);

@@ -117,6 +117,8 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 	index = -1;
 	while (++index < obj->cyctr)
 	{
+		obj->cy[index].q_axis = normalize_quat(create_rotation_quat(
+			(t_vec3){0, 1, 0}, obj->cy[index].axis));
 		hit = cylinder_intersection(obj->cy[index], ray);
 		if (hit.t >= 0)
 		{
