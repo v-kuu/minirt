@@ -6,17 +6,17 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/21 15:13:48 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/23 12:35:57 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minirt.h"
 
 static void	draw_screen(void *param);
-static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp);
+static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp);
 static void	keybinds(void *param);
 
-int	g_active;
+int			g_active;
 
 int	rendering_loop(t_data *data)
 {
@@ -67,18 +67,19 @@ static void	draw_screen(void *param)
 	}
 }
 
-static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
+static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 {
-	t_objects	*obj = vp->obj;
-	t_hit			hit;
-	t_hit			closest;
-	int				index;
+	t_objects	*obj;
+	t_hit		hit;
+	t_hit		closest;
+	int			index;
 
+	obj = vp->obj;
 	index = -1;
 	closest.t = FLT_MAX;
 	while (++index < obj->spctr)
 	{
-		hit = sphere_intersection(obj, obj->sp[index], ray);
+		hit = sphere_intersection(obj->sp[index], ray);
 		if (hit.t >= 0)
 		{
 			if (hit.t < closest.t)
@@ -86,14 +87,18 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 				closest = hit;
 				// mlx_put_pixel(vp->img, x, y,
 				// 		normal_visual(ray, obj->sp[index].center, hit));
-				mlx_put_pixel(vp->img, x, y,hit.color);
+				hit.ray = ray;
+				hit.normal = sp_normal_at(obj->sp[index], ray_at(ray, hit.t));
+				hit.color = shading_visual(shading_vectors(obj,
+							obj->sp[index].color, hit));
+				mlx_put_pixel(vp->img, x, y, hit.color);
 			}
 		}
 	}
 	index = -1;
 	while (++index < obj->plctr)
 	{
-		hit = plane_intersection(obj, obj->pl[index], ray);
+		hit = plane_intersection(obj->pl[index], ray);
 		if (hit.t >= 0)
 		{
 			if (hit.t < closest.t)
@@ -101,8 +106,11 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 				closest = hit;
 				// mlx_put_pixel(vp->img, x, y,
 				// 		plane_visual(ray, obj->pl[index], hit));
-				mlx_put_pixel(vp->img, x, y,hit.color);
-
+				hit.normal = obj->pl[index].normal;
+				hit.ray = ray;
+				hit.color = shading_visual(shading_vectors(obj,
+							obj->pl[index].color, hit));
+				mlx_put_pixel(vp->img, x, y, hit.color);
 			}
 		}
 	}
@@ -115,8 +123,8 @@ static void render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			if (hit.t < closest.t)
 			{
 				closest = hit;
-				mlx_put_pixel(vp->img, x, y,
-						cyl_normal(obj->cy[index].center, hit));
+				mlx_put_pixel(vp->img, x, y, cyl_normal(obj->cy[index].center,
+						hit));
 			}
 		}
 	}

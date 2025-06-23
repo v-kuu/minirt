@@ -318,19 +318,20 @@ t_point				ray_at(t_ray ray, float hit);
 /*
  * Calculates if a given ray intersects a sphere
  */
-t_hit				sphere_intersection(t_objects *obj, t_sphere sphere,
-						t_ray ray);
-t_hit				plane_intersection(t_objects *obj, t_plane plane,
-						t_ray ray);
+t_hit				sphere_intersection(t_sphere sphere,t_ray ray);
+
+
+/*
+ * Calculates if a given ray intersects a plane
+ */
+t_hit				plane_intersection(t_plane plane, t_ray ray);
 
 /*
  * Calculates if a given ray intersects a cylinder
  */
 t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
-t_hit				sphere_intersection(t_objects *obj, t_sphere sphere,
-						t_ray ray);
-t_hit				plane_intersection(t_objects *obj, t_plane plane,
-						t_ray ray);
+
+
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
 t_rgbcolor			shading_vectors(t_objects *obj, t_rgbcolor obj_color,
