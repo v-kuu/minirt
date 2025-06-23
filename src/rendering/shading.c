@@ -36,7 +36,7 @@ if (light->epsilon < 0)
 	}
 }
 
-t_rgbcolor	lightining(t_a_light a_light,t_light l_light, t_rgbcolor obj_color, t_phong phong)
+t_rgbcolor	lightining(t_a_light a_light,t_light l_light, t_rgbcolor obj_color, t_phong phong, bool in_shadows)
 {
 	t_lights light;
 
@@ -45,8 +45,10 @@ t_rgbcolor	lightining(t_a_light a_light,t_light l_light, t_rgbcolor obj_color, t
 	light.ambient = multiply_color_by(normalize_color(obj_color), a_light.ratio);
 	light.epsilon = dot_product(phong.light_v, phong.normal_v);
 	light_calculation(&light, &phong, &l_light);
-	
-	light.final = add_colors(add_colors(light.ambient, light.diffuse), light.specular);
+	if (in_shadows)
+		light.final = light.ambient;
+	else
+		light.final = add_colors(add_colors(light.ambient, light.diffuse), light.specular);
 	color_climping(&light);
 	return (light.final);
 }
@@ -55,12 +57,12 @@ t_rgbcolor	shading_vectors(t_objects *obj, t_rgbcolor obj_color,  t_hit hit)
 {
 	t_phong	phong;
 	t_vec3	hit_point;
-
+	bool in_shadows = false;
 	hit_point = ray_at(hit.ray, hit.t);
 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
 	phong.normal_v = hit.normal;
 	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
 				phong.normal_v));
-	return (lightining(obj->a,obj->l[0], obj_color, phong));
+	return (lightining(obj->a,obj->l[0], obj_color, phong, in_shadows));
 }
