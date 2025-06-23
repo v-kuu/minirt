@@ -318,8 +318,7 @@ t_point				ray_at(t_ray ray, float hit);
 /*
  * Calculates if a given ray intersects a sphere
  */
-t_hit				sphere_intersection(t_sphere sphere,t_ray ray);
-
+t_hit				sphere_intersection(t_sphere sphere, t_ray ray);
 
 /*
  * Calculates if a given ray intersects a plane
@@ -331,17 +330,27 @@ t_hit				plane_intersection(t_plane plane, t_ray ray);
  */
 t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
 
-
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
+/*
+ * Calculates the final color after lightining and shadow.
+ */						
 t_rgbcolor			shading_vectors(t_objects *obj, t_rgbcolor obj_color,
 						t_hit hit);
 
+/*
+ * return the min or the max if the value exceed the min and max.
+ */
 float				ft_clamp(float val, float min, float max);
+
 t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
 t_rgbcolor			add_colors(t_rgbcolor c1, t_rgbcolor c2);
 t_rgbcolor			multiply_color_by(t_rgbcolor c1, float value);
 t_rgbcolor			normalize_color(t_rgbcolor c1);
-t_rgbcolor	multiply_colors(t_rgbcolor c1, t_rgbcolor c2);
+t_rgbcolor			multiply_colors(t_rgbcolor c1, t_rgbcolor c2);
+t_rgbcolor			lightining_shadow(t_objects *obj, t_rgbcolor obj_color);
+bool				is_shadowed(t_objects *obj, t_hit hit);
+t_rgbcolor			color_clamping(t_rgbcolor color);
+t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
 
 #endif
