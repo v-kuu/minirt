@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/17 13:23:37 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/23 12:29:51 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 	if (discriminant < 0)
 		return ((t_hit){.t = -1.0f});
 	else
-		return ((t_hit){.t = (projection - sqrtf(discriminant)) / square_ray});
+		return (t_hit){.t = (projection - sqrtf(discriminant)) / square_ray};
 }
 
 t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
@@ -46,31 +46,26 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	cyl.diameter /= 2;
 	displacement_vec = subtract_vec(cyl.center, ray.origin);
 	square_ray = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
-	projection = ray.direction.x * displacement_vec.x
-		+ ray.direction.z * displacement_vec.z;
+	projection = ray.direction.x * displacement_vec.x + ray.direction.z
+		* displacement_vec.z;
 	square_dist = pow(displacement_vec.x, 2) + pow(displacement_vec.z, 2)
 		- pow(cyl.diameter, 2);
 	discriminant = projection * projection - square_ray * square_dist;
 	if (discriminant < 0)
 		return ((t_hit){.t = -1.0f});
-	return ((t_hit){.t = check_caps(((projection - sqrtf(discriminant)) / square_ray),
-			(projection + sqrtf(discriminant) / square_ray),
-			cyl, ray)});
+	return ((t_hit){.t = check_caps(((projection - sqrtf(discriminant))
+				/ square_ray), (projection + sqrtf(discriminant) / square_ray),
+			cyl, ray), .ray = ray});
+	// i need the cylindar normal.
 }
 
-/*
-Plane has normal vector to decide the direction, and a point.
-the equation for the intersection point t is:
-t = dot(plane_point - ray_origin, plane_normal) / dot(ray_direction,
-		plane_normal);
-fabs(denominator < 1e-6),
-	this meand to check if it is near to zero so this avoind the zeoro divition.
-*/
+
 t_hit	plane_intersection(t_plane plane, t_ray ray)
 {
 	float	temp;
 	float	denominator;
 	float	t;
+	t_hit	hit;
 
 	temp = dot_product(subtract_vec(plane.point, ray.origin), plane.normal);
 	denominator = dot_product(ray.direction, plane.normal);
@@ -80,7 +75,8 @@ t_hit	plane_intersection(t_plane plane, t_ray ray)
 		t = temp / denominator;
 	if (t < 0)
 		return ((t_hit){.t = -1.0f});
-	return ((t_hit){.t = t});
+	hit.t = t;
+	return (hit);
 }
 
 static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray)
@@ -88,15 +84,15 @@ static float	check_caps(float t1, float t2, t_cylinder cyl, t_ray ray)
 	float	t_all[4];
 	float	closest;
 	int		index;
-	
+
 	closest = FLT_MAX;
 	t_all[0] = t1;
-	if (ray_at(ray, t_all[0]).y > cyl.height / 2
-		|| ray_at(ray, t_all[0]).y < cyl.height / -2)
+	if (ray_at(ray, t_all[0]).y > cyl.height / 2 || ray_at(ray,
+			t_all[0]).y < cyl.height / -2)
 		t_all[0] = -1;
 	t_all[1] = t2;
-	if (ray_at(ray, t_all[1]).y > cyl.height / 2
-		|| ray_at(ray, t_all[1]).y < cyl.height / -2)
+	if (ray_at(ray, t_all[1]).y > cyl.height / 2 || ray_at(ray,
+			t_all[1]).y < cyl.height / -2)
 		t_all[1] = -1;
 	t_all[2] = circle_intersection(cyl, ray, 1);
 	t_all[3] = circle_intersection(cyl, ray, -1);
@@ -120,8 +116,8 @@ static float	circle_intersection(t_cylinder cyl, t_ray ray, int dir)
 	float	t;
 
 	cap_point = (t_vec3){cyl.center.x, cyl.height / 2 * dir, cyl.center.z};
-	temp = dot_product(subtract_vec(cap_point, ray.origin),
-			(t_vec3){0, 1 * dir, 0});
+	temp = dot_product(subtract_vec(cap_point, ray.origin), (t_vec3){0, 1 * dir,
+			0});
 	denominator = dot_product(ray.direction, (t_vec3){0, 1 * dir, 0});
 	if (fabs(denominator) < 1e-6)
 		t = -1.0;

@@ -5,7 +5,8 @@
 # define MOL 1000.0f // max coordinates value
 # define WIDTH 1920
 # define HEIGHT 1080
-
+# define SHININESS 10  // in lighting
+# define SPECULAR 0.2f // in ligtining
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
 # include <errno.h>
@@ -25,22 +26,29 @@ typedef struct s_vec3
 	float			z;
 }					t_vec3;
 
-typedef struct	s_quaternion
+typedef struct s_ray
+{
+	t_vec3			origin;
+	t_vec3			direction;
+}					t_ray;
+
+typedef struct s_quaternion
 {
 	float			w;
 	float			x;
 	float			y;
 	float			z;
-}				t_quaternion;
+}					t_quaternion;
 
-typedef struct	s_hit_record
+typedef struct s_hit_record
 {
-	float	t;
-	t_vec3	normal;
-	t_color	color;
-}				t_hit;
+	float			t;
+	t_vec3			normal;
+	t_color			color;
+	t_ray			ray;
+}					t_hit;
 
-typedef t_vec3	t_point;
+typedef t_vec3		t_point;
 
 typedef struct s_rgbcolor
 {
@@ -126,6 +134,25 @@ typedef struct s_data
 	int				cp_counter;
 }					t_data;
 
+typedef struct s_phong_vectors
+{
+	t_vec3			eye_v;
+	t_vec3			light_v;
+	t_vec3			normal_v;
+	t_vec3			reflect_V;
+}					t_phong;
+
+typedef struct s_lights
+{
+	t_rgbcolor		effective_color;
+	t_rgbcolor		ambient;
+	t_rgbcolor		diffuse;
+	t_rgbcolor		specular;
+	float			epsilon;
+	float			factor;
+	t_rgbcolor		final;
+}					t_lights;
+
 void				open_file_read(char **argv, t_data *data);
 void				check_filename(char **argv);
 void				check_arguments(int argc, char **argv);
@@ -145,20 +172,14 @@ void				case_c(t_data *data, t_objects *objects, int i);
 void				case_l(t_data *data, t_objects *objects, int i);
 void				case_sp(t_data *data, t_objects *objects, int i);
 void				case_pl(t_data *data, t_objects *objects, int i);
-void	case_cy(t_data *data, t_objects *objects, int i);
+void				case_cy(t_data *data, t_objects *objects, int i);
 
 void	print_camera(t_data *data); // must be removed
 bool				fill_in_coordinates(t_data *data, int i, t_vec3 *coords);
 bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
 bool				fill_in_RGB(char *value, t_rgbcolor *color);
 bool				malloc_all_objects(t_data *data);
-bool	fill_in_value(char *value, float *src);
-
-typedef struct s_ray
-{
-	t_vec3			origin;
-	t_vec3			direction;
-}					t_ray;
+bool				fill_in_value(char *value, float *src);
 
 typedef struct s_cam
 {
@@ -224,8 +245,6 @@ t_vec3				divide_vec(const t_vec3 vector, float scalar);
 
 ////////////////////////////////////////////////////////// vector_products.c //
 
-
-
 /*
  * Calculates the dot product between 2 vectors. The dot product tells us
  * information abot the angle between the vectors.
@@ -263,9 +282,11 @@ t_color				background_color(t_ray ray);
 /*
  * Returns a color based on the normal
  */
-t_color	normal_visual(t_ray ray, t_vec3 center, t_hit hit);
-t_color	plane_visual(t_ray ray, t_plane plane, t_hit hit);
-t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit);
+t_color				normal_visual(t_vec3 center, t_hit hit);
+t_color				plane_visual(t_plane plane);
+t_color				cyl_normal(t_vec3 center, t_hit hit);
+t_color				shading_visual(t_rgbcolor color);
+t_vec3				sp_normal_at(t_sphere sphere, t_vec3 point);
 
 /////////////////////////////////////////////////////////////////// camera.c //
 
@@ -290,22 +311,46 @@ t_ray				pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
 /*
  * Returns the location where the ray hit
  */
-t_point	ray_at(t_ray ray, float hit);
+t_point				ray_at(t_ray ray, float hit);
 
 //////////////////////////////////////////////////////////// hit_detection.c //
 
 /*
  * Calculates if a given ray intersects a sphere
  */
-t_hit	sphere_intersection(t_sphere sphere, t_ray ray);
-t_hit	plane_intersection(t_plane plane, t_ray ray);
+t_hit				sphere_intersection(t_sphere sphere, t_ray ray);
+
+/*
+ * Calculates if a given ray intersects a plane
+ */
+t_hit				plane_intersection(t_plane plane, t_ray ray);
 
 /*
  * Calculates if a given ray intersects a cylinder
  */
-t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray);
-t_hit	sphere_intersection(t_sphere sphere, t_ray ray);
-t_hit	plane_intersection(t_plane plane, t_ray ray);
-t_color light_visual(t_objects obj, t_ray ray,float hit, int index);
+t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
+
+t_color				light_visual(t_objects obj, t_ray ray, float hit,
+						int index);
+/*
+ * Calculates the final color after lightining and shadow.
+ */						
+t_rgbcolor			shading_vectors(t_objects *obj, t_rgbcolor obj_color,
+						t_hit hit);
+
+/*
+ * return the min or the max if the value exceed the min and max.
+ */
+float				ft_clamp(float val, float min, float max);
+
+t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
+t_rgbcolor			add_colors(t_rgbcolor c1, t_rgbcolor c2);
+t_rgbcolor			multiply_color_by(t_rgbcolor c1, float value);
+t_rgbcolor			normalize_color(t_rgbcolor c1);
+t_rgbcolor			multiply_colors(t_rgbcolor c1, t_rgbcolor c2);
+t_rgbcolor			lightining_shadow(t_objects *obj, t_rgbcolor obj_color);
+bool				is_shadowed(t_objects *obj, t_hit hit);
+t_rgbcolor			color_clamping(t_rgbcolor color);
+t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
 
 #endif

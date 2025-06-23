@@ -2,8 +2,8 @@
 
 bool	validate_coordination(t_vec3 *coords)
 {
-	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL
-			|| coords->y < -MOL) || (coords->z > MOL || coords->z < -MOL))
+	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL || coords->y <
+			-MOL) || (coords->z > MOL || coords->z < -MOL))
 	{
 		return (ft_putstr_fd("Error\ncheck coordinates values\n", 2), false);
 	}
@@ -12,8 +12,8 @@ bool	validate_coordination(t_vec3 *coords)
 
 bool	validate_orientation(t_vec3 *orinets)
 {
-	if ((orinets->x > 1 || orinets->x < -1) || (orinets->y > 1 || orinets->y <
-			-1) || (orinets->z > 1 || orinets->z < -1))
+	if ((orinets->x > 1.0f || orinets->x < -1.0f) || (orinets->y > 1.0f || orinets->y <
+			-1.0f) || (orinets->z > 1.0f || orinets->z < -1.0f))
 	{
 		return (ft_putstr_fd("Error\ncheck Orinetations vales\n", 2), false);
 	}
