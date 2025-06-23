@@ -36,6 +36,7 @@ t_point	ray_at(t_ray ray, float hit)
 
 t_ray	rotate_ray(t_ray ray, t_quaternion quat)
 {
+	quat = normalize_quat(quat);
 	ray.origin = rotate_by_quat(quat, ray.origin);
 	ray.direction = rotate_by_quat(quat, ray.direction);
 	return (ray);

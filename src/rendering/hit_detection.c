@@ -32,6 +32,14 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 		return (t_hit){.t = (projection - sqrtf(discriminant)) / square_ray};
 }
 
+/*
+Plane has normal vector to decide the direction, and a point.
+the equation for the intersection point t is:
+t = dot(plane_point - ray_origin, plane_normal) / dot(ray_direction,
+		plane_normal);
+fabs(denominator < 1e-6),
+	this meand to check if it is near to zero so this avoind the zeoro divition.
+*/
 t_hit	plane_intersection(t_plane plane, t_ray ray)
 {
 	float	temp;

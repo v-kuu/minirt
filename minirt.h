@@ -284,6 +284,11 @@ t_quaternion	create_rotation_quat(t_vec3 from, t_vec3 to);
  */
 t_vec3			rotate_by_quat(t_quaternion quat, t_vec3 vec);
 
+/*
+ * Normalizes a quaternion
+ */
+t_quaternion	normalize_quat(t_quaternion quat);
+
 //////////////////////////////////////////////////////////////////// color.c //
 
 /*

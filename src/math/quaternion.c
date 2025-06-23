@@ -34,28 +34,23 @@ t_quaternion	create_rotation_quat(t_vec3 from, t_vec3 to)
 
 t_vec3	rotate_by_quat(t_quaternion quat, t_vec3 vec)
 {
-	t_vec3	rotated;
-	float	xyz[3];
-	float	mat[3][3];
+	const t_vec3	q_xyz = (t_vec3){quat.x, quat.y, quat.z};
+	const float		w = quat.w;
+	t_vec3			rotated;
+	t_vec3			temp;
 
-	xyz[0] = quat.x * 2;
-	xyz[1] = quat.y * 2;
-	xyz[2] = quat.z * 2;
-	mat[0][0] = quat.x * xyz[0];
-	mat[0][1] = quat.y * xyz[1];
-	mat[0][2] = quat.z * xyz[2];
-	mat[1][0] = quat.x * xyz[1];
-	mat[1][1] = quat.x * xyz[2];
-	mat[1][2] = quat.y * xyz[2];
-	mat[2][0] = quat.w * xyz[0];
-	mat[2][1] = quat.w * xyz[1];
-	mat[2][2] = quat.w * xyz[2];
-
-	rotated.x = (1 - (mat[0][1] + mat[0][2])) * vec.x + (mat[1][0] - mat[2][2])
-		* vec.y + (mat[1][1] + mat[2][1]) * vec.z;
-	rotated.y = (mat[1][0] + mat[2][2]) * vec.x + (1 - (mat[0][0] + mat[0][2]))
-		* vec.y + (mat[1][2] - mat[2][0]) * vec.z;
-	rotated.z = (mat[1][1] - mat[2][1]) * vec.x + (mat[1][2] + mat[2][2])
-		* vec.y + (1 - (mat[0][0] + mat[0][1])) * vec.z;
+	rotated = scale_vec(q_xyz, 2.0f * dot_product(q_xyz, vec));
+	temp = scale_vec(vec, w * w - dot_product(q_xyz, q_xyz));
+	rotated = add_vec(rotated, temp);
+	temp = scale_vec(scale_vec(cross_product(q_xyz, vec), w), 2.0f);
+	rotated = add_vec(rotated, temp);
 	return (rotated);
+}
+
+t_quaternion	normalize_quat(t_quaternion quat)
+{
+	const float	len = sqrtf(quat.w * quat.w + quat.x * quat.x
+			+ quat.y * quat.y + quat.z * quat.z);
+	return ((t_quaternion){quat.w / len, quat.x / len,
+			quat.y / len, quat.z / len});
 }
