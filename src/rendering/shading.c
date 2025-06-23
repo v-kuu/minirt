@@ -7,11 +7,13 @@ t_vec3	sp_normal_at(t_sphere sphere, t_vec3 point)
 	return (normalize(subtract_vec(point, sphere.center)));
 }
 
-void	color_climping(t_lights *light)
+t_rgbcolor	color_climping(t_rgbcolor color)
 {
-	light->final.r = ft_clamp(light->final.r, 0.0f, 1.0f);
-	light->final.g = ft_clamp(light->final.g, 0.0f, 1.0f);
-	light->final.b = ft_clamp(light->final.b, 0.0f, 1.0f);
+	color.r = ft_clamp(color.r, 0.0f, 1.0f);
+	color.g = ft_clamp(color.g, 0.0f, 1.0f);
+	color.b = ft_clamp(color.b, 0.0f, 1.0f);
+
+	return (color);
 }
 void	light_calculation(t_lights *light, t_phong *phong, t_light *light_obj)
 {
@@ -37,8 +39,7 @@ void	light_calculation(t_lights *light, t_phong *phong, t_light *light_obj)
 	}
 }
 
-t_rgbcolor	lightining(t_objects *obj, t_rgbcolor obj_color, t_phong phong,
-		bool in_shadows)
+t_rgbcolor	lightining(t_objects *obj, t_rgbcolor obj_color, t_phong phong)
 {
 	t_lights	light;
 
@@ -47,20 +48,27 @@ t_rgbcolor	lightining(t_objects *obj, t_rgbcolor obj_color, t_phong phong,
 	light.ambient = multiply_color_by(normalize_color(obj_color), obj->a.ratio);
 	light.epsilon = dot_product(phong.light_v, phong.normal_v);
 	light_calculation(&light, &phong, &obj->l[0]);
-	if (in_shadows)
-		light.final = light.ambient;
-	else
-		light.final = add_colors(add_colors(light.ambient, light.diffuse),
+	light.final = add_colors(add_colors(light.ambient, light.diffuse),
 				light.specular);
-	color_climping(&light);
-	return (light.final);
+	
+	return (color_climping(light.final));
+}
+
+
+t_rgbcolor	lightining_shadow(t_objects *obj, t_rgbcolor obj_color)
+{
+	t_rgbcolor	ambient;
+
+	ambient = multiply_color_by(normalize_color(obj_color), obj->a.ratio);
+	color_climping(ambient);
+	return (ambient);
 }
 
 bool	is_shadowed(t_objects *obj, t_hit hit)
 {
 	(void)obj;
 	(void)hit;
-	return (false);
+	return (true);
 }
 
 t_rgbcolor	shading_vectors(t_objects *obj, t_rgbcolor obj_color, t_hit hit)
@@ -69,10 +77,12 @@ t_rgbcolor	shading_vectors(t_objects *obj, t_rgbcolor obj_color, t_hit hit)
 	t_vec3 hit_point;
 
 	hit_point = ray_at(hit.ray, hit.t);
+	if (is_shadowed(obj, hit))
+		return (lightining_shadow(obj, obj_color));
 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
 	phong.normal_v = hit.normal;
 	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
 				phong.normal_v));
-	return (lightining(obj, obj_color, phong, is_shadowed(obj, hit)));
+	return (lightining(obj, obj_color, phong));
 }
