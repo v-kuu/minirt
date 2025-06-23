@@ -15,21 +15,20 @@
 t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 {
 	t_vec3	displacement_vec;
-	float	square_ray;
+	float	squares[2];
 	float	projection;
-	float	square_dist;
 	float	discriminant;
 
 	displacement_vec = subtract_vec(sphere.center, ray.origin);
-	square_ray = dot_product(ray.direction, ray.direction);
+	squares[0] = dot_product(ray.direction, ray.direction);
 	projection = dot_product(ray.direction, displacement_vec);
-	square_dist = dot_product(displacement_vec, displacement_vec)
+	squares[1] = dot_product(displacement_vec, displacement_vec)
 		- sphere.radius * sphere.radius;
-	discriminant = projection * projection - square_ray * square_dist;
+	discriminant = projection * projection - squares[0] * squares[1];
 	if (discriminant < 0)
 		return ((t_hit){.t = -1.0f});
 	else
-		return (t_hit){.t = (projection - sqrtf(discriminant)) / square_ray};
+		return ((t_hit){.t = (projection - sqrtf(discriminant)) / squares[0]});
 }
 
 /*
