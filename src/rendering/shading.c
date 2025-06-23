@@ -12,7 +12,6 @@ t_rgbcolor	color_climping(t_rgbcolor color)
 	color.r = ft_clamp(color.r, 0.0f, 1.0f);
 	color.g = ft_clamp(color.g, 0.0f, 1.0f);
 	color.b = ft_clamp(color.b, 0.0f, 1.0f);
-
 	return (color);
 }
 void	light_calculation(t_lights *light, t_phong *phong, t_light *light_obj)
@@ -49,11 +48,9 @@ t_rgbcolor	lightining(t_objects *obj, t_rgbcolor obj_color, t_phong phong)
 	light.epsilon = dot_product(phong.light_v, phong.normal_v);
 	light_calculation(&light, &phong, &obj->l[0]);
 	light.final = add_colors(add_colors(light.ambient, light.diffuse),
-				light.specular);
-	
+			light.specular);
 	return (color_climping(light.final));
 }
-
 
 t_rgbcolor	lightining_shadow(t_objects *obj, t_rgbcolor obj_color)
 {
@@ -66,15 +63,29 @@ t_rgbcolor	lightining_shadow(t_objects *obj, t_rgbcolor obj_color)
 
 bool	is_shadowed(t_objects *obj, t_hit hit)
 {
-	(void)obj;
-	(void)hit;
-	return (true);
+	t_ray	shadow_ray;
+	t_hit	sh_hit;
+	float	t_max;
+	int		index;
+
+	index = -1;
+	shadow_ray = (t_ray){ray_at(hit.ray, hit.t),
+		subtract_vec(obj->l[0].coordinates, ray_at(hit.ray, hit.t))};
+	t_max = vec_len(shadow_ray.direction);
+	shadow_ray.direction = normalize(shadow_ray.direction);
+	while (++index < obj->spctr)
+	{
+		sh_hit = sphere_intersection(obj->sp[index], shadow_ray);
+		if (sh_hit.t >= 0 && sh_hit.t < t_max)
+			return (true);
+	}
+	return (false);
 }
 
 t_rgbcolor	shading_vectors(t_objects *obj, t_rgbcolor obj_color, t_hit hit)
 {
-	t_phong phong;
-	t_vec3 hit_point;
+	t_phong	phong;
+	t_vec3	hit_point;
 
 	hit_point = ray_at(hit.ray, hit.t);
 	if (is_shadowed(obj, hit))
