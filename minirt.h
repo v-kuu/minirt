@@ -342,5 +342,6 @@ t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
 t_rgbcolor			add_colors(t_rgbcolor c1, t_rgbcolor c2);
 t_rgbcolor			multiply_color_by(t_rgbcolor c1, float value);
 t_rgbcolor			normalize_color(t_rgbcolor c1);
+t_rgbcolor	multiply_colors(t_rgbcolor c1, t_rgbcolor c2);
 
 #endif

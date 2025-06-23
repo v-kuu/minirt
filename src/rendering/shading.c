@@ -7,7 +7,7 @@ t_vec3	sp_normal_at(t_sphere sphere, t_vec3 point)
 	return (normalize(subtract_vec(point, sphere.center)));
 }
 
-t_rgbcolor	color_climping(t_rgbcolor color)
+t_rgbcolor	color_clamping(t_rgbcolor color)
 {
 	color.r = ft_clamp(color.r, 0.0f, 1.0f);
 	color.g = ft_clamp(color.g, 0.0f, 1.0f);
@@ -44,21 +44,22 @@ t_rgbcolor	lightining(t_objects *obj, t_rgbcolor obj_color, t_phong phong)
 
 	light.effective_color = multiply_color_by(normalize_color(obj_color),
 			obj->l[0].b_ratio);
-	light.ambient = multiply_color_by(normalize_color(obj_color), obj->a.ratio);
+	light.ambient = multiply_colors(normalize_color(obj_color), normalize_color(obj->a.color));
+	light.ambient = multiply_color_by(light.ambient, obj->a.ratio);
 	light.epsilon = dot_product(phong.light_v, phong.normal_v);
 	light_calculation(&light, &phong, &obj->l[0]);
 	light.final = add_colors(add_colors(light.ambient, light.diffuse),
 			light.specular);
-	return (color_climping(light.final));
+	return (color_clamping(light.final));
 }
 
 t_rgbcolor	lightining_shadow(t_objects *obj, t_rgbcolor obj_color)
 {
 	t_rgbcolor	ambient;
 
-	ambient = multiply_color_by(normalize_color(obj_color), obj->a.ratio);
-	color_climping(ambient);
-	return (ambient);
+	ambient = multiply_colors(normalize_color(obj_color), normalize_color(obj->a.color));
+	ambient = multiply_color_by(ambient, obj->a.ratio);
+	return (color_clamping(ambient));
 }
 
 bool	is_shadowed(t_objects *obj, t_hit hit)

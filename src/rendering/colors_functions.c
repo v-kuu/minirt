@@ -31,3 +31,8 @@ t_rgbcolor	normalize_color(t_rgbcolor c1)
 {
 	return ((t_rgbcolor){c1.r / 255.0f, c1.g / 255.0f, c1.b / 255.0f});
 }
+
+t_rgbcolor	multiply_colors(t_rgbcolor c1, t_rgbcolor c2)
+{
+	return ((t_rgbcolor){c1.r * c2.r, c1.g * c2.g, c1.b * c2.b});
+}
