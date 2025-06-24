@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/23 12:35:57 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:13:49 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			if (hit.t < closest.t)
 			{
 				closest = hit;
-				// mlx_put_pixel(vp->img, x, y,
-				// 		normal_visual(ray, obj->sp[index].center, hit));
 				hit.ray = ray;
 				hit.normal = sp_normal_at(obj->sp[index], ray_at(ray, hit.t));
 				hit.color = shading_visual(shading_vectors(obj,
@@ -104,8 +102,6 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			if (hit.t < closest.t)
 			{
 				closest = hit;
-				// mlx_put_pixel(vp->img, x, y,
-				// 		plane_visual(ray, obj->pl[index], hit));
 				hit.normal = obj->pl[index].normal;
 				hit.ray = ray;
 				hit.color = shading_visual(shading_vectors(obj,
@@ -125,7 +121,10 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			if (hit.t < closest.t)
 			{
 				closest = hit;
-				mlx_put_pixel(vp->img, x, y, normal_visual(closest));
+				hit.ray = ray;
+				hit.color = shading_visual(shading_vectors(obj,
+							obj->cy[index].color, hit));
+				mlx_put_pixel(vp->img, x, y, hit.color);
 			}
 		}
 	}

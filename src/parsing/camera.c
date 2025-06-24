@@ -66,7 +66,7 @@ bool	fill_in_c_fov(t_data *data, int i, t_camera *c)
 	c->fov = ft_atof(data->lines[i].line[3]);
 	if (isnan(c->fov))
 		exit_free_parsing(data);
-	if (!(c->fov >= 0 && c->fov <= 180))
+	if (!(c->fov >= 0.0f && c->fov <= 180.0f))
 		return (ft_putstr_fd("Error\ncheck fov value\n", 2), false);
 	return (true);
 }

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   hit_detection.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/23 17:54:25 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/23 17:54:38 by vkuusela         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../minirt.h"
 
 t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
@@ -47,7 +35,7 @@ t_hit	plane_intersection(t_plane plane, t_ray ray)
 
 	temp = dot_product(subtract_vec(plane.point, ray.origin), plane.normal);
 	denominator = dot_product(ray.direction, plane.normal);
-	if (fabs(denominator) < 1e-6)
+	if (fabs(denominator) < 0.0001)
 		return ((t_hit){.t = -1.0f});
 	else
 		t = temp / denominator;

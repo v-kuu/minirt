@@ -26,7 +26,7 @@ void	light_calculation(t_lights *light, t_phong *phong, t_light *light_obj)
 		light->diffuse = multiply_color_by(light->effective_color,
 				light->epsilon);
 		light->epsilon = 0;
-		light->epsilon = dot_product(phong->reflect_V, phong->eye_v);
+		light->epsilon = dot_product(phong->reflect_v, phong->eye_v);
 		if (light->epsilon > 0)
 		{
 			light->factor = powf(light->epsilon, SHININESS);
@@ -65,7 +65,7 @@ t_rgbcolor	shading_vectors(t_objects *obj, t_rgbcolor obj_color, t_hit hit)
 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
 	phong.normal_v = hit.normal;
-	phong.reflect_V = normalize(reflect_at(scale_vec(phong.light_v, -1),
+	phong.reflect_v = normalize(reflect_at(scale_vec(phong.light_v, -1),
 				phong.normal_v));
 	return (lightining(obj, obj_color, phong));
 }
