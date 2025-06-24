@@ -27,8 +27,7 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	cyl.diameter /= 2;
 	ray.origin = subtract_vec(ray.origin, cyl.center);
 	ray = rotate_ray(ray, cyl.q_axis);
-	ray.origin = add_vec(ray.origin, cyl.center);
-	displacement_vec = subtract_vec(cyl.center, ray.origin);
+	displacement_vec = subtract_vec((t_vec3){0, 0, 0}, ray.origin);
 	squares[0] = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
 	projection = ray.direction.x * displacement_vec.x
 		+ ray.direction.z * displacement_vec.z;
@@ -81,7 +80,7 @@ static float	circle_intersection(t_cylinder cyl, t_ray ray, int dir)
 	float	denominator;
 	float	t;
 
-	cap_point = (t_vec3){cyl.center.x, cyl.height / 2 * dir, cyl.center.z};
+	cap_point = (t_vec3){0, cyl.height / 2 * dir, 0};
 	temp = dot_product(subtract_vec(cap_point, ray.origin),
 			(t_vec3){0, 1 * dir, 0});
 	denominator = dot_product(ray.direction, (t_vec3){0, 1 * dir, 0});
@@ -103,9 +102,7 @@ static t_hit	hit_to_world(float t, t_ray ray, t_cylinder cyl)
 	t_hit			ret;
 
 	world_hit = rotate_by_quat(inverse_quat(cyl.q_axis), local_hit);
-	ray.origin = subtract_vec(ray.origin, cyl.center);
 	ray = rotate_ray(ray, inverse_quat(cyl.q_axis));
-	ray.origin = add_vec(ray.origin, cyl.center);
 	ret.t = t_from_point(world_hit, ray);
 	return (ret);
 }
