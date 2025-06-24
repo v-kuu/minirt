@@ -49,7 +49,7 @@ t_color	normal_visual(t_vec3 center, t_hit hit)
 	return (red | green | blue | 0xFF);
 }
 
-t_color	cyl_normal(t_vec3 center, t_hit hit)
+t_color	cyl_normal(t_ray ray, t_vec3 center, t_hit hit)
 {
 	t_vec3	unit_normal;
 	float	fraction;
@@ -57,7 +57,7 @@ t_color	cyl_normal(t_vec3 center, t_hit hit)
 	t_color	green;
 	t_color	blue;
 
-	unit_normal = normalize(subtract_vec(ray_at(hit.ray, hit.t), center));
+	unit_normal = normalize(subtract_vec(ray_at(ray, hit.t), center));
 	fraction = 0.5 * (unit_normal.x + 1.0);
 	red = 0xFF * fraction;
 	red <<= 24;

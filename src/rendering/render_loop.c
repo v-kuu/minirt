@@ -125,8 +125,8 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			if (hit.t < closest.t)
 			{
 				closest = hit;
-				mlx_put_pixel(vp->img, x, y, cyl_normal(obj->cy[index].center,
-						hit));
+				mlx_put_pixel(vp->img, x, y, cyl_normal(ray,
+							obj->cy[index].center, hit));
 			}
 		}
 	}
