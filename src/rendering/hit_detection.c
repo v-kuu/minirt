@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 14:01:06 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/23 12:29:51 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/06/24 13:08:36 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_hit	plane_intersection(t_plane plane, t_ray ray)
 
 	temp = dot_product(subtract_vec(plane.point, ray.origin), plane.normal);
 	denominator = dot_product(ray.direction, plane.normal);
-	if (fabs(denominator) < 1e-6)
+	if (fabs(denominator) < 0.0001)
 		return ((t_hit){.t = -1.0f});
 	else
 		t = temp / denominator;
