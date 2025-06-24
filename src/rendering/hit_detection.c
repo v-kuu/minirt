@@ -12,12 +12,15 @@
 
 #include "../../minirt.h"
 
+static t_hit	sphere_hit_data(float t1, float t2, t_sphere sphere, t_ray ray);
+
 t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 {
 	t_vec3	displacement_vec;
 	float	squares[2];
 	float	projection;
 	float	discriminant;
+	float	t[2];
 
 	displacement_vec = subtract_vec(sphere.center, ray.origin);
 	squares[0] = dot_product(ray.direction, ray.direction);
@@ -27,8 +30,9 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 	discriminant = projection * projection - squares[0] * squares[1];
 	if (discriminant < 0)
 		return ((t_hit){.t = -1.0f});
-	else
-		return ((t_hit){.t = (projection - sqrtf(discriminant)) / squares[0]});
+	t[0] = (projection - sqrtf(discriminant)) / squares[0];
+	t[1] = (projection + sqrtf(discriminant)) / squares[0];
+	return (sphere_hit_data(t[0], t[1], sphere, ray));
 }
 
 /*
@@ -55,5 +59,22 @@ t_hit	plane_intersection(t_plane plane, t_ray ray)
 	if (t < 0)
 		return ((t_hit){.t = -1.0f});
 	hit.t = t;
+	hit.normal = plane.normal;
 	return (hit);
+}
+
+static t_hit	sphere_hit_data(float t1, float t2, t_sphere sphere, t_ray ray)
+{
+	t_hit	ret;
+
+	if (t1 >= 0 && t2 >= 0)
+		ret.t = fmin(t1, t2);
+	else if (t1 < 0)
+		ret.t = t2;
+	else
+		ret.t = t1;
+	if (ret.t < 0)
+		return (ret);
+	ret.normal = sp_normal_at(sphere, ray_at(ray, ret.t));
+	return (ret);
 }
