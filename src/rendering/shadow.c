@@ -38,7 +38,7 @@ bool	is_shadowed(t_objects *obj, t_hit hit)
 	// Offset the origin to avoid self-shadowing
 	shadow_origin = add_vec(ray_at(hit.ray, hit.t), scale_vec(hit.normal, 0.0001f));
 	index = -1;
-	shadow_ray = (t_ray){ray_at(hit.ray, hit.t),
+	shadow_ray = (t_ray){shadow_origin,
 		subtract_vec(obj->l[0].coordinates, shadow_origin)};
 	t_max = vec_len(shadow_ray.direction);
 
