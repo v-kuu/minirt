@@ -139,7 +139,7 @@ typedef struct s_phong_vectors
 	t_vec3			eye_v;
 	t_vec3			light_v;
 	t_vec3			normal_v;
-	t_vec3			reflect_V;
+	t_vec3			reflect_v;
 }					t_phong;
 
 typedef struct s_lights
@@ -343,14 +343,44 @@ t_rgbcolor			shading_vectors(t_objects *obj, t_rgbcolor obj_color,
  */
 float				ft_clamp(float val, float min, float max);
 
+/*
+ * return the reflected vector.
+ */
 t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
+
+/*
+ * return the new color came from 2 colors. color1 + color2
+ */
 t_rgbcolor			add_colors(t_rgbcolor c1, t_rgbcolor c2);
+
+/*
+ * return the new color came after scale it with a value.
+ */
 t_rgbcolor			multiply_color_by(t_rgbcolor c1, float value);
+
+/*
+ * return the normal value of the color. from 0-1
+ */
 t_rgbcolor			normalize_color(t_rgbcolor c1);
+/*
+ * return the new color came after multiplying  colors
+ */
 t_rgbcolor			multiply_colors(t_rgbcolor c1, t_rgbcolor c2);
+
+/*
+ * return the new color came after calculating the effect of lights and shadows
+ */
 t_rgbcolor			lightining_shadow(t_objects *obj, t_rgbcolor obj_color);
+
+/*
+ * return the status of the hit point if it in shadow or or
+ */
 bool				is_shadowed(t_objects *obj, t_hit hit);
+
+/*
+ * return the new color after clamping and make it max to 255, and the min is 0. it will protect from overflows.
+ */
 t_rgbcolor			color_clamping(t_rgbcolor color);
-t_vec3				reflect_at(t_vec3 in_v, t_vec3 light_n);
+
 
 #endif
