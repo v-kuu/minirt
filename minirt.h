@@ -306,8 +306,6 @@ t_color				background_color(t_ray ray);
  * Returns a color based on the normal
  */
 t_color				normal_visual(t_hit hit);
-t_color				plane_visual(t_plane plane);
-t_color				cyl_normal(t_ray ray, t_vec3 center, t_hit hit);
 t_color				shading_visual(t_rgbcolor color);
 t_vec3				sp_normal_at(t_sphere sphere, t_vec3 point);
 
