@@ -27,16 +27,44 @@ t_rgbcolor	lightining_shadow(t_objects *obj, t_rgbcolor obj_color)
 	return (color_clamping(ambient));
 }
 
+/*bool	is_shadowed(t_objects *obj, t_hit hit)
+{
+	int		index;
+	t_ray	ray;
+
+	ray.origin = add_vec(ray_at(hit.ray, hit.t), scale_vec(hit.normal, 0.0001f));
+	ray.direction = normalize(subtract_vec(obj->l[0].coordinates, ray.origin));
+	index = -1;
+	while (++index < obj->spctr)
+	{
+		if (sphere_intersection(obj->sp[index], ray).t >= 0)
+			return (true);
+	}
+	index = -1;
+	while (++index < obj->plctr)
+	{
+		if (plane_intersection(obj->pl[index], ray).t >= 0)
+			return (true);
+	}
+	index = -1;
+	while (++index < obj->cyctr)
+	{
+		if (cylinder_intersection(obj->cy[index], ray).t >= 0)
+			return (true);
+	}
+	return (false);
+}*/
+
 bool	is_shadowed(t_objects *obj, t_hit hit)
 {
 	t_ray	shadow_ray;
 	t_hit	sh_hit;
 	float	t_max;
 	int		index;
-	t_vec3 shadow_origin;
+	t_vec3	shadow_origin;
 
 	// Offset the origin to avoid self-shadowing
-	shadow_origin = add_vec(ray_at(hit.ray, hit.t), scale_vec(hit.normal, 0.0001f));
+	shadow_origin = add_vec(ray_at(hit.ray, hit.t), scale_vec(hit.normal, 0.01f));
 	index = -1;
 	shadow_ray = (t_ray){shadow_origin,
 		subtract_vec(obj->l[0].coordinates, shadow_origin)};

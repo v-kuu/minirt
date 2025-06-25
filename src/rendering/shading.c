@@ -60,8 +60,8 @@ t_rgbcolor	shading_vectors(t_objects *obj, t_rgbcolor obj_color, t_hit hit)
 	t_vec3	hit_point;
 
 	hit_point = ray_at(hit.ray, hit.t);
-	if (is_shadowed(obj, hit))
-		return (lightining_shadow(obj, obj_color));
+	//if (is_shadowed(obj, hit))
+	//	return (lightining_shadow(obj, obj_color));
 	phong.eye_v = normalize(subtract_vec(obj->c.coordinates, hit_point));
 	phong.light_v = normalize(subtract_vec(obj->l[0].coordinates, hit_point));
 	phong.normal_v = hit.normal;
