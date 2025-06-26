@@ -36,7 +36,7 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	if (discriminant < 0)
 		return ((t_hit){.t = FLT_MAX});
 	return (solve_hit(((projection - sqrtf(discriminant)) / squares[0]),
-			(projection + sqrtf(discriminant) / squares[0]),
+			((projection + sqrtf(discriminant)) / squares[0]),
 			cyl, ray));
 }
 
