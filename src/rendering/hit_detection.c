@@ -1,4 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hit_detection.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/26 13:51:57 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/06/26 14:24:23 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minirt.h"
+
+static t_hit	solve_sphere(float t1, float t2, t_sphere sphere, t_ray ray);
 
 t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 {
@@ -6,6 +20,7 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 	float	squares[2];
 	float	projection;
 	float	discriminant;
+	float	t[2];
 
 	displacement_vec = subtract_vec(sphere.center, ray.origin);
 	squares[0] = dot_product(ray.direction, ray.direction);
@@ -14,8 +29,32 @@ t_hit	sphere_intersection(t_sphere sphere, t_ray ray)
 		- sphere.radius * sphere.radius;
 	discriminant = projection * projection - squares[0] * squares[1];
 	if (discriminant < 0)
-		return ((t_hit){.t = -1.0f});
-	return ((t_hit){.t = (projection - sqrtf(discriminant)) / squares[0]});
+		return ((t_hit){.t = FLT_MAX});
+	t[0] = (projection - sqrtf(discriminant)) / squares[0];
+	t[1] = (projection + sqrtf(discriminant)) / squares[0];
+	return (solve_sphere(t[0], t[1], sphere, ray));
+}
+
+static t_hit	solve_sphere(float t1, float t2, t_sphere sphere, t_ray ray)
+{
+	const float	max = fmax(t1, t2);
+	const float	min = fmin(t1, t2);
+	t_hit		ret;
+
+	if (min < 0 && max < FLT_MAX && max > 0 && max != min)
+	{
+		ret.t = max;
+		ret.normal = normalize(scale_vec(sp_normal_at(
+						sphere, ray_at(ray, ret.t)), -1.0f));
+	}
+	else if (min < 0)
+		ret.t = FLT_MAX;
+	else
+	{
+		ret.t = min;
+		ret.normal = normalize(sp_normal_at(sphere, ray_at(ray, ret.t)));
+	}
+	return (ret);
 }
 
 /*
