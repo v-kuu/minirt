@@ -86,7 +86,6 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			{
 				closest = hit;
 				hit.ray = ray;
-				hit.normal = sp_normal_at(obj->sp[index], ray_at(ray, hit.t));
 				hit.color = shading_visual(shading_vectors(obj,
 							obj->sp[index].color, hit));
 				mlx_put_pixel(vp->img, x, y, hit.color);
