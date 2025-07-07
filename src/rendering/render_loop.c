@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_loop.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/24 17:13:49 by mkhlouf          ###   ########.fr       */
+/*   Created: 2025/07/07 15:15:42 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/07 15:38:01 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 static void	draw_screen(void *param);
 static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp);
+static void	find_closest(t_objects *obj, t_ray ray, t_hit *closest);
 static void	keybinds(void *param);
-
-int			g_active;
 
 int	rendering_loop(t_data *data)
 {
@@ -36,7 +35,8 @@ int	rendering_loop(t_data *data)
 		return (1);
 	}
 	screen.obj = data->objects;
-	g_active = 1;
+	screen.active = 1;
+	calculate_cylinder_quats(screen.obj);
 	mlx_image_to_window(mlx, screen.img, 0, 0);
 	mlx_loop_hook(mlx, draw_screen, &screen);
 	mlx_loop_hook(mlx, keybinds, mlx);
@@ -47,14 +47,15 @@ int	rendering_loop(t_data *data)
 
 static void	draw_screen(void *param)
 {
-	const t_viewp	*vp = param;
-	t_ray			ray;
-	int				x;
-	int				y;
+	t_viewp	*vp;
+	t_ray	ray;
+	int		x;
+	int		y;
 
-	if (!g_active)
+	vp = param;
+	if (!vp->active)
 		return ;
-	g_active = 0;
+	vp->active = 0;
 	y = -1;
 	while (++y < HEIGHT)
 	{
@@ -69,51 +70,45 @@ static void	draw_screen(void *param)
 
 static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 {
-	t_objects	*obj;
-	t_hit		hit;
 	t_hit		closest;
-	int			index;
 
-	obj = vp->obj;
-	index = -1;
 	closest.t = FLT_MAX;
-	while (++index < obj->spctr)
-	{
-		hit = sphere_intersection(obj->sp[index], ray);
-		if (hit.t >= 0)
-			if (hit.t < closest.t)
-				closest = hit;
-	}
-	index = -1;
-	while (++index < obj->plctr)
-	{
-		hit = plane_intersection(obj->pl[index], ray);
-		if (hit.t >= 0)
-			if (hit.t < closest.t)
-				closest = hit;
-	}
-	index = -1;
-	while (++index < obj->cyctr)
-	{
-		obj->cy[index].q_axis = normalize_quat(create_rotation_quat(
-			(t_vec3){0, 1, 0}, obj->cy[index].axis));
-		hit = cylinder_intersection(obj->cy[index], ray);
-		if (hit.t >= 0)
-		{
-			if (hit.t < closest.t)
-			{
-				closest = hit;
-			}
-		}
-	}
+	find_closest(vp->obj, ray, &closest);
 	if (closest.t == FLT_MAX)
 		mlx_put_pixel(vp->img, x, y, background_color(ray));
 	else
 	{
 		closest.ray = ray;
 		mlx_put_pixel(vp->img, x, y,
-			shading_visual(shading_vectors(obj, closest)));
-		//mlx_put_pixel(vp->img, x, y, normal_visual(closest));
+			shading_visual(shading_vectors(vp->obj, closest)));
+	}
+}
+
+static void	find_closest(t_objects *obj, t_ray ray, t_hit *closest)
+{
+	int		index;
+	t_hit	hit;
+
+	index = -1;
+	while (++index < obj->spctr)
+	{
+		hit = sphere_intersection(obj->sp[index], ray);
+		if (hit.t >= 0 && hit.t < closest->t)
+			*closest = hit;
+	}
+	index = -1;
+	while (++index < obj->plctr)
+	{
+		hit = plane_intersection(obj->pl[index], ray);
+		if (hit.t >= 0 && hit.t < closest->t)
+			*closest = hit;
+	}
+	index = -1;
+	while (++index < obj->cyctr)
+	{
+		hit = cylinder_intersection(obj->cy[index], ray);
+		if (hit.t >= 0 && hit.t < closest->t)
+			*closest = hit;
 	}
 }
 

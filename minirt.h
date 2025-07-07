@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 16:04:01 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/07 16:08:48 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -109,8 +121,7 @@ typedef struct s_objects
 	t_plane			*pl;
 	t_sphere		*sp;
 	t_cylinder		*cy;
-
-	int lctr; /// added_lights_counter
+	int				lctr;
 	int				plctr;
 	int				spctr;
 	int				cyctr;
@@ -174,8 +185,6 @@ void				case_l(t_data *data, t_objects *objects, int i);
 void				case_sp(t_data *data, t_objects *objects, int i);
 void				case_pl(t_data *data, t_objects *objects, int i);
 void				case_cy(t_data *data, t_objects *objects, int i);
-
-void	print_camera(t_data *data); // must be removed
 bool				fill_in_coordinates(t_data *data, int i, t_vec3 *coords);
 bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
 bool				fill_in_RGB(char *value, t_rgbcolor *color);
@@ -194,6 +203,7 @@ typedef struct s_viewp
 {
 	mlx_image_t		*img;
 	t_objects		*obj;
+	int				active;
 	t_vec3			cam_origin;
 	t_vec3			cam_dir;
 	t_vec3			horizontal;
@@ -278,22 +288,22 @@ t_vec3				normalize(const t_vec3 vector);
 /*
  * Returns a quaternion representing the rotation from one vector to another
  */
-t_quaternion	create_rotation_quat(t_vec3 from, t_vec3 to);
+t_quaternion		create_rotation_quat(t_vec3 from, t_vec3 to);
 
 /*
  * Rotates a vector by a quaternion
  */
-t_vec3			rotate_by_quat(t_quaternion quat, t_vec3 vec);
+t_vec3				rotate_by_quat(t_quaternion quat, t_vec3 vec);
 
 /*
  * Normalizes a quaternion
  */
-t_quaternion	normalize_quat(t_quaternion quat);
+t_quaternion		normalize_quat(t_quaternion quat);
 
 /*
  * Inverts a quaternion
  */
-t_quaternion	inverse_quat(t_quaternion quat);
+t_quaternion		inverse_quat(t_quaternion quat);
 
 //////////////////////////////////////////////////////////////////// color.c //
 
@@ -305,8 +315,8 @@ t_color				background_color(t_ray ray);
 /*
  * Returns a color based on the normal
  */
-t_color				normal_visual(t_hit hit);
 t_color				shading_visual(t_rgbcolor color);
+
 t_vec3				sp_normal_at(t_sphere sphere, t_vec3 point);
 
 /////////////////////////////////////////////////////////////////// camera.c //
@@ -368,6 +378,11 @@ t_hit				plane_intersection(t_plane plane, t_ray ray);
  */
 t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
 
+/*
+ * Calculate quaternions for cylinder axis
+ */
+void				calculate_cylinder_quats(t_objects *obj);
+
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
 /*
@@ -415,7 +430,8 @@ t_rgbcolor			lighting_shadow(t_objects *obj, t_rgbcolor obj_color);
 bool				is_shadowed(t_objects *obj, t_ray ray, float t_max);
 
 /*
- * return the new color after clamping and make it max to 255, and the min is 0. it will protect from overflows.
+ * return the new color after clamping and make it max to 255,
+ * and the min is 0. it will protect from overflows.
  */
 t_rgbcolor			color_clamping(t_rgbcolor color);
 

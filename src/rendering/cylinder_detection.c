@@ -22,6 +22,7 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	float			squares[2];
 	float			projection;
 	float			discriminant;
+	float			t[2];
 
 	cyl.diameter /= 2;
 	ray.origin = subtract_vec(ray.origin, cyl.center);
@@ -35,9 +36,9 @@ t_hit	cylinder_intersection(t_cylinder cyl, t_ray ray)
 	discriminant = projection * projection - squares[0] * squares[1];
 	if (discriminant < 0)
 		return ((t_hit){.t = FLT_MAX});
-	return (solve_hit(((projection - sqrtf(discriminant)) / squares[0]),
-			((projection + sqrtf(discriminant)) / squares[0]),
-			cyl, ray));
+	t[0] = (projection - sqrtf(discriminant)) / squares[0];
+	t[1] = (projection + sqrtf(discriminant)) / squares[0];
+	return (solve_hit(t[0], t[1], cyl, ray));
 }
 
 static t_hit	solve_hit(float t1, float t2, t_cylinder cyl, t_ray ray)
@@ -53,9 +54,11 @@ static t_hit	solve_hit(float t1, float t2, t_cylinder cyl, t_ray ray)
 	t_all[3] = circle_intersection(cyl, ray, -1);
 	index = -1;
 	while (++index < 4)
-		if (t_all[index].t < FLT_MAX && t_all[index].t < closest.t)
+		if (t_all[index].t < closest.t && t_all[index].t > 0)
 			closest = t_all[index];
 	closest.color = cyl.color;
+	if (dot_product(closest.normal, ray.direction) > 0)
+		closest.normal = scale_vec(closest.normal, -1);
 	return (closest);
 }
 
@@ -95,4 +98,14 @@ static t_hit	finite_hit(float t, t_ray ray, t_cylinder cyl)
 	ret.normal = normalize(subtract_vec(hit, (t_vec3){0, 0, 0}));
 	ret.normal = rotate_by_quat(inverse_quat(cyl.q_axis), ret.normal);
 	return (ret);
+}
+
+void	calculate_cylinder_quats(t_objects *obj)
+{
+	int	index;
+
+	index = -1;
+	while (++index < obj->cyctr)
+		obj->cy[index].q_axis = normalize_quat(create_rotation_quat(
+					(t_vec3){0, 1, 0}, obj->cy[index].axis));
 }

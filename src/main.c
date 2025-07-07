@@ -1,17 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 16:08:55 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/07 16:09:27 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minirt.h"
-
-void	print_lines(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->read_lines[i])
-	{
-		if (data->read_lines[i][0] != '\n')
-			printf("line[%d] is :%s", i, data->read_lines[i]);
-		i++;
-	}
-}
 
 void	free_objects(t_data *data)
 {
@@ -36,7 +35,6 @@ void	free_objects(t_data *data)
 		data->objects->sp = NULL;
 	}
 }
-
 
 int	main(int argc, char **argv)
 {
