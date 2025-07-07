@@ -55,7 +55,7 @@ static t_hit	solve_hit(float t1, float t2, t_cylinder cyl, t_ray ray)
 	while (++index < 4)
 		if (t_all[index].t < FLT_MAX && t_all[index].t < closest.t)
 			closest = t_all[index];
-	closest.color = shading_visual(cyl.color);
+	closest.color = cyl.color;
 	return (closest);
 }
 

@@ -26,6 +26,15 @@ t_ray	pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y)
 	return ((t_ray){origin, ray_direction});
 }
 
+t_ray	light_ray(t_hit hit, t_light light, t_point hit_point)
+{
+	t_ray	ret;
+
+	ret.origin = add_vec(hit_point, scale_vec(hit.normal, 0.0001f));
+	ret.direction = normalize(subtract_vec(light.coordinates, ret.origin));
+	return (ret);
+}
+
 t_point	ray_at(t_ray ray, float hit)
 {
 	t_vec3	scaled_dir;

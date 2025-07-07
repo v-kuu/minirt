@@ -41,6 +41,7 @@ static t_hit	solve_sphere(float t1, float t2, t_sphere sphere, t_ray ray)
 	const float	min = fmin(t1, t2);
 	t_hit		ret;
 
+	ret.color = sphere.color;
 	if (min < 0 && max < FLT_MAX && max > 0 && max != min)
 	{
 		ret.t = max;
@@ -82,5 +83,6 @@ t_hit	plane_intersection(t_plane plane, t_ray ray)
 		return ((t_hit){.t = -1.0f});
 	hit.t = t;
 	hit.normal = plane.normal;
+	hit.color = plane.color;
 	return (hit);
 }

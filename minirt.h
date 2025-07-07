@@ -6,7 +6,7 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 # define SHININESS 10  // in lighting
-# define SPECULAR 0.2f // in ligtining
+# define SPECULAR 0.2f // in lighting
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
 # include <errno.h>
@@ -40,22 +40,22 @@ typedef struct s_quaternion
 	float			z;
 }					t_quaternion;
 
-typedef struct s_hit_record
-{
-	float			t;
-	t_vec3			normal;
-	t_color			color;
-	t_ray			ray;
-}					t_hit;
-
-typedef t_vec3		t_point;
-
 typedef struct s_rgbcolor
 {
 	float			r;
 	float			g;
 	float			b;
 }					t_rgbcolor;
+
+typedef struct s_hit_record
+{
+	float			t;
+	t_vec3			normal;
+	t_rgbcolor		color;
+	t_ray			ray;
+}					t_hit;
+
+typedef t_vec3		t_point;
 
 typedef struct s_light
 {
@@ -330,6 +330,11 @@ t_viewp				create_viewport(t_camera cam, float fov_rad, int width,
 t_ray				pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
 
 /*
+ * Calculates the ray from an intersection to light source
+ */
+t_ray				light_ray(t_hit hit, t_light light, t_point hit_point);
+
+/*
  * Returns the location where the ray hit
  */
 t_point				ray_at(t_ray ray, float hit);
@@ -366,10 +371,9 @@ t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
 /*
- * Calculates the final color after lightining and shadow.
+ * Calculates the final color after lighting and shadow.
  */						
-t_rgbcolor			shading_vectors(t_objects *obj, t_rgbcolor obj_color,
-						t_hit hit);
+t_rgbcolor			shading_vectors(t_objects *obj, t_hit hit);
 
 /*
  * return the min or the max if the value exceed the min and max.
@@ -403,17 +407,16 @@ t_rgbcolor			multiply_colors(t_rgbcolor c1, t_rgbcolor c2);
 /*
  * return the new color came after calculating the effect of lights and shadows
  */
-t_rgbcolor			lightining_shadow(t_objects *obj, t_rgbcolor obj_color);
+t_rgbcolor			lighting_shadow(t_objects *obj, t_rgbcolor obj_color);
 
 /*
  * return the status of the hit point if it in shadow or or
  */
-bool				is_shadowed(t_objects *obj, t_hit hit);
+bool				is_shadowed(t_objects *obj, t_ray ray, float t_max);
 
 /*
  * return the new color after clamping and make it max to 255, and the min is 0. it will protect from overflows.
  */
 t_rgbcolor			color_clamping(t_rgbcolor color);
-
 
 #endif

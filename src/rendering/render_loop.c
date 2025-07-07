@@ -81,33 +81,16 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 	{
 		hit = sphere_intersection(obj->sp[index], ray);
 		if (hit.t >= 0)
-		{
 			if (hit.t < closest.t)
-			{
 				closest = hit;
-				hit.ray = ray;
-				hit.color = shading_visual(shading_vectors(obj,
-							obj->sp[index].color, hit));
-				mlx_put_pixel(vp->img, x, y, hit.color);
-			}
-		}
 	}
 	index = -1;
 	while (++index < obj->plctr)
 	{
 		hit = plane_intersection(obj->pl[index], ray);
 		if (hit.t >= 0)
-		{
 			if (hit.t < closest.t)
-			{
 				closest = hit;
-				hit.normal = obj->pl[index].normal;
-				hit.ray = ray;
-				hit.color = shading_visual(shading_vectors(obj,
-							obj->pl[index].color, hit));
-				mlx_put_pixel(vp->img, x, y, hit.color);
-			}
-		}
 	}
 	index = -1;
 	while (++index < obj->cyctr)
@@ -120,16 +103,18 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 			if (hit.t < closest.t)
 			{
 				closest = hit;
-				hit.ray = ray;
-				hit.color = shading_visual(shading_vectors(obj,
-							obj->cy[index].color, hit));
-				mlx_put_pixel(vp->img, x, y, hit.color);
-				//mlx_put_pixel(vp->img, x, y, normal_visual(closest));
 			}
 		}
 	}
 	if (closest.t == FLT_MAX)
 		mlx_put_pixel(vp->img, x, y, background_color(ray));
+	else
+	{
+		closest.ray = ray;
+		mlx_put_pixel(vp->img, x, y,
+			shading_visual(shading_vectors(obj, closest)));
+		//mlx_put_pixel(vp->img, x, y, normal_visual(closest));
+	}
 }
 
 static void	keybinds(void *param)
