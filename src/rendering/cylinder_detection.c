@@ -57,8 +57,8 @@ static t_hit	solve_hit(float t1, float t2, t_cylinder cyl, t_ray ray)
 		if (t_all[index].t < closest.t && t_all[index].t > 0)
 			closest = t_all[index];
 	closest.color = cyl.color;
-	if (dot_product(closest.normal, ray.direction) > 0)
-		closest.normal = scale_vec(closest.normal, -1);
+	//if (dot_product(closest.normal, ray.direction) > 0)
+	//	closest.normal = scale_vec(closest.normal, -1);
 	return (closest);
 }
 
