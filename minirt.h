@@ -334,7 +334,7 @@ t_viewp				create_viewport(t_camera cam, float fov_rad, int width,
 /*
  * Recalculate viewport when screen gets resized
  */
-void	resize_screen(int32_t width, int32_t height, void *param);
+void				resize_screen(int32_t width, int32_t height, void *param);
 
 ////////////////////////////////////////////////////////////////////// ray.c //
 
