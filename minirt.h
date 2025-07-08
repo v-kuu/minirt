@@ -187,7 +187,7 @@ void				case_pl(t_data *data, t_objects *objects, int i);
 void				case_cy(t_data *data, t_objects *objects, int i);
 bool				fill_in_coordinates(t_data *data, int i, t_vec3 *coords);
 bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
-bool				fill_in_RGB(char *value, t_rgbcolor *color);
+bool				fill_in_rgb(char *value, t_rgbcolor *color);
 bool				malloc_all_objects(t_data *data);
 bool				fill_in_value(char *value, float *src);
 
@@ -201,8 +201,12 @@ typedef struct s_cam
 
 typedef struct s_viewp
 {
+	mlx_t			*mlx;
 	mlx_image_t		*img;
 	t_objects		*obj;
+	int				width;
+	int				height;
+	float			fov_rad;
 	int				active;
 	t_vec3			cam_origin;
 	t_vec3			cam_dir;
@@ -322,15 +326,15 @@ t_vec3				sp_normal_at(t_sphere sphere, t_vec3 point);
 /////////////////////////////////////////////////////////////////// camera.c //
 
 /*
- * Initialize the basic camera object
- */
-t_cam				init_camera(t_vec3 origin, t_vec3 orientation, float fov);
-
-/*
  * Calculate the viewport based on camera data and screen dimensions
  */
 t_viewp				create_viewport(t_camera cam, float fov_rad, int width,
 						int height);
+
+/*
+ * Recalculate viewport when screen gets resized
+ */
+void	resize_screen(int32_t width, int32_t height, void *param);
 
 ////////////////////////////////////////////////////////////////////// ray.c //
 

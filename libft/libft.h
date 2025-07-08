@@ -81,6 +81,6 @@ char	*get_next_line(int fd);
 void	*ft_free(void **ptr);
 int		ft_abs(int number);
 void	*ft_free_str_arr(char **array);
-int	ft_isfloat(int character);
+int		ft_isfloat(int character);
 
 #endif

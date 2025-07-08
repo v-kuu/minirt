@@ -19,29 +19,30 @@ static void	keybinds(void *param);
 
 int	rendering_loop(t_data *data)
 {
-	mlx_t		*mlx;
 	t_viewp		screen;
 	t_camera	cam;
 
-	mlx = mlx_init(WIDTH, HEIGHT, "minirt", false);
-	if (!mlx)
-		return (1);
+	ft_bzero(&screen, sizeof(screen));
 	cam = data->objects->c;
-	screen = create_viewport(cam, (cam.fov * (M_PI / 180)), WIDTH, HEIGHT);
-	screen.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	screen = create_viewport(cam, (cam.fov * (M_PI / 180)), 1920, 1080);
+	screen.mlx = mlx_init(1920, 1080, "minirt", true);
+	if (!screen.mlx)
+		return (1);
+	mlx_set_window_limit(screen.mlx, 640, 640, 1920, 1080);
+	screen.img = mlx_new_image(screen.mlx, 1920, 1080);
 	if (!screen.img)
 	{
-		mlx_terminate(mlx);
+		mlx_terminate(screen.mlx);
 		return (1);
 	}
 	screen.obj = data->objects;
-	screen.active = 1;
 	calculate_cylinder_quats(screen.obj);
-	mlx_image_to_window(mlx, screen.img, 0, 0);
-	mlx_loop_hook(mlx, draw_screen, &screen);
-	mlx_loop_hook(mlx, keybinds, mlx);
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_image_to_window(screen.mlx, screen.img, 0, 0);
+	mlx_resize_hook(screen.mlx, resize_screen, &screen);
+	mlx_loop_hook(screen.mlx, draw_screen, &screen);
+	mlx_loop_hook(screen.mlx, keybinds, screen.mlx);
+	mlx_loop(screen.mlx);
+	mlx_terminate(screen.mlx);
 	return (0);
 }
 
@@ -57,10 +58,10 @@ static void	draw_screen(void *param)
 		return ;
 	vp->active = 0;
 	y = -1;
-	while (++y < HEIGHT)
+	while (++y < vp->height)
 	{
 		x = -1;
-		while (++x < WIDTH)
+		while (++x < vp->width)
 		{
 			ray = pixel_ray(vp->cam_origin, *vp, x, y);
 			render_pixel(x, y, ray, vp);
@@ -79,6 +80,8 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 	else
 	{
 		closest.ray = ray;
+		if (dot_product(ray.direction, closest.normal) > 0)
+			closest.normal = scale_vec(closest.normal, -1);
 		mlx_put_pixel(vp->img, x, y,
 			shading_visual(shading_vectors(vp->obj, closest)));
 	}

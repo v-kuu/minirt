@@ -1,8 +1,8 @@
 		### BASICS ###
 
 NAME 			= minirt
-CC 				= gcc
-CFLAGS 			= -g -Wall -Wextra -Werror -I.
+CC 				= cc
+CFLAGS 			= -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
 RM 				= rm -rf
 VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx42.supp

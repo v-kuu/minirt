@@ -1,9 +1,19 @@
-#include "../../minirt.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shapes.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 14:26:13 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/08 14:49:39 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../minirt.h"
 
 bool	fill_in_value(char *value, float *src)
 {
-	
 	*src = ft_atof(value);
 	if (!*src)
 		return (false);
@@ -33,7 +43,7 @@ void	case_cy(t_data *data, t_objects *objects, int i)
 	{
 		exit_free_parsing(data);
 	}
-	if (!fill_in_RGB(data->lines[i].line[5],
+	if (!fill_in_rgb(data->lines[i].line[5],
 			&objects->cy[objects->cyctr].color))
 	{
 		exit_free_parsing(data);
@@ -50,13 +60,12 @@ void	case_sp(t_data *data, t_objects *objects, int i)
 	}
 	if (!fill_in_coordinates(data, i, &objects->sp[objects->spctr].center))
 		exit_free_parsing(data);
-
 	if (!fill_in_value(data->lines[i].line[2],
 			&objects->sp[objects->spctr].radius))
 	{
 		exit_free_parsing(data);
 	}
-	if (!fill_in_RGB(data->lines[i].line[3],
+	if (!fill_in_rgb(data->lines[i].line[3],
 			&objects->sp[objects->spctr].color))
 	{
 		exit_free_parsing(data);
@@ -75,7 +84,7 @@ void	case_pl(t_data *data, t_objects *objects, int i)
 		exit_free_parsing(data);
 	if (!fill_in_orientations(data, i, &objects->pl[objects->plctr].normal))
 		exit_free_parsing(data);
-	if (!fill_in_RGB(data->lines[i].line[3],
+	if (!fill_in_rgb(data->lines[i].line[3],
 			&objects->pl[objects->plctr].color))
 	{
 		exit_free_parsing(data);

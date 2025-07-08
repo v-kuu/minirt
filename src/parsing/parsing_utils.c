@@ -1,9 +1,20 @@
-#include "../../minirt.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 14:30:41 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/08 14:31:23 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../minirt.h"
 
 void	exit_free_parsing(t_data *data)
 {
-	free(data->objects->l); // must be free to bonus
+	free(data->objects->l);
 	if (data->objects)
 		free(data->objects);
 	free_lines_arr(data->lines);
@@ -14,9 +25,9 @@ void	exit_free_parsing(t_data *data)
 	exit(EXIT_FAILURE);
 }
 
-void free_lines_arr(t_s_lines *lines)
+void	free_lines_arr(t_s_lines *lines)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (lines[i].line)
@@ -28,7 +39,6 @@ void free_lines_arr(t_s_lines *lines)
 	free(lines);
 	lines = NULL;
 }
-
 
 /*
 free 2d arr
@@ -59,7 +69,6 @@ void	print_error_exit(void)
 	ft_putstr_fd(strerror(errno), 2);
 	exit(EXIT_FAILURE);
 }
-
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

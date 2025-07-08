@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 14:26:37 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/08 14:29:56 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minirt.h"
 
 void	remove_white_spaces(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(line[i])
+	while (line[i])
 	{
-		if(line[i] == '\t')
+		if (line[i] == '\t')
 			line[i] = ' ';
 		i++;
 	}
@@ -65,31 +77,27 @@ bool	color_validation(t_rgbcolor *color)
 bool	parse_to_objects(t_data *data)
 {
 	int			i;
-	t_objects	*objects;
 
 	i = 0;
-	objects = ft_calloc(1, sizeof(t_objects));
-	if (!objects)
+	data->objects = ft_calloc(1, sizeof(t_objects));
+	if (!data->objects)
 		return (false);
-	data->objects = objects;
 	if (!malloc_all_objects(data))
 		return (false);
 	while (data->lines[i].line)
 	{
 		if (ft_strcmp(data->lines[i].line[0], "A") == 0)
-			case_a(data, objects, i);
+			case_a(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "C") == 0)
-			case_c(data, objects, i);
+			case_c(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "L") == 0)
-			case_l(data, objects, i);
+			case_l(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "sp") == 0)
-			case_sp(data, objects, i);
+			case_sp(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)
-			case_pl(data, objects, i);
+			case_pl(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
-			case_cy(data, objects, i);
-		// else
-		// 	bonus_cases(data);
+			case_cy(data, data->objects, i);
 		i++;
 	}
 	return (true);
@@ -113,6 +121,7 @@ void	calculate_counters(t_data *data)
 		i++;
 	}
 }
+
 bool	malloc_all_objects(t_data *data)
 {
 	data->objects->l = ft_calloc(data->light_counter, sizeof(t_light));
@@ -132,7 +141,6 @@ bool	malloc_all_objects(t_data *data)
 	}
 	return (true);
 }
-
 
 bool	parsing(t_data *data)
 {
