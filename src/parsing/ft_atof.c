@@ -70,7 +70,6 @@ float	ft_atof(char *str)
 	sign = 1;
 	i = 0;
 	f = 0;
-	decimal_part = NULL;
 	if (!str)
 		return (NAN);
 	if (!check_all_nums(str))

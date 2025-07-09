@@ -12,19 +12,6 @@
 
 #include "../../minirt.h"
 
-void	remove_white_spaces(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '\t')
-			line[i] = ' ';
-		i++;
-	}
-}
-
 bool	parse_to_lines(t_data *data)
 {
 	int	i;
@@ -44,33 +31,6 @@ bool	parse_to_lines(t_data *data)
 		}
 		i++;
 	}
-	return (true);
-}
-
-int	not_empty_lines(t_data *data)
-{
-	int	i;
-	int	lines_counter;
-
-	i = 0;
-	lines_counter = 0;
-	while (data->read_lines[i])
-	{
-		if (data->read_lines[i][0] != '\n')
-			lines_counter++;
-		i++;
-	}
-	return (lines_counter);
-}
-
-bool	color_validation(t_rgbcolor *color)
-{
-	if (!(color->r >= 0.0f && color->r <= 255.0f))
-		return (ft_putstr_fd("Error\ninvalid color red value.\n", 2), false);
-	if (!(color->g >= 0.0f && color->g <= 255.0f))
-		return (ft_putstr_fd("Error\ninvalid color green value.\n", 2), false);
-	if (!(color->b >= 0.0f && color->b <= 255.0f))
-		return (ft_putstr_fd("Error\ninvalid color blue value.\n", 2), false);
 	return (true);
 }
 
@@ -155,5 +115,5 @@ bool	parsing(t_data *data)
 	calculate_counters(data);
 	if (!parse_to_objects(data))
 		return (free_lines_arr(data->lines), false);
-	return (free_2d_arr(data->read_lines), true);
+	return (ft_free_str_arr(data->read_lines), true);
 }

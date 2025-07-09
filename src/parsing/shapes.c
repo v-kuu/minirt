@@ -91,3 +91,18 @@ void	case_pl(t_data *data, t_objects *objects, int i)
 	}
 	objects->plctr++;
 }
+
+void	case_c(t_data *data, t_objects *objects, int i)
+{
+	if (data->lines[i].line[4] != 0)
+	{
+		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
+		exit_free_parsing(data);
+	}
+	if (!fill_in_coordinates(data, i, &objects->c.coordinates))
+		exit_free_parsing(data);
+	if (!fill_in_orientations(data, i, &objects->c.orientations))
+		exit_free_parsing(data);
+	if (!fill_in_c_fov(data, i, &objects->c))
+		exit_free_parsing(data);
+}

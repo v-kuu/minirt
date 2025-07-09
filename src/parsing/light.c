@@ -32,7 +32,7 @@ bool	fill_in_rgb(char *value, t_rgbcolor *color)
 	color->r = ft_atof(rgb[0]);
 	color->g = ft_atof(rgb[1]);
 	color->b = ft_atof(rgb[2]);
-	free_2d_arr(rgb);
+	ft_free_str_arr(rgb);
 	if (isnan(color->r) || isnan(color->g) || isnan(color->b))
 		return (false);
 	if (!color_validation(color))
@@ -70,7 +70,6 @@ void	case_a(t_data *data, t_objects *objects, int i)
 {
 	char	**rgb;
 
-	rgb = NULL;
 	if (data->lines[i].line[3] != 0)
 	{
 		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
@@ -80,7 +79,7 @@ void	case_a(t_data *data, t_objects *objects, int i)
 	rgb = ft_split(data->lines[i].line[2], ',');
 	if (!rgb)
 	{
-		free_2d_arr(rgb);
+		ft_free_str_arr(rgb);
 		exit_free_parsing(data);
 	}
 	objects->a.color.r = ft_atof(rgb[0]);
@@ -90,8 +89,8 @@ void	case_a(t_data *data, t_objects *objects, int i)
 		|| isnan(objects->a.color.g) || isnan(objects->a.color.b)
 		|| !validate_a(objects->a))
 	{
-		free_2d_arr(rgb);
+		ft_free_str_arr(rgb);
 		exit_free_parsing(data);
 	}
-	free_2d_arr(rgb);
+	ft_free_str_arr(rgb);
 }

@@ -48,7 +48,7 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 	orinets->x = ft_atof(orientations[0]);
 	orinets->y = ft_atof(orientations[1]);
 	orinets->z = ft_atof(orientations[2]);
-	free_2d_arr(orientations);
+	ft_free_str_arr(orientations);
 	if (isnan(orinets->x) || isnan(orinets->y) || isnan(orinets->z))
 		return (false);
 	if (!validate_orientation(orinets))
@@ -66,7 +66,7 @@ bool	fill_in_coordinates(t_data *data, int i, t_vec3 *coords)
 	coords->x = ft_atof(coordinates[0]);
 	coords->y = ft_atof(coordinates[1]);
 	coords->z = ft_atof(coordinates[2]);
-	free_2d_arr(coordinates);
+	ft_free_str_arr(coordinates);
 	if (isnan(coords->x) || isnan(coords->y) || isnan(coords->z))
 		return (false);
 	if (!validate_coordination(coords))
@@ -82,19 +82,4 @@ bool	fill_in_c_fov(t_data *data, int i, t_camera *c)
 	if (!(c->fov >= 0.0f && c->fov <= 180.0f))
 		return (ft_putstr_fd("Error\ncheck fov value\n", 2), false);
 	return (true);
-}
-
-void	case_c(t_data *data, t_objects *objects, int i)
-{
-	if (data->lines[i].line[4] != 0)
-	{
-		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
-		exit_free_parsing(data);
-	}
-	if (!fill_in_coordinates(data, i, &objects->c.coordinates))
-		exit_free_parsing(data);
-	if (!fill_in_orientations(data, i, &objects->c.orientations))
-		exit_free_parsing(data);
-	if (!fill_in_c_fov(data, i, &objects->c))
-		exit_free_parsing(data);
 }

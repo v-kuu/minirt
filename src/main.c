@@ -44,7 +44,7 @@ int	main(int argc, char **argv)
 	check_arguments(argc, argv);
 	open_file_read(argv, data);
 	if (!parsing(data))
-		return (free_2d_arr(data->read_lines), free(data), 1);
+		return (ft_free_str_arr(data->read_lines), free(data), 1);
 	rendering_loop(data);
 	free_objects(data);
 	free(data->objects);
