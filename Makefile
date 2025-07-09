@@ -64,8 +64,6 @@ $(MLX42):
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
 
-
-
 clean:
 	@echo "Cleaning objects..."
 	@$(RM) $(OBJECTS) $(OBJDIR)
