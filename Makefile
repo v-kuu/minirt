@@ -1,9 +1,22 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/07/09 15:40:55 by vkuusela          #+#    #+#              #
+#    Updated: 2025/07/09 15:41:41 by vkuusela         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 		### BASICS ###
 
 NAME 			= minirt
 CC 				= cc
 CFLAGS 			= -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
+OFLAGS			= -O3 -flto -march=native
 RM 				= rm -rf
 VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx42.supp
 FILE			= test.rt
@@ -31,13 +44,13 @@ OBJECTS			= $(SOURCES:%.c=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o: %.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@
 	
 all: 			$(NAME)
 
 $(NAME):		$(LIBFT) $(MLX42) $(OBJECTS)
 	@echo "Compiling $(NAME)..."
-	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(MLX42) $(LFLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OFLAGS) $(OBJECTS) $(LIBFT) $(MLX42) $(LFLAGS) -o $(NAME)
 
 $(LIBFT):
 	@echo "Compiling libft..."
