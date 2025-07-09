@@ -12,7 +12,7 @@
 
 		### BASICS ###
 
-NAME 			= minirt
+NAME 			= miniRT
 CC 				= cc
 CFLAGS 			= -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
