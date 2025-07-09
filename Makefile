@@ -81,12 +81,15 @@ run:			all
 	@$(VALGRIND) ./$(NAME) $(FILE)
 
 debug:			CFLAGS += -g
+debug:			OFLAGS =
 debug:			re
 
 fsanitize:		CFLAGS += -g -fsanitize=address
+fsanitize:		OFLAGS =
 fsanitize:		re
 
 gprof:			CFLAGS += -g -pg
+gprof:			OFLAGS =
 gprof:			re
 
 norminette:
