@@ -30,7 +30,7 @@ t_ray	light_ray(t_hit hit, t_light light, t_point hit_point)
 {
 	t_ray	ret;
 
-	ret.origin = add_vec(hit_point, scale_vec(hit.normal, 0.0001f));
+	ret.origin = add_vec(hit_point, scale_vec(hit.normal, 0.01f));
 	ret.direction = normalize(subtract_vec(light.coordinates, ret.origin));
 	return (ret);
 }
