@@ -1,27 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 14:30:41 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/09 15:37:39 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minirt.h"
 
-
-void	exit_free_parsing(t_data *data)
+int	arr_count(char **arr)
 {
-	free(data->objects->l); // must be free to bonus
-	if (data->objects)
-		free(data->objects);
-	free_lines_arr(data->lines);
-	if (data->read_lines)
-		free_2d_arr(data->read_lines);
-	if (data)
-		free(data);
-	exit(EXIT_FAILURE);
+	int	count;
+
+	if (!arr)
+		return (0);
+	count = 0;
+	while (arr[count])
+		count++;
+	return (count);
 }
 
-void free_lines_arr(t_s_lines *lines)
+int	not_empty_lines(t_data *data)
 {
-	int i;
+	int	i;
+	int	lines_counter;
+
+	i = 0;
+	lines_counter = 0;
+	while (data->read_lines[i])
+	{
+		if (data->read_lines[i][0] != '\n')
+			lines_counter++;
+		i++;
+	}
+	return (lines_counter);
+}
+
+void	free_lines_arr(t_s_lines *lines)
+{
+	int	i;
 
 	i = 0;
 	while (lines[i].line)
 	{
-		free_2d_arr(lines[i].line);
+		ft_free_str_arr(lines[i].line);
 		lines[i].line = NULL;
 		i++;
 	}
@@ -29,48 +55,26 @@ void free_lines_arr(t_s_lines *lines)
 	lines = NULL;
 }
 
-
-/*
-free 2d arr
-*/
-void	free_2d_arr(char **arr)
+void	remove_white_spaces(char *line)
 {
 	int	i;
 
 	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
+	while (line[i])
 	{
-		free(arr[i]);
-		arr[i] = NULL;
+		if (line[i] == '\t')
+			line[i] = ' ';
 		i++;
 	}
-	free(arr);
-	arr = NULL;
 }
 
-/*
-to print the error from errno then exit.
-*/
-void	print_error_exit(void)
+bool	color_validation(t_rgbcolor *color)
 {
-	ft_putstr_fd("Minirt :", 2);
-	ft_putstr_fd(strerror(errno), 2);
-	exit(EXIT_FAILURE);
-}
-
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	unsigned int	i;
-
-	i = 0;
-	while ((s1[i] || s2[i]))
-	{
-		if ((unsigned char)s1[i] != (unsigned char)s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
+	if (!(color->r >= 0.0f && color->r <= 255.0f))
+		return (ft_putstr_fd("Error\ninvalid color red value.\n", 2), false);
+	if (!(color->g >= 0.0f && color->g <= 255.0f))
+		return (ft_putstr_fd("Error\ninvalid color green value.\n", 2), false);
+	if (!(color->b >= 0.0f && color->b <= 255.0f))
+		return (ft_putstr_fd("Error\ninvalid color blue value.\n", 2), false);
+	return (true);
 }

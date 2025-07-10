@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:28:34 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/21 13:42:04 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/07 15:04:24 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,14 @@ t_color	background_color(t_ray ray)
 	return (red << 24 | green << 16 | blue << 8 | 0xFF);
 }
 
-t_color	normal_visual(t_hit hit)
+t_color	shading_visual(t_rgbcolor color)
 {
-	t_vec3	unit_normal;
-	float	fraction;
-	t_color	red;
-	t_color	green;
-	t_color	blue;
+	float	r;
+	float	g;
+	float	b;
 
-	unit_normal = normalize(hit.normal);
-	fraction = 0.5 * (unit_normal.x + 1.0);
-	red = 0xFF * fraction;
-	red <<= 24;
-	fraction = 0.5 * (unit_normal.y + 1.0);
-	green = 0xFF * fraction;
-	green <<= 16;
-	fraction = 0.5 * (unit_normal.z + 1.0);
-	blue = 0xFF * fraction;
-	blue <<= 8;
-	return (red | green | blue | 0xFF);
-}
-
-t_color shading_visual(t_rgbcolor color)
-{
-	float r;
-	float g;
-	float b;
-	
-	r = color.r *255.0f;
-	g = color.g *255.0f;
-	b = color.b *255.0f;
-	
-    return ((int)r << 24) | ((int)g << 16) | ((int)b << 8) | 0xFF;
+	r = color.r * 255.0f;
+	g = color.g * 255.0f;
+	b = color.b * 255.0f;
+	return (((int)r << 24) | ((int)g << 16) | ((int)b << 8) | 0xFF);
 }

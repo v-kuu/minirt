@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atof.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/08 14:37:39 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minirt.h"
 
-bool check_all_nums(char *str)
+bool	check_all_nums(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if(str[0] == '-' || str[0] == '+')
+	if (str[0] == '-' || str[0] == '+')
 		i++;
-	while (str[i] && str[i]!='\n')
-	{	
-		if(!ft_isfloat(str[i]))
+	while (str[i] && str[i] != '\n')
+	{
+		if (!ft_isfloat(str[i]))
 			return (false);
 		i++;
 	}
@@ -47,6 +59,7 @@ static void	handle_minues(int *sign, int *i)
 	*sign = -1;
 	(*i)++;
 }
+
 float	ft_atof(char *str)
 {
 	float	f;
@@ -57,17 +70,14 @@ float	ft_atof(char *str)
 	sign = 1;
 	i = 0;
 	f = 0;
-	decimal_part = NULL;
 	if (!str)
 		return (NAN);
 	if (!check_all_nums(str))
-		return (ft_putstr_fd("Error: non digits is in the str\n",2), NAN);
+		return (ft_putstr_fd("Error: non digits is in the str\n", 2), NAN);
 	if (str[0] == '-')
 		handle_minues(&sign, &i);
 	while (str[i] && str[i] != '.' && str[i] != '\n')
-	{
 		numberconvert(&f, str, &i);
-	}
 	if (str[i] == '.')
 	{
 		decimal_part = ft_substr(str, i + 1, ft_strlen(str) - 2);
@@ -75,6 +85,6 @@ float	ft_atof(char *str)
 		free(decimal_part);
 	}
 	if (f > FLT_MAX || f < -FLT_MAX)
-		return(ft_putstr_fd("Error over than the max float.\n",2), NAN);
+		return (ft_putstr_fd("Error over than the max float.\n", 2), NAN);
 	return (f * sign);
 }

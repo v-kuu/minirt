@@ -6,7 +6,7 @@
 #    By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/05 15:04:16 by vkuusela          #+#    #+#              #
-#    Updated: 2025/01/28 12:06:23 by vkuusela         ###   ########.fr        #
+#    Updated: 2025/07/09 15:25:23 by vkuusela         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,8 @@ SOURCES 	= ft_isdigit.c \
 			  ft_free.c \
 			  get_next_line.c \
 			  ft_abs.c \
-			  ft_free_str_arr.c
+			  ft_free_str_arr.c \
+			  ft_strcmp.c
 
 OBJECTS 	= $(SOURCES:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:04:33 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/18 15:24:29 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:10:18 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ t_quaternion	create_rotation_quat(t_vec3 from, t_vec3 to)
 		rot_axis = cross_product(from_unit, to_unit);
 		angle = acosf(dot);
 		return ((t_quaternion){cos(angle / 2),
-				rot_axis.x * sin(angle / 2),
-				rot_axis.y * sin(angle / 2),
-				rot_axis.z * sin(angle / 2)});
+			rot_axis.x * sin(angle / 2),
+			rot_axis.y * sin(angle / 2),
+			rot_axis.z * sin(angle / 2)});
 	}
 	return ((t_quaternion){1, 0, 0, 0});
 }
@@ -51,8 +51,9 @@ t_quaternion	normalize_quat(t_quaternion quat)
 {
 	const float	len = sqrtf(quat.w * quat.w + quat.x * quat.x
 			+ quat.y * quat.y + quat.z * quat.z);
+
 	return ((t_quaternion){quat.w / len, quat.x / len,
-			quat.y / len, quat.z / len});
+		quat.y / len, quat.z / len});
 }
 
 t_quaternion	inverse_quat(t_quaternion quat)

@@ -1,12 +1,25 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/07/09 15:40:55 by vkuusela          #+#    #+#              #
+#    Updated: 2025/07/09 15:41:41 by vkuusela         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 		### BASICS ###
 
-NAME 			= minirt
-CC 				= gcc
-CFLAGS 			= -g -Wall -Wextra -Werror -I.
+NAME 			= miniRT
+CC 				= cc
+CFLAGS 			= -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
+OFLAGS			= -O3 -flto -march=native
 RM 				= rm -rf
 VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx42.supp
-FILE			= test.rt
+FILE			= maps/test.rt
 OBJDIR			= obj
 
 		### LIBRARIES ###
@@ -17,7 +30,7 @@ MLX42			= MLX42/build/libmlx42.a
 		### SOURCE ###
 
 SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c src/parsing/parsing.c \
-				  src/parsing/validation.c src/parsing/ft_atof.c \
+				  src/parsing/validation.c src/parsing/ft_atof.c src/parsing/exit_functions.c \
 				  src/parsing/camera.c  src/parsing/light.c  src/parsing/shapes.c\
 				  src/math/vector_operations.c src/math/vector_products.c \
 				  src/math/vector_properties.c src/rendering/color.c \
@@ -31,13 +44,13 @@ OBJECTS			= $(SOURCES:%.c=$(OBJDIR)/%.o)
 
 $(OBJDIR)/%.o: %.c $(HEADERS)
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@
 	
 all: 			$(NAME)
 
 $(NAME):		$(LIBFT) $(MLX42) $(OBJECTS)
 	@echo "Compiling $(NAME)..."
-	@$(CC) $(CFLAGS) $(OBJECTS) $(LIBFT) $(MLX42) $(LFLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OFLAGS) $(OBJECTS) $(LIBFT) $(MLX42) $(LFLAGS) -o $(NAME)
 
 $(LIBFT):
 	@echo "Compiling libft..."
@@ -50,8 +63,6 @@ $(MLX42):
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
-
-
 
 clean:
 	@echo "Cleaning objects..."
@@ -70,12 +81,15 @@ run:			all
 	@$(VALGRIND) ./$(NAME) $(FILE)
 
 debug:			CFLAGS += -g
+debug:			OFLAGS = -Og
 debug:			re
 
 fsanitize:		CFLAGS += -g -fsanitize=address
+fsanitize:		OFLAGS = -Og
 fsanitize:		re
 
 gprof:			CFLAGS += -g -pg
+gprof:			OFLAGS = -Og
 gprof:			re
 
 norminette:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_loop.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 18:55:37 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/06/24 17:13:49 by mkhlouf          ###   ########.fr       */
+/*   Created: 2025/07/07 15:15:42 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/07 15:38:01 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,54 @@
 
 static void	draw_screen(void *param);
 static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp);
+static void	find_closest(t_objects *obj, t_ray ray, t_hit *closest);
 static void	keybinds(void *param);
 
-int			g_active;
-
-int	rendering_loop(t_data *data)
+int	rendering(t_data *data)
 {
-	mlx_t		*mlx;
 	t_viewp		screen;
 	t_camera	cam;
 
-	mlx = mlx_init(WIDTH, HEIGHT, "minirt", false);
-	if (!mlx)
-		return (1);
+	ft_bzero(&screen, sizeof(screen));
 	cam = data->objects->c;
-	screen = create_viewport(cam, (cam.fov * (M_PI / 180)), WIDTH, HEIGHT);
-	screen.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	screen = create_viewport(cam, (cam.fov * (M_PI / 180)), 1920, 1080);
+	screen.mlx = mlx_init(1920, 1080, "minirt", true);
+	if (!screen.mlx)
+		return (1);
+	mlx_set_window_limit(screen.mlx, 640, 640, 1920, 1080);
+	screen.img = mlx_new_image(screen.mlx, 1920, 1080);
 	if (!screen.img)
 	{
-		mlx_terminate(mlx);
+		mlx_terminate(screen.mlx);
 		return (1);
 	}
 	screen.obj = data->objects;
-	g_active = 1;
-	mlx_image_to_window(mlx, screen.img, 0, 0);
-	mlx_loop_hook(mlx, draw_screen, &screen);
-	mlx_loop_hook(mlx, keybinds, mlx);
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	calculate_cylinder_quats(screen.obj);
+	mlx_image_to_window(screen.mlx, screen.img, 0, 0);
+	mlx_resize_hook(screen.mlx, resize_screen, &screen);
+	mlx_loop_hook(screen.mlx, draw_screen, &screen);
+	mlx_loop_hook(screen.mlx, keybinds, screen.mlx);
+	mlx_loop(screen.mlx);
+	mlx_terminate(screen.mlx);
 	return (0);
 }
 
 static void	draw_screen(void *param)
 {
-	const t_viewp	*vp = param;
-	t_ray			ray;
-	int				x;
-	int				y;
+	t_viewp	*vp;
+	t_ray	ray;
+	int		x;
+	int		y;
 
-	if (!g_active)
+	vp = param;
+	if (!vp->active)
 		return ;
-	g_active = 0;
+	vp->active = 0;
 	y = -1;
-	while (++y < HEIGHT)
+	while (++y < vp->height)
 	{
 		x = -1;
-		while (++x < WIDTH)
+		while (++x < vp->width)
 		{
 			ray = pixel_ray(vp->cam_origin, *vp, x, y);
 			render_pixel(x, y, ray, vp);
@@ -69,67 +71,48 @@ static void	draw_screen(void *param)
 
 static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp)
 {
-	t_objects	*obj;
-	t_hit		hit;
 	t_hit		closest;
-	int			index;
 
-	obj = vp->obj;
-	index = -1;
 	closest.t = FLT_MAX;
+	find_closest(vp->obj, ray, &closest);
+	if (closest.t == FLT_MAX)
+		mlx_put_pixel(vp->img, x, y, background_color(ray));
+	else
+	{
+		closest.ray = ray;
+		if (dot_product(ray.direction, closest.normal) > 0)
+			closest.normal = scale_vec(closest.normal, -1);
+		mlx_put_pixel(vp->img, x, y,
+			shading_visual(shading_vectors(vp->obj, closest)));
+	}
+}
+
+static void	find_closest(t_objects *obj, t_ray ray, t_hit *closest)
+{
+	int		index;
+	t_hit	hit;
+
+	index = -1;
 	while (++index < obj->spctr)
 	{
 		hit = sphere_intersection(obj->sp[index], ray);
-		if (hit.t >= 0)
-		{
-			if (hit.t < closest.t)
-			{
-				closest = hit;
-				hit.ray = ray;
-				hit.normal = sp_normal_at(obj->sp[index], ray_at(ray, hit.t));
-				hit.color = shading_visual(shading_vectors(obj,
-							obj->sp[index].color, hit));
-				mlx_put_pixel(vp->img, x, y, hit.color);
-			}
-		}
+		if (hit.t >= 0 && hit.t < closest->t)
+			*closest = hit;
 	}
 	index = -1;
 	while (++index < obj->plctr)
 	{
 		hit = plane_intersection(obj->pl[index], ray);
-		if (hit.t >= 0)
-		{
-			if (hit.t < closest.t)
-			{
-				closest = hit;
-				hit.normal = obj->pl[index].normal;
-				hit.ray = ray;
-				hit.color = shading_visual(shading_vectors(obj,
-							obj->pl[index].color, hit));
-				mlx_put_pixel(vp->img, x, y, hit.color);
-			}
-		}
+		if (hit.t >= 0 && hit.t < closest->t)
+			*closest = hit;
 	}
 	index = -1;
 	while (++index < obj->cyctr)
 	{
-		obj->cy[index].q_axis = normalize_quat(create_rotation_quat(
-			(t_vec3){0, 1, 0}, obj->cy[index].axis));
 		hit = cylinder_intersection(obj->cy[index], ray);
-		if (hit.t >= 0)
-		{
-			if (hit.t < closest.t)
-			{
-				closest = hit;
-				hit.ray = ray;
-				hit.color = shading_visual(shading_vectors(obj,
-							obj->cy[index].color, hit));
-				mlx_put_pixel(vp->img, x, y, hit.color);
-			}
-		}
+		if (hit.t >= 0 && hit.t < closest->t)
+			*closest = hit;
 	}
-	if (closest.t == FLT_MAX)
-		mlx_put_pixel(vp->img, x, y, background_color(ray));
 }
 
 static void	keybinds(void *param)

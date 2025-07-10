@@ -1,17 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 14:26:37 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/08 14:29:56 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minirt.h"
-
-void	remove_white_spaces(char *line)
-{
-	int i;
-
-	i = 0;
-	while(line[i])
-	{
-		if(line[i] == '\t')
-			line[i] = ' ';
-		i++;
-	}
-}
 
 bool	parse_to_lines(t_data *data)
 {
@@ -35,61 +34,30 @@ bool	parse_to_lines(t_data *data)
 	return (true);
 }
 
-int	not_empty_lines(t_data *data)
-{
-	int	i;
-	int	lines_counter;
-
-	i = 0;
-	lines_counter = 0;
-	while (data->read_lines[i])
-	{
-		if (data->read_lines[i][0] != '\n')
-			lines_counter++;
-		i++;
-	}
-	return (lines_counter);
-}
-
-bool	color_validation(t_rgbcolor *color)
-{
-	if (!(color->r >= 0.0f && color->r <= 255.0f))
-		return (ft_putstr_fd("Error\ninvalid color red value.\n", 2), false);
-	if (!(color->g >= 0.0f && color->g <= 255.0f))
-		return (ft_putstr_fd("Error\ninvalid color green value.\n", 2), false);
-	if (!(color->b >= 0.0f && color->b <= 255.0f))
-		return (ft_putstr_fd("Error\ninvalid color blue value.\n", 2), false);
-	return (true);
-}
-
 bool	parse_to_objects(t_data *data)
 {
 	int			i;
-	t_objects	*objects;
 
 	i = 0;
-	objects = ft_calloc(1, sizeof(t_objects));
-	if (!objects)
+	data->objects = ft_calloc(1, sizeof(t_objects));
+	if (!data->objects)
 		return (false);
-	data->objects = objects;
 	if (!malloc_all_objects(data))
-		return (false);
+		return (free(data->objects), false);
 	while (data->lines[i].line)
 	{
 		if (ft_strcmp(data->lines[i].line[0], "A") == 0)
-			case_a(data, objects, i);
+			case_a(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "C") == 0)
-			case_c(data, objects, i);
+			case_c(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "L") == 0)
-			case_l(data, objects, i);
+			case_l(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "sp") == 0)
-			case_sp(data, objects, i);
+			case_sp(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "pl") == 0)
-			case_pl(data, objects, i);
+			case_pl(data, data->objects, i);
 		else if (ft_strcmp(data->lines[i].line[0], "cy") == 0)
-			case_cy(data, objects, i);
-		// else
-		// 	bonus_cases(data);
+			case_cy(data, data->objects, i);
 		i++;
 	}
 	return (true);
@@ -113,6 +81,7 @@ void	calculate_counters(t_data *data)
 		i++;
 	}
 }
+
 bool	malloc_all_objects(t_data *data)
 {
 	data->objects->l = ft_calloc(data->light_counter, sizeof(t_light));
@@ -133,7 +102,6 @@ bool	malloc_all_objects(t_data *data)
 	return (true);
 }
 
-
 bool	parsing(t_data *data)
 {
 	data->lines_counter = not_empty_lines(data);
@@ -147,5 +115,5 @@ bool	parsing(t_data *data)
 	calculate_counters(data);
 	if (!parse_to_objects(data))
 		return (free_lines_arr(data->lines), false);
-	return (free_2d_arr(data->read_lines), true);
+	return (ft_free_str_arr(data->read_lines), true);
 }

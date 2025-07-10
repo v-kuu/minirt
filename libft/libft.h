@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:04:32 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/05/28 17:36:36 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/09 15:24:51 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		ft_tolower(int character);
 char	*ft_strchr(const char *string, int character);
 char	*ft_strrchr(const char *string, int character);
 int		ft_strncmp(const char *first, const char *second, size_t length);
+int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_memchr(const void *source, int character, size_t length);
 int		ft_memcmp(const void *first, const void *second, size_t length);
 char	*ft_strnstr(const char *big, const char *little, size_t length);
@@ -81,6 +82,6 @@ char	*get_next_line(int fd);
 void	*ft_free(void **ptr);
 int		ft_abs(int number);
 void	*ft_free_str_arr(char **array);
-int	ft_isfloat(int character);
+int		ft_isfloat(int character);
 
 #endif

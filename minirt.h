@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minirt.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/07 16:04:01 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/07 16:08:48 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINIRT_H
 # define MINIRT_H
 
@@ -6,7 +18,7 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 # define SHININESS 10  // in lighting
-# define SPECULAR 0.2f // in ligtining
+# define SPECULAR 0.2f // in lighting
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
 # include <errno.h>
@@ -40,22 +52,22 @@ typedef struct s_quaternion
 	float			z;
 }					t_quaternion;
 
-typedef struct s_hit_record
-{
-	float			t;
-	t_vec3			normal;
-	t_color			color;
-	t_ray			ray;
-}					t_hit;
-
-typedef t_vec3		t_point;
-
 typedef struct s_rgbcolor
 {
 	float			r;
 	float			g;
 	float			b;
 }					t_rgbcolor;
+
+typedef struct s_hit_record
+{
+	float			t;
+	t_vec3			normal;
+	t_rgbcolor		color;
+	t_ray			ray;
+}					t_hit;
+
+typedef t_vec3		t_point;
 
 typedef struct s_light
 {
@@ -109,8 +121,7 @@ typedef struct s_objects
 	t_plane			*pl;
 	t_sphere		*sp;
 	t_cylinder		*cy;
-
-	int lctr; /// added_lights_counter
+	int				lctr;
 	int				plctr;
 	int				spctr;
 	int				cyctr;
@@ -154,34 +165,6 @@ typedef struct s_lights
 	t_rgbcolor		final;
 }					t_lights;
 
-void				open_file_read(char **argv, t_data *data);
-void				check_filename(char **argv);
-void				check_arguments(int argc, char **argv);
-void				print_error_exit(void);
-void				free_2d_arr(char **arr);
-bool				parsing(t_data *data);
-void				print_lines(t_data *data);
-void				free_lines_arr(t_s_lines *objects);
-bool				validation(t_data *data);
-int					ft_strcmp(const char *s1, const char *s2);
-bool				validate_a(t_a_light a);
-float				ft_atof(char *str);
-void				exit_free_parsing(t_data *data);
-bool				color_validation(t_rgbcolor *color);
-void				case_a(t_data *data, t_objects *objects, int i);
-void				case_c(t_data *data, t_objects *objects, int i);
-void				case_l(t_data *data, t_objects *objects, int i);
-void				case_sp(t_data *data, t_objects *objects, int i);
-void				case_pl(t_data *data, t_objects *objects, int i);
-void				case_cy(t_data *data, t_objects *objects, int i);
-
-void	print_camera(t_data *data); // must be removed
-bool				fill_in_coordinates(t_data *data, int i, t_vec3 *coords);
-bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
-bool				fill_in_RGB(char *value, t_rgbcolor *color);
-bool				malloc_all_objects(t_data *data);
-bool				fill_in_value(char *value, float *src);
-
 typedef struct s_cam
 {
 	t_vec3			origin;
@@ -192,8 +175,13 @@ typedef struct s_cam
 
 typedef struct s_viewp
 {
+	mlx_t			*mlx;
 	mlx_image_t		*img;
 	t_objects		*obj;
+	int				width;
+	int				height;
+	float			fov_rad;
+	int				active;
 	t_vec3			cam_origin;
 	t_vec3			cam_dir;
 	t_vec3			horizontal;
@@ -208,14 +196,41 @@ void				open_file_read(char **argv, t_data *data);
 void				check_filename(char **argv);
 void				check_arguments(int argc, char **argv);
 void				print_error_exit(void);
-void				free_2d_arr(char **arr);
+bool				parsing(t_data *data);
+int					arr_count(char **arr);
+void				free_lines_arr(t_s_lines *objects);
+void				free_objects(t_data *data);
+bool				validation(t_data *data);
+bool				validate_a(t_a_light a);
+float				ft_atof(char *str);
+void				exit_free_parsing(t_data *data);
+bool				color_validation(t_rgbcolor *color);
+void				case_a(t_data *data, t_objects *objects, int i);
+void				case_c(t_data *data, t_objects *objects, int i);
+void				case_l(t_data *data, t_objects *objects, int i);
+void				case_sp(t_data *data, t_objects *objects, int i);
+void				case_pl(t_data *data, t_objects *objects, int i);
+void				case_cy(t_data *data, t_objects *objects, int i);
+bool				fill_in_coordinates(t_data *data, int i, t_vec3 *coords);
+bool				fill_in_orientations(t_data *data, int i, t_vec3 *orinets);
+bool				fill_in_c_fov(t_data *data, int i, t_camera *c);
+bool				fill_in_rgb(char *value, t_rgbcolor *color);
+bool				malloc_all_objects(t_data *data);
+bool				fill_in_value(char *value, float *src);
+void				remove_white_spaces(char *line);
+bool				color_validation(t_rgbcolor *color);
+void				open_file_read(char **argv, t_data *data);
+void				check_filename(char **argv);
+void				check_arguments(int argc, char **argv);
+int					not_empty_lines(t_data *data);
+void				print_error_exit(void);
 
 ////////////////////////////////////////////////////////////// render_loop.c //
 
 /*
  *	Sets up mlx and starts the rendering
  */
-int					rendering_loop(t_data *data);
+int					rendering(t_data *data);
 
 //////////////////////////////////////////////////////// vector_operations.c //
 
@@ -278,22 +293,22 @@ t_vec3				normalize(const t_vec3 vector);
 /*
  * Returns a quaternion representing the rotation from one vector to another
  */
-t_quaternion	create_rotation_quat(t_vec3 from, t_vec3 to);
+t_quaternion		create_rotation_quat(t_vec3 from, t_vec3 to);
 
 /*
  * Rotates a vector by a quaternion
  */
-t_vec3			rotate_by_quat(t_quaternion quat, t_vec3 vec);
+t_vec3				rotate_by_quat(t_quaternion quat, t_vec3 vec);
 
 /*
  * Normalizes a quaternion
  */
-t_quaternion	normalize_quat(t_quaternion quat);
+t_quaternion		normalize_quat(t_quaternion quat);
 
 /*
  * Inverts a quaternion
  */
-t_quaternion	inverse_quat(t_quaternion quat);
+t_quaternion		inverse_quat(t_quaternion quat);
 
 //////////////////////////////////////////////////////////////////// color.c //
 
@@ -305,16 +320,11 @@ t_color				background_color(t_ray ray);
 /*
  * Returns a color based on the normal
  */
-t_color				normal_visual(t_hit hit);
 t_color				shading_visual(t_rgbcolor color);
+
 t_vec3				sp_normal_at(t_sphere sphere, t_vec3 point);
 
 /////////////////////////////////////////////////////////////////// camera.c //
-
-/*
- * Initialize the basic camera object
- */
-t_cam				init_camera(t_vec3 origin, t_vec3 orientation, float fov);
 
 /*
  * Calculate the viewport based on camera data and screen dimensions
@@ -322,12 +332,22 @@ t_cam				init_camera(t_vec3 origin, t_vec3 orientation, float fov);
 t_viewp				create_viewport(t_camera cam, float fov_rad, int width,
 						int height);
 
+/*
+ * Recalculate viewport when screen gets resized
+ */
+void				resize_screen(int32_t width, int32_t height, void *param);
+
 ////////////////////////////////////////////////////////////////////// ray.c //
 
 /*
  * Calculates the current ray vectors for the current pixel on screen
  */
 t_ray				pixel_ray(t_vec3 origin, t_viewp viewport, int x, int y);
+
+/*
+ * Calculates the ray from an intersection to light source
+ */
+t_ray				light_ray(t_hit hit, t_light light, t_point hit_point);
 
 /*
  * Returns the location where the ray hit
@@ -363,13 +383,17 @@ t_hit				plane_intersection(t_plane plane, t_ray ray);
  */
 t_hit				cylinder_intersection(t_cylinder cyl, t_ray ray);
 
+/*
+ * Calculate quaternions for cylinder axis
+ */
+void				calculate_cylinder_quats(t_objects *obj);
+
 t_color				light_visual(t_objects obj, t_ray ray, float hit,
 						int index);
 /*
- * Calculates the final color after lightining and shadow.
+ * Calculates the final color after lighting and shadow.
  */						
-t_rgbcolor			shading_vectors(t_objects *obj, t_rgbcolor obj_color,
-						t_hit hit);
+t_rgbcolor			shading_vectors(t_objects *obj, t_hit hit);
 
 /*
  * return the min or the max if the value exceed the min and max.
@@ -403,17 +427,17 @@ t_rgbcolor			multiply_colors(t_rgbcolor c1, t_rgbcolor c2);
 /*
  * return the new color came after calculating the effect of lights and shadows
  */
-t_rgbcolor			lightining_shadow(t_objects *obj, t_rgbcolor obj_color);
+t_rgbcolor			lighting_shadow(t_objects *obj, t_rgbcolor obj_color);
 
 /*
  * return the status of the hit point if it in shadow or or
  */
-bool				is_shadowed(t_objects *obj, t_hit hit);
+bool				is_shadowed(t_objects *obj, t_ray ray, float t_max);
 
 /*
- * return the new color after clamping and make it max to 255, and the min is 0. it will protect from overflows.
+ * return the new color after clamping and make it max to 255,
+ * and the min is 0. it will protect from overflows.
  */
 t_rgbcolor			color_clamping(t_rgbcolor color);
-
 
 #endif

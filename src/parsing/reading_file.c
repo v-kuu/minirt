@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reading_file.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/08 14:40:39 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/08 14:40:41 by vkuusela         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minirt.h"
 
 void	print_exit_read(char *msg, t_data *data, int fd)
 {
 	ft_putstr_fd("Error\n", 2);
-	ft_putstr_fd("Minirt :", 2);
+	ft_putstr_fd("Minirt: ", 2);
 	ft_putstr_fd(msg, 2);
 	close(fd);
-	free_2d_arr(data->read_lines);
-	free(data);
+	ft_free_str_arr(data->read_lines);
 	exit(EXIT_FAILURE);
 }
 

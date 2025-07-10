@@ -18,14 +18,14 @@ static void	ft_save(size_t cutoff, char *buffer, char leftovers[BUFFER_SIZE]);
 
 char	*get_next_line(int fd)
 {
-	static char	leftovers[FOPEN_MAX][BUFFER_SIZE + 1];
+	static char	leftovers[BUFFER_SIZE + 1];
 	char		*buffer;
 	char		*line;
 	size_t		length;
 
 	if (fd < 0)
 		return (NULL);
-	buffer = ft_update(fd, leftovers[fd]);
+	buffer = ft_update(fd, leftovers);
 	if (!buffer || !*buffer)
 		return (ft_free((void **)&buffer));
 	if (!ft_strchr(buffer, '\n'))
@@ -35,7 +35,7 @@ char	*get_next_line(int fd)
 	line = ft_substr(buffer, 0, length + 1);
 	if (!line)
 		return (ft_free((void **)&buffer));
-	ft_save(length + 1, buffer, leftovers[fd]);
+	ft_save(length + 1, buffer, leftovers);
 	return (line);
 }
 

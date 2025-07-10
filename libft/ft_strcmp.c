@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/07 16:08:55 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/07 16:09:27 by vkuusela         ###   ########.fr       */
+/*   Created: 2025/07/09 15:23:43 by vkuusela          #+#    #+#             */
+/*   Updated: 2025/07/09 15:24:05 by vkuusela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minirt.h"
-
-int	main(int argc, char **argv)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	t_data	data;
+	unsigned int	i;
 
-	ft_bzero(&data, sizeof(data));
-	check_arguments(argc, argv);
-	open_file_read(argv, &data);
-	if (!parsing(&data))
-		return (ft_free_str_arr(data.read_lines), 1);
-	rendering(&data);
-	free_objects(&data);
-	free_lines_arr(data.lines);
+	i = 0;
+	while ((s1[i] || s2[i]))
+	{
+		if ((unsigned char)s1[i] != (unsigned char)s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
 	return (0);
 }
