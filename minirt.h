@@ -197,7 +197,7 @@ void				check_filename(char **argv);
 void				check_arguments(int argc, char **argv);
 void				print_error_exit(void);
 bool				parsing(t_data *data);
-void				print_lines(t_data *data);
+int					arr_count(char **arr);
 void				free_lines_arr(t_s_lines *objects);
 void				free_objects(t_data *data);
 bool				validation(t_data *data);

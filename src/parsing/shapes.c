@@ -24,9 +24,9 @@ bool	fill_in_value(char *value, float *src)
 
 void	case_cy(t_data *data, t_objects *objects, int i)
 {
-	if (data->lines[i].line[6] != 0)
+	if (arr_count(data->lines[i].line) != 6)
 	{
-		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
+		ft_putstr_fd("Error\nwrong arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
 	if (!fill_in_coordinates(data, i, &objects->cy[objects->cyctr].center))
@@ -53,9 +53,9 @@ void	case_cy(t_data *data, t_objects *objects, int i)
 
 void	case_sp(t_data *data, t_objects *objects, int i)
 {
-	if (data->lines[i].line[4] != 0)
+	if (arr_count(data->lines[i].line) != 4)
 	{
-		ft_putstr_fd("Error\n arguments in a line\n", 2);
+		ft_putstr_fd("Error\nwrong arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
 	if (!fill_in_coordinates(data, i, &objects->sp[objects->spctr].center))
@@ -75,9 +75,9 @@ void	case_sp(t_data *data, t_objects *objects, int i)
 
 void	case_pl(t_data *data, t_objects *objects, int i)
 {
-	if (data->lines[i].line[4] != 0)
+	if (arr_count(data->lines[i].line) != 4)
 	{
-		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
+		ft_putstr_fd("Error\nwrong arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
 	if (!fill_in_coordinates(data, i, &objects->pl[objects->plctr].point))
@@ -94,9 +94,9 @@ void	case_pl(t_data *data, t_objects *objects, int i)
 
 void	case_c(t_data *data, t_objects *objects, int i)
 {
-	if (data->lines[i].line[4] != 0)
+	if (arr_count(data->lines[i].line) != 4)
 	{
-		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
+		ft_putstr_fd("Error\nwrong arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
 	if (!fill_in_coordinates(data, i, &objects->c.coordinates))

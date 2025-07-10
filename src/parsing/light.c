@@ -42,9 +42,9 @@ bool	fill_in_rgb(char *value, t_rgbcolor *color)
 
 void	case_l(t_data *data, t_objects *objects, int i)
 {
-	if (data->lines[i].line[4] != 0)
+	if (arr_count(data->lines[i].line) != 4)
 	{
-		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
+		ft_putstr_fd("Error\nwrong arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
 	if (!fill_in_coordinates(data, i, &objects->l[objects->lctr].coordinates))
@@ -70,9 +70,9 @@ void	case_a(t_data *data, t_objects *objects, int i)
 {
 	char	**rgb;
 
-	if (data->lines[i].line[3] != 0)
+	if (arr_count(data->lines[i].line) != 3)
 	{
-		ft_putstr_fd("Error\nextra arguments in a line\n", 2);
+		ft_putstr_fd("Error\nwrong arguments in a line\n", 2);
 		exit_free_parsing(data);
 	}
 	objects->a.ratio = ft_atof(data->lines[i].line[1]);

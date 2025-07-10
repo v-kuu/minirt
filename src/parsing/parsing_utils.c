@@ -12,6 +12,18 @@
 
 #include "../../minirt.h"
 
+int	arr_count(char **arr)
+{
+	int	count;
+
+	if (!arr)
+		return (0);
+	count = 0;
+	while (arr[count])
+		count++;
+	return (count);
+}
+
 int	not_empty_lines(t_data *data)
 {
 	int	i;
