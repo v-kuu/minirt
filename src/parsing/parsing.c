@@ -43,7 +43,7 @@ bool	parse_to_objects(t_data *data)
 	if (!data->objects)
 		return (false);
 	if (!malloc_all_objects(data))
-		return (false);
+		return (free(data->objects), false);
 	while (data->lines[i].line)
 	{
 		if (ft_strcmp(data->lines[i].line[0], "A") == 0)

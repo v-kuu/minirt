@@ -17,7 +17,7 @@ static void	render_pixel(int x, int y, t_ray ray, const t_viewp *vp);
 static void	find_closest(t_objects *obj, t_ray ray, t_hit *closest);
 static void	keybinds(void *param);
 
-int	rendering_loop(t_data *data)
+int	rendering(t_data *data)
 {
 	t_viewp		screen;
 	t_camera	cam;

@@ -19,7 +19,7 @@ LFLAGS			= -ldl -lglfw -pthread -lm
 OFLAGS			= -O3 -flto -march=native
 RM 				= rm -rf
 VALGRIND		= valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --suppressions=mlx42.supp
-FILE			= test.rt
+FILE			= maps/test.rt
 OBJDIR			= obj
 
 		### LIBRARIES ###
@@ -81,15 +81,15 @@ run:			all
 	@$(VALGRIND) ./$(NAME) $(FILE)
 
 debug:			CFLAGS += -g
-debug:			OFLAGS =
+debug:			OFLAGS = -Og
 debug:			re
 
 fsanitize:		CFLAGS += -g -fsanitize=address
-fsanitize:		OFLAGS =
+fsanitize:		OFLAGS = -Og
 fsanitize:		re
 
 gprof:			CFLAGS += -g -pg
-gprof:			OFLAGS =
+gprof:			OFLAGS = -Og
 gprof:			re
 
 norminette:

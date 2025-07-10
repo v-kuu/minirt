@@ -15,11 +15,10 @@
 void	print_exit_read(char *msg, t_data *data, int fd)
 {
 	ft_putstr_fd("Error\n", 2);
-	ft_putstr_fd("Minirt :", 2);
+	ft_putstr_fd("Minirt: ", 2);
 	ft_putstr_fd(msg, 2);
 	close(fd);
 	ft_free_str_arr(data->read_lines);
-	free(data);
 	exit(EXIT_FAILURE);
 }
 

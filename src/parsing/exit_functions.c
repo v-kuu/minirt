@@ -12,16 +12,37 @@
 
 #include "../../minirt.h"
 
+void	free_objects(t_data *data)
+{
+	if (data->objects->l)
+	{
+		free(data->objects->l);
+		data->objects->l = NULL;
+	}
+	if (data->objects->pl)
+	{
+		free(data->objects->pl);
+		data->objects->pl = NULL;
+	}
+	if (data->objects->cy)
+	{
+		free(data->objects->cy);
+		data->objects->cy = NULL;
+	}
+	if (data->objects->sp)
+	{
+		free(data->objects->sp);
+		data->objects->sp = NULL;
+	}
+	free(data->objects);
+}
+
 void	exit_free_parsing(t_data *data)
 {
-	free(data->objects->l);
-	if (data->objects)
-		free(data->objects);
+	free_objects(data);
 	free_lines_arr(data->lines);
 	if (data->read_lines)
 		ft_free_str_arr(data->read_lines);
-	if (data)
-		free(data);
 	exit(EXIT_FAILURE);
 }
 
@@ -30,7 +51,6 @@ to print the error from errno then exit.
 */
 void	print_error_exit(void)
 {
-	ft_putstr_fd("Minirt :", 2);
-	ft_putstr_fd(strerror(errno), 2);
+	perror("Minirt");
 	exit(EXIT_FAILURE);
 }

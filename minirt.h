@@ -199,6 +199,7 @@ void				print_error_exit(void);
 bool				parsing(t_data *data);
 void				print_lines(t_data *data);
 void				free_lines_arr(t_s_lines *objects);
+void				free_objects(t_data *data);
 bool				validation(t_data *data);
 bool				validate_a(t_a_light a);
 float				ft_atof(char *str);
@@ -229,7 +230,7 @@ void				print_error_exit(void);
 /*
  *	Sets up mlx and starts the rendering
  */
-int					rendering_loop(t_data *data);
+int					rendering(t_data *data);
 
 //////////////////////////////////////////////////////// vector_operations.c //
 
