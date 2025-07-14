@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:24:39 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/14 17:18:12 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/14 17:24:21 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,21 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 	return (true);
 }
 
+bool arguments_counter(char **args)
+{
+	int i;
+	i = 0;
+	while(args[i])
+		i++;
+	//continue
+}
+
 bool	fill_in_coordinates(t_data *data, int i, t_vec3 *coords)
 {
 	char	**coordinates;
 
 	coordinates = ft_split(data->lines[i].line[1], ',');
-	if (!coordinates)
+	if (!coordinates || !arguments_counter(coordinates))
 		return (ft_free_str_arr(coordinates),false);
 	coords->x = ft_atof(coordinates[0]);
 	if (isnan(coords->x))
