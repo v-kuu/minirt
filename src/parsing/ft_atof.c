@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/08 14:37:39 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/07/14 17:02:08 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ float	ft_atof(char *str)
 	i = 0;
 	f = 0;
 	if (!str)
-		return (NAN);
+		return (ft_putstr_fd("Error\nempty value\n", 2),NAN);
 	if (!check_all_nums(str))
-		return (ft_putstr_fd("Error: non digits is in the str\n", 2), NAN);
+		return (ft_putstr_fd("Error\nnon digits is in the str\n", 2), NAN);
 	if (str[0] == '-')
 		handle_minues(&sign, &i);
 	while (str[i] && str[i] != '.' && str[i] != '\n')
@@ -85,6 +85,6 @@ float	ft_atof(char *str)
 		free(decimal_part);
 	}
 	if (f > FLT_MAX || f < -FLT_MAX)
-		return (ft_putstr_fd("Error over than the max float.\n", 2), NAN);
+		return (ft_putstr_fd("Error\nover than the max float.\n", 2), NAN);
 	return (f * sign);
 }
