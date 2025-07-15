@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 15:13:13 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 16:36:14 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ bool	check_all_nums(char *str)
 			dot_counter++;
 		i++;
 	}
+	if (ft_strlen(str) != 1 && (str[0] == '.' || str[ft_strlen(str)
+			- 1] == '.'))
+		return (false);
 	if (dot_counter > 1)
 		return (false);
 	i = 0;
@@ -65,7 +68,7 @@ static float	decimal_convert(char *decimal_part)
 	return (d);
 }
 
-static void	handle_minues(int *sign, int *i)
+static void	handle_minus(int *sign, int *i)
 {
 	*sign = -1;
 	(*i)++;
@@ -82,18 +85,18 @@ float	ft_atof(char *str)
 	i = 0;
 	f = 0;
 	if (!str || !check_all_nums(str))
-		return (ft_putstr_fd("Error\nnon digits is in the str\n", 2), NAN);
+		return (ft_putstr_fd("Error\nCheck the values\n", 2), NAN);
 	if (!check_overflow(str))
 		return (ft_putstr_fd("Error\noverflow check your values\n", 2), NAN);
 	if (str[0] == '-')
-		handle_minues(&sign, &i);
+		handle_minus(&sign, &i);
 	while (str[i] && str[i] != '.' && str[i] != '\n')
 		numberconvert(&f, str, &i);
 	if (str[i] == '.')
 	{
-		decimal_part = ft_substr(str, i + 1, ft_strlen(str) - 2);
+		decimal_part = str + i + 1;
+		printf("string is %s, decimal_part:%s \n", str, decimal_part);
 		f = f + decimal_convert(decimal_part);
-		free(decimal_part);
 	}
 	if (f > 1000.0f || f < -1000.0f)
 		return (ft_putstr_fd("Error\nover than float min or max.\n", 2), NAN);
