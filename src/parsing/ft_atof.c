@@ -6,13 +6,13 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 16:36:14 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/16 01:30:37 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minirt.h"
 
-bool	check_all_nums(char *str)
+bool	dot_check(char *str)
 {
 	int	i;
 	int	dot_counter;
@@ -25,10 +25,19 @@ bool	check_all_nums(char *str)
 			dot_counter++;
 		i++;
 	}
+	if (dot_counter > 1)
+		return (false);
+	return (true);
+}
+bool	check_all_nums(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!dot_check(str))
+		return (false);
 	if (ft_strlen(str) != 1 && (str[0] == '.' || str[ft_strlen(str)
 			- 1] == '.'))
-		return (false);
-	if (dot_counter > 1)
 		return (false);
 	i = 0;
 	if (str[0] == '-' || str[0] == '+')
@@ -95,7 +104,6 @@ float	ft_atof(char *str)
 	if (str[i] == '.')
 	{
 		decimal_part = str + i + 1;
-		printf("string is %s, decimal_part:%s \n", str, decimal_part);
 		f = f + decimal_convert(decimal_part);
 	}
 	if (f > 1000.0f || f < -1000.0f)
