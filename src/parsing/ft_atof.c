@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/14 17:02:08 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:10:33 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,18 @@
 bool	check_all_nums(char *str)
 {
 	int	i;
+	int	dot_counter;
 
+	i = 0;
+	dot_counter = 0;
+	while (str[i])
+	{
+		if (str[i] == '.')
+			dot_counter++;
+		i++;
+	}
+	if (dot_counter > 1)
+		return (false);
 	i = 0;
 	if (str[0] == '-' || str[0] == '+')
 		i++;
@@ -60,6 +71,17 @@ static void	handle_minues(int *sign, int *i)
 	(*i)++;
 }
 
+bool	check_overflow(char *str)
+{
+	char	*tmp;
+	int		p_position;
+
+	tmp = NULL;
+	p_position = 0;
+	if (ft_strlen(str) > 40)
+		return (false);
+	return (true);
+}
 float	ft_atof(char *str)
 {
 	float	f;
@@ -70,10 +92,10 @@ float	ft_atof(char *str)
 	sign = 1;
 	i = 0;
 	f = 0;
-	if (!str)
-		return (ft_putstr_fd("Error\nempty value\n", 2),NAN);
-	if (!check_all_nums(str))
+	if (!str || !check_all_nums(str))
 		return (ft_putstr_fd("Error\nnon digits is in the str\n", 2), NAN);
+	if (!check_overflow(str))
+		return (ft_putstr_fd("Error\noverflow check your values\n", 2), NAN);
 	if (str[0] == '-')
 		handle_minues(&sign, &i);
 	while (str[i] && str[i] != '.' && str[i] != '\n')
@@ -84,7 +106,7 @@ float	ft_atof(char *str)
 		f = f + decimal_convert(decimal_part);
 		free(decimal_part);
 	}
-	if (f > FLT_MAX || f < -FLT_MAX)
-		return (ft_putstr_fd("Error\nover than the max float.\n", 2), NAN);
+	if (f > 1000.0f || f < -1000.0f)
+		return (ft_putstr_fd("Error\nover than the float min or max.\n", 2), NAN);
 	return (f * sign);
 }

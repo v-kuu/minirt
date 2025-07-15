@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:37:49 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 10:24:37 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 13:44:44 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ bool	fill_in_rgb(char *value, t_rgbcolor *color)
 	rgb = ft_split(value, ',');
 	if (!rgb)
 		return (false);
-	if(!arguments_counter(rgb))
-		return (ft_free_str_arr(rgb),false);
+	if (!arguments_counter(rgb))
+		return (ft_free_str_arr(rgb), false);
 	color->r = ft_atof(rgb[0]);
 	if (isnan(color->r))
-		return (ft_free_str_arr(rgb),false);
+		return (ft_free_str_arr(rgb), false);
 	color->g = ft_atof(rgb[1]);
 	if (isnan(color->g))
-		return (ft_free_str_arr(rgb),false);
+		return (ft_free_str_arr(rgb), false);
 	color->b = ft_atof(rgb[2]);
 	if (isnan(color->b))
-		return (ft_free_str_arr(rgb),false);
-	ft_free_str_arr(rgb);		
+		return (ft_free_str_arr(rgb), false);
+	ft_free_str_arr(rgb);
 	if (!color_validation(color))
 		return (false);
 	return (true);
@@ -65,8 +65,8 @@ void	case_l(t_data *data, t_objects *objects, int i)
 bool	validate_a(t_a_light a)
 {
 	if (!(a.ratio >= 0 && a.ratio <= 1))
-		return (ft_putstr_fd(
-				"Error\ninvalid Ambient light ratio.\n", 2), false);
+		return (ft_putstr_fd("Error\ninvalid Ambient light ratio.\n", 2),
+			false);
 	if (!color_validation(&a.color))
 		return (false);
 	return (true);
@@ -80,8 +80,8 @@ void	case_a(t_data *data, t_objects *objects, int i)
 		exit_free_parsing(data);
 	}
 	objects->a.ratio = ft_atof(data->lines[i].line[1]);
-	
+	if (isnan(objects->a.ratio))
+		exit_free_parsing(data);
 	if (!fill_in_rgb(data->lines[i].line[2], &objects->a.color))
 		exit_free_parsing(data);
-
 }
