@@ -6,11 +6,23 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:24:39 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/14 17:24:21 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 10:30:01 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minirt.h"
+
+bool	arguments_counter(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	if (i != 3)
+		return (ft_putstr_fd("Error\nMust be 3 arguments.", 2), false);
+	return (true);
+}
 
 bool	validate_coordination(t_vec3 *coords)
 {
@@ -43,10 +55,9 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 
 	orientations = ft_split(data->lines[i].line[2], ',');
 	if (!orientations)
-	{
-		ft_putstr_fd("Error\n Allocating memory failed\n", 2);
-		exit_free_parsing(data);
-	}
+		return(ft_putstr_fd("Error\n Allocating memory failed\n", 2), false);
+	if (!arguments_counter(orientations))
+		return(false);
 	orinets->x = ft_atof(orientations[0]);
 	if (isnan(orinets->x))
 		return (ft_free_str_arr(orientations), false);
@@ -57,29 +68,21 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 	if (isnan(orinets->z))
 		return (ft_free_str_arr(orientations), false);
 	ft_free_str_arr(orientations);
-	if (isnan(orinets->x) || isnan(orinets->y) || isnan(orinets->z))
-		return (false);
 	if (!validate_orientation(orinets))
 		return (false);
 	return (true);
 }
 
-bool arguments_counter(char **args)
-{
-	int i;
-	i = 0;
-	while(args[i])
-		i++;
-	//continue
-}
 
 bool	fill_in_coordinates(t_data *data, int i, t_vec3 *coords)
 {
 	char	**coordinates;
 
 	coordinates = ft_split(data->lines[i].line[1], ',');
-	if (!coordinates || !arguments_counter(coordinates))
-		return (ft_free_str_arr(coordinates),false);
+	if (!coordinates)
+		return(ft_putstr_fd("Error\n Allocating memory failed\n", 2), false);
+	if (!arguments_counter(coordinates))
+		return (ft_free_str_arr(coordinates), false);
 	coords->x = ft_atof(coordinates[0]);
 	if (isnan(coords->x))
 		return (ft_free_str_arr(coordinates), false);

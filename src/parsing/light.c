@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:37:49 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/14 17:14:56 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 10:24:37 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ bool	fill_in_rgb(char *value, t_rgbcolor *color)
 	rgb = ft_split(value, ',');
 	if (!rgb)
 		return (false);
+	if(!arguments_counter(rgb))
+		return (ft_free_str_arr(rgb),false);
 	color->r = ft_atof(rgb[0]);
 	if (isnan(color->r))
 		return (ft_free_str_arr(rgb),false);

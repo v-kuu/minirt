@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:04:01 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/14 17:21:06 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 10:22:53 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,5 +439,10 @@ bool				is_shadowed(t_objects *obj, t_ray ray, float t_max);
  * and the min is 0. it will protect from overflows.
  */
 t_rgbcolor			color_clamping(t_rgbcolor color);
+
+/*
+ * return fase if number if arguments more than 3
+ */
+bool	arguments_counter(char **args);
 
 #endif
