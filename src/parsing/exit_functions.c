@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 15:37:11 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/09 15:37:37 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:52:06 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ to print the error from errno then exit.
 */
 void	print_error_exit(void)
 {
-	perror("Minirt");
+	perror("Error\nMinirt");
 	exit(EXIT_FAILURE);
 }

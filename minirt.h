@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:04:01 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/07 16:08:48 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/07/15 15:13:32 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,5 +439,12 @@ bool				is_shadowed(t_objects *obj, t_ray ray, float t_max);
  * and the min is 0. it will protect from overflows.
  */
 t_rgbcolor			color_clamping(t_rgbcolor color);
+
+/*
+ * return fase if number if arguments more than 3
+ */
+bool	arguments_counter(char **args);
+
+bool	check_overflow(char *str);
 
 #endif
