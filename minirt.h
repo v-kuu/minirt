@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:04:01 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 15:13:32 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:44:46 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,5 +446,6 @@ t_rgbcolor			color_clamping(t_rgbcolor color);
 bool	arguments_counter(char **args);
 
 bool	check_overflow(char *str);
+bool	commas_counter(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:37:49 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 13:44:44 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 16:36:04 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@ bool	fill_in_b_ration(char *value, t_light *light)
 	if (isnan(light->b_ratio))
 		return (false);
 	if (!(light->b_ratio >= 0.0 && light->b_ratio <= 1.0))
-		return (false);
+		return (ft_putstr_fd("Error\nmust be [-1,1]\n", 2),false);
 	return (true);
 }
 
 bool	fill_in_rgb(char *value, t_rgbcolor *color)
 {
 	char	**rgb;
-
+	
+	rgb = NULL;
+	if (!commas_counter(value))
+		return (ft_free_str_arr(rgb), false);
 	rgb = ft_split(value, ',');
 	if (!rgb)
 		return (false);
@@ -64,11 +67,9 @@ void	case_l(t_data *data, t_objects *objects, int i)
 
 bool	validate_a(t_a_light a)
 {
-	if (!(a.ratio >= 0 && a.ratio <= 1))
+	if (!(a.ratio >= 0.0f && a.ratio <= 1.0f))
 		return (ft_putstr_fd("Error\ninvalid Ambient light ratio.\n", 2),
 			false);
-	if (!color_validation(&a.color))
-		return (false);
 	return (true);
 }
 
@@ -80,7 +81,7 @@ void	case_a(t_data *data, t_objects *objects, int i)
 		exit_free_parsing(data);
 	}
 	objects->a.ratio = ft_atof(data->lines[i].line[1]);
-	if (isnan(objects->a.ratio))
+	if (isnan(objects->a.ratio) || !validate_a(objects->a))
 		exit_free_parsing(data);
 	if (!fill_in_rgb(data->lines[i].line[2], &objects->a.color))
 		exit_free_parsing(data);
