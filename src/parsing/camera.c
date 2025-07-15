@@ -6,28 +6,16 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:24:39 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 10:30:01 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:17:41 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minirt.h"
 
-bool	arguments_counter(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-		i++;
-	if (i != 3)
-		return (ft_putstr_fd("Error\nMust be 3 arguments.", 2), false);
-	return (true);
-}
-
 bool	validate_coordination(t_vec3 *coords)
 {
-	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL || coords->y <
-			-MOL) || (coords->z > MOL || coords->z < -MOL))
+	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL || coords->y
+			< -MOL) || (coords->z > MOL || coords->z < -MOL))
 	{
 		return (ft_putstr_fd("Error\ncheck coordinates values\n", 2), false);
 	}
@@ -55,9 +43,9 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 
 	orientations = ft_split(data->lines[i].line[2], ',');
 	if (!orientations)
-		return(ft_putstr_fd("Error\n Allocating memory failed\n", 2), false);
+		return (ft_putstr_fd("Error\n Allocating memory failed\n", 2), false);
 	if (!arguments_counter(orientations))
-		return(false);
+		return (false);
 	orinets->x = ft_atof(orientations[0]);
 	if (isnan(orinets->x))
 		return (ft_free_str_arr(orientations), false);
@@ -73,14 +61,13 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 	return (true);
 }
 
-
 bool	fill_in_coordinates(t_data *data, int i, t_vec3 *coords)
 {
 	char	**coordinates;
 
 	coordinates = ft_split(data->lines[i].line[1], ',');
 	if (!coordinates)
-		return(ft_putstr_fd("Error\n Allocating memory failed\n", 2), false);
+		return (ft_putstr_fd("Error\n Allocating memory failed\n", 2), false);
 	if (!arguments_counter(coordinates))
 		return (ft_free_str_arr(coordinates), false);
 	coords->x = ft_atof(coordinates[0]);

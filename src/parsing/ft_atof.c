@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 15:10:33 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/15 15:13:13 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,6 @@ static void	handle_minues(int *sign, int *i)
 	(*i)++;
 }
 
-bool	check_overflow(char *str)
-{
-	char	*tmp;
-	int		p_position;
-
-	tmp = NULL;
-	p_position = 0;
-	if (ft_strlen(str) > 40)
-		return (false);
-	return (true);
-}
 float	ft_atof(char *str)
 {
 	float	f;
@@ -107,6 +96,6 @@ float	ft_atof(char *str)
 		free(decimal_part);
 	}
 	if (f > 1000.0f || f < -1000.0f)
-		return (ft_putstr_fd("Error\nover than the float min or max.\n", 2), NAN);
+		return (ft_putstr_fd("Error\nover than float min or max.\n", 2), NAN);
 	return (f * sign);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+         #
+#    By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/09 15:40:55 by vkuusela          #+#    #+#              #
-#    Updated: 2025/07/09 15:41:41 by vkuusela         ###   ########.fr        #
+#    Updated: 2025/07/15 15:14:10 by mkhlouf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SOURCES			= src/main.c src/parsing/reading_file.c src/parsing/parsing_utils.c sr
 				  src/math/vector_properties.c src/rendering/color.c \
 				  src/rendering/camera.c src/rendering/ray.c src/rendering/render_loop.c \
 				  src/rendering/hit_detection.c src/rendering/shading.c src/rendering/colors_functions.c\
-				  src/rendering/shadow.c src/math/quaternion.c src/rendering/cylinder_detection.c
+				  src/rendering/shadow.c src/math/quaternion.c src/rendering/cylinder_detection.c src/parsing/parsing_utils2.c
 
 HEADERS			= minirt.h
 
