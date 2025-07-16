@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:24:39 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 15:48:16 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:57:07 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 bool	validate_coordination(t_vec3 *coords)
 {
-	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL || coords->y
-			< -MOL) || (coords->z > MOL || coords->z < -MOL))
+	if ((coords->x > MOL || coords->x < -MOL) || (coords->y > MOL
+			|| coords->y < -MOL) || (coords->z > MOL || coords->z < -MOL))
 	{
 		return (ft_putstr_fd("Error\ncheck coordinates values\n", 2), false);
 	}
@@ -40,7 +40,7 @@ bool	validate_orientation(t_vec3 *orinets)
 bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 {
 	char	**orientations;
-	
+
 	if (!commas_counter(data->lines[i].line[2]))
 		return (false);
 	orientations = ft_split(data->lines[i].line[2], ',');
@@ -66,7 +66,7 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 bool	fill_in_coordinates(t_data *data, int i, t_vec3 *coords)
 {
 	char	**coordinates;
-	
+
 	if (!commas_counter(data->lines[i].line[1]))
 		return (false);
 	coordinates = ft_split(data->lines[i].line[1], ',');

@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 16:36:14 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/16 12:21:44 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,12 @@
 bool	check_all_nums(char *str)
 {
 	int	i;
-	int	dot_counter;
 
 	i = 0;
-	dot_counter = 0;
-	while (str[i])
-	{
-		if (str[i] == '.')
-			dot_counter++;
-		i++;
-	}
-	if (ft_strlen(str) != 1 && (str[0] == '.' || str[ft_strlen(str)
-			- 1] == '.'))
+	if (!dot_check(str))
 		return (false);
-	if (dot_counter > 1)
+	if (ft_strlen(str) != 1 && (str[0] == '.' || str[ft_strlen(str)
+				- 1] == '.'))
 		return (false);
 	i = 0;
 	if (str[0] == '-' || str[0] == '+')
@@ -95,7 +87,6 @@ float	ft_atof(char *str)
 	if (str[i] == '.')
 	{
 		decimal_part = str + i + 1;
-		printf("string is %s, decimal_part:%s \n", str, decimal_part);
 		f = f + decimal_convert(decimal_part);
 	}
 	if (f > 1000.0f || f < -1000.0f)
