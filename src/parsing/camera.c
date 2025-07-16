@@ -47,7 +47,7 @@ bool	fill_in_orientations(t_data *data, int i, t_vec3 *orinets)
 	if (!orientations)
 		return (ft_putstr_fd("Error\n Allocating memory failed\n", 2), false);
 	if (!arguments_counter(orientations))
-		return (false);
+		return (ft_free_str_arr(orientations), false);
 	orinets->x = ft_atof(orientations[0]);
 	if (isnan(orinets->x))
 		return (ft_free_str_arr(orientations), false);
