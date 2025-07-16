@@ -182,7 +182,6 @@ typedef struct s_viewp
 	t_vec3			vertical;
 	t_vec3			delta_u;
 	t_vec3			delta_v;
-	t_vec3			upper_left;
 	t_vec3			pixel_zero;
 }					t_viewp;
 
