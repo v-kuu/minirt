@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 16:04:01 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 15:44:46 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:59:55 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -447,5 +447,6 @@ bool	arguments_counter(char **args);
 
 bool	check_overflow(char *str);
 bool	commas_counter(char *str);
+bool	dot_check(char *str);
 
 #endif
