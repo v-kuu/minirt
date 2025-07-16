@@ -22,7 +22,6 @@ int	rendering(t_data *data)
 	t_viewp		screen;
 	t_camera	cam;
 
-	ft_bzero(&screen, sizeof(screen));
 	cam = data->objects->c;
 	screen = create_viewport(cam, (cam.fov * (M_PI / 180)), 1920, 1080);
 	screen.mlx = mlx_init(1920, 1080, "minirt", true);

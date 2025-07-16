@@ -15,19 +15,13 @@
 
 # define MAX_LINES 200
 # define MOL 1000.0f // max coordinates value
-# define WIDTH 1920
-# define HEIGHT 1080
 # define SHININESS 10  // in lighting
 # define SPECULAR 0.2f // in lighting
 # include "MLX42/include/MLX42/MLX42.h"
 # include "libft/libft.h"
-# include <errno.h>
 # include <fcntl.h>
 # include <float.h>
 # include <math.h>
-# include <stdio.h>
-# include <string.h>
-# include <unistd.h>
 
 typedef uint32_t	t_color;
 
@@ -37,6 +31,8 @@ typedef struct s_vec3
 	float			y;
 	float			z;
 }					t_vec3;
+
+typedef t_vec3		t_point;
 
 typedef struct s_ray
 {
@@ -66,8 +62,6 @@ typedef struct s_hit_record
 	t_rgbcolor		color;
 	t_ray			ray;
 }					t_hit;
-
-typedef t_vec3		t_point;
 
 typedef struct s_light
 {
@@ -188,7 +182,6 @@ typedef struct s_viewp
 	t_vec3			vertical;
 	t_vec3			delta_u;
 	t_vec3			delta_v;
-	t_vec3			upper_left;
 	t_vec3			pixel_zero;
 }					t_viewp;
 
@@ -443,10 +436,10 @@ t_rgbcolor			color_clamping(t_rgbcolor color);
 /*
  * return fase if number if arguments more than 3
  */
-bool	arguments_counter(char **args);
+bool				arguments_counter(char **args);
 
-bool	check_overflow(char *str);
-bool	commas_counter(char *str);
-bool	dot_check(char *str);
+bool				check_overflow(char *str);
+bool				commas_counter(char *str);
+bool				dot_check(char *str);
 
 #endif
