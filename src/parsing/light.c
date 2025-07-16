@@ -6,7 +6,7 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:37:49 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/15 16:36:04 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:56:29 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ bool	fill_in_b_ration(char *value, t_light *light)
 	if (isnan(light->b_ratio))
 		return (false);
 	if (!(light->b_ratio >= 0.0 && light->b_ratio <= 1.0))
-		return (ft_putstr_fd("Error\nmust be [-1,1]\n", 2),false);
+		return (ft_putstr_fd("Error\nmust be [0,1]\n", 2), false);
 	return (true);
 }
 
 bool	fill_in_rgb(char *value, t_rgbcolor *color)
 {
 	char	**rgb;
-	
+
 	rgb = NULL;
 	if (!commas_counter(value))
 		return (ft_free_str_arr(rgb), false);

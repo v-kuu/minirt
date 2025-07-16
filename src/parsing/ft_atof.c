@@ -6,29 +6,12 @@
 /*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:34:31 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/16 01:30:37 by mkhlouf          ###   ########.fr       */
+/*   Updated: 2025/07/16 11:55:37 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minirt.h"
 
-bool	dot_check(char *str)
-{
-	int	i;
-	int	dot_counter;
-
-	i = 0;
-	dot_counter = 0;
-	while (str[i])
-	{
-		if (str[i] == '.')
-			dot_counter++;
-		i++;
-	}
-	if (dot_counter > 1)
-		return (false);
-	return (true);
-}
 bool	check_all_nums(char *str)
 {
 	int	i;
@@ -37,7 +20,7 @@ bool	check_all_nums(char *str)
 	if (!dot_check(str))
 		return (false);
 	if (ft_strlen(str) != 1 && (str[0] == '.' || str[ft_strlen(str)
-			- 1] == '.'))
+				- 1] == '.'))
 		return (false);
 	i = 0;
 	if (str[0] == '-' || str[0] == '+')

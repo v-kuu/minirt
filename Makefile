@@ -6,7 +6,7 @@
 #    By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/09 15:40:55 by vkuusela          #+#    #+#              #
-#    Updated: 2025/07/16 00:45:30 by mkhlouf          ###   ########.fr        #
+#    Updated: 2025/07/16 10:53:37 by mkhlouf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME 			= miniRT
 CC 				= cc
-CFLAGS 			= -Wall -I.
+CFLAGS 			= -Wall -Wextra -Werror -I.
 LFLAGS			= -ldl -lglfw -pthread -lm
 OFLAGS			= -O3 -flto -march=native
 RM 				= rm -rf

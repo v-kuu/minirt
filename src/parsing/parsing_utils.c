@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vkuusela <vkuusela@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: mkhlouf <mkhlouf@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 14:30:41 by vkuusela          #+#    #+#             */
-/*   Updated: 2025/07/09 15:37:39 by vkuusela         ###   ########.fr       */
+/*   Updated: 2025/07/16 11:56:17 by mkhlouf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	remove_white_spaces(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\t')
+		if (line[i] == '\t' || line[i] == '\n' || line[i] == '\f'
+			|| line[i] == '\r' || line[i] == '\v')
 			line[i] = ' ';
 		i++;
 	}
