@@ -437,10 +437,10 @@ t_rgbcolor			color_clamping(t_rgbcolor color);
 /*
  * return fase if number if arguments more than 3
  */
-bool	arguments_counter(char **args);
+bool				arguments_counter(char **args);
 
-bool	check_overflow(char *str);
-bool	commas_counter(char *str);
-bool	dot_check(char *str);
+bool				check_overflow(char *str);
+bool				commas_counter(char *str);
+bool				dot_check(char *str);
 
 #endif

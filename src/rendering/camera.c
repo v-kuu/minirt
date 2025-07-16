@@ -20,6 +20,7 @@ t_viewp	create_viewport(t_camera cam, float fov_rad, int width, int height)
 	t_vec3	temp;
 	float	focal_length;
 
+	ft_bzero(&screen, sizeof(screen));
 	screen.width = width;
 	screen.height = height;
 	screen.cam_origin = cam.coordinates;
